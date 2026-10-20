@@ -6,3 +6,5 @@ __pycache__/
 dist/
 .vscode
 .DS_StoreThunmbs.db.
+docs/cahier-des-charges/.obsidian/workspace.json
+docs/cahier-des-charges/.obsidian/workspace-mobile.json
