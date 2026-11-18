@@ -280,3 +280,50 @@ def test_le_carnet_des_autres_est_invisible(connecte: TestClient, sans_reseau: N
     assert connecte.get("/api/marine/sorties").json() == []
     assert connecte.put(f"/api/marine/sorties/{identifiant}", json=sortie()).status_code == 404
     assert connecte.delete(f"/api/marine/sorties/{identifiant}").status_code == 404
+
+
+# --- Danger, assistant, tempête --------------------------------------------------------------
+
+
+def test_chaque_heure_et_l_instant_ont_un_niveau_de_danger() -> None:
+    conditions = assembler(SPOT, METEO, MARINE, BREST, MAINTENANT)
+
+    assert conditions.danger.niveau in ("vert", "rouge", "noir")
+    assert all(h.danger in ("vert", "rouge", "noir") for h in conditions.heures)
+    # Les heures de nuit sont au moins rouges.
+    nuit = [h for h in conditions.heures if h.instant.hour in (2, 3)]
+    assert nuit and all(h.danger != "vert" for h in nuit)
+
+
+def test_l_assistant_propose_des_creneaux_de_jour(connecte: TestClient, sans_reseau: None) -> None:
+    reponse = connecte.get("/api/marine/assistant", params={"mode": "nage", "duree_min": 40})
+
+    assert reponse.status_code == 200
+    corps = reponse.json()
+    assert corps["recommandations"]["durees"]["texte"].startswith("Eau à")
+    assert corps["recommandations"]["reprise"] is True  # aucune sortie notée : on part prudent
+    for creneau in corps["creneaux"]:
+        assert creneau["danger"]["niveau"] != "noir"
+        assert 8 <= int(creneau["debut"][11:13]) <= 17
+
+
+def test_essuyer_une_tempete(connecte: TestClient, sans_reseau: None) -> None:
+    lue = connecte.post("/api/marine/sorties", json=sortie(vent_kmh=95, eau_c=11)).json()
+
+    assert lue["tempete"] is True
+    assert lue["danger"] == "noir"  # le badge ne sera jamais présenté comme une réussite
+
+
+def test_une_sortie_sans_aucune_condition_n_a_pas_de_niveau(connecte: TestClient) -> None:
+    class EnPanne(OpenMeteo):
+        def __init__(self) -> None:
+            super().__init__(httpx.Client(transport=httpx.MockTransport(lambda r: httpx.Response(503))))
+
+    application.dependency_overrides[open_meteo] = EnPanne
+    try:
+        lue = connecte.post("/api/marine/sorties", json=sortie()).json()
+    finally:
+        application.dependency_overrides.pop(open_meteo, None)
+
+    assert lue["danger"] is None
+    assert lue["tempete"] is False

@@ -25,3 +25,49 @@ demi_fenetre_pas = 8
 meteo_min = 30
 marine_min = 60
 brest_min = 360
+
+# --- Niveau de danger (validé le 18/11/2026) -------------------------------------------
+# Le niveau d'une sortie est le plus grave des critères ; chaque raison est affichée.
+[danger]
+vent_rouge_kmh = 30          # force 5
+vent_noir_kmh = 50           # force 7
+rafales_rouge_kmh = 60
+rafales_noir_kmh = 75
+vent_terre_rouge_kmh = 20    # vent qui pousse vers le large
+vent_terre_noir_kmh = 35
+vagues_rouge_m = 1.0
+vagues_noir_m = 2.0
+courant_rouge_kmh = 2.0
+courant_noir_kmh = 3.0
+eau_rouge_c = 8.0
+eau_noir_c = 5.0
+# Les plages regardent la mer vers le nord : un vent venant du sud (± 67,5°) souffle vers le large.
+cap_vers_le_large_deg = 0.0
+demi_secteur_terre_deg = 67.5
+
+[tempete]
+# Easter egg « Essuyer une tempête ! » : vent moyen de force 10 Beaufort ou plus.
+vent_moyen_kmh = 89
+
+# --- Durées en eau froide, sans combinaison (validées le 18/11/2026) -------------------
+# Repères : seuil de choc thermique à 15 °C (RNLI), règle 1-10-1 (Giesbrecht).
+# Chaque ligne : température minimale de l'eau → [temps conseillé, temps maximal] en minutes.
+# 0 = pas de limite liée au froid.
+[eau_froide]
+paliers = [
+  [18.0, 0, 0],
+  [15.0, 45, 60],
+  [12.0, 25, 40],
+  [10.0, 15, 25],
+  [8.0, 10, 15],
+  [5.0, 5, 10],
+  [-5.0, 1, 2],
+]
+facteur_combinaison = 2.0     # combinaison de 4 à 5 mm : durées doublées (estimation)
+facteur_reprise = 0.5         # aucune sortie depuis plus de 4 semaines : durées divisées par deux
+jours_avant_reprise = 28
+
+[cote]
+# Axe de la côte (vers l'est) : sert à conseiller le sens de nage par rapport au courant.
+axe_est_deg = 90.0
+courant_faible_kmh = 0.3

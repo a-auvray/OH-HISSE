@@ -2,14 +2,14 @@
 
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlmodel import col, select
 
 from app.core.acces import a_moi
 from app.core.authentification import UtilisateurDep
 from app.core.base_de_donnees import SessionDep
 from app.models import SortieMer, Spot
-from app.schemas.marine import Conditions, SortieEcrite, SortieLue, SpotLu
+from app.schemas.marine import Assistant, Conditions, Mode, SortieEcrite, SortieLue, SpotLu
 from app.services import marine as service
 from app.services.open_meteo import ConditionsIndisponibles, OpenMeteo, open_meteo
 
@@ -40,11 +40,35 @@ def conditions(
         ) from None
 
 
+@routeur.get("/assistant", responses={404: {}, 503: {}})
+def assistant(
+    utilisateur: UtilisateurDep,
+    session: SessionDep,
+    meteo: OpenMeteoDep,
+    spot_id: int | None = None,
+    mode: Mode = "nage",
+    duree_min: Annotated[int, Query(gt=0, le=600)] = 30,
+    combinaison: bool = False,
+) -> Assistant:
+    """Meilleurs créneaux des prochaines 48 h et recommandations pour préparer la sortie."""
+    spot = a_moi(session, Spot, spot_id, utilisateur) if spot_id else service.spots(session, utilisateur)[0]
+    try:
+        conditions_du_spot = service.conditions(meteo, spot)
+    except ConditionsIndisponibles:
+        raise HTTPException(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            "L'assistant a besoin des conditions en mer : Open-Meteo ne répond pas.",
+        ) from None
+    jours = service.jours_depuis_derniere_sortie(session, utilisateur, conditions_du_spot.maintenant.instant)
+    return service.assistant(conditions_du_spot, mode, duree_min, combinaison, jours)
+
+
 # --- Carnet de sortie -----------------------------------------------------------------------
 
 
 def _lecture(sortie: SortieMer, spot: Spot | None) -> SortieLue:
-    return SortieLue(**sortie.model_dump(), spot=spot.nom if spot else None)
+    danger, tempete = service.danger_sortie(sortie)
+    return SortieLue(**sortie.model_dump(), spot=spot.nom if spot else None, danger=danger, tempete=tempete)
 
 
 @routeur.get("/sorties")

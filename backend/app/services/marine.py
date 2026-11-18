@@ -1,14 +1,31 @@
 """Conditions en mer : assemblage des réponses Open-Meteo, et spots."""
 
 import datetime as dt
+from dataclasses import asdict
 from typing import Any
 from zoneinfo import ZoneInfo
 
 from sqlmodel import Session, col, select
 
 from app.models import SortieMer, Spot, Utilisateur
-from app.moteurs import marees
-from app.schemas.marine import Conditions, Heure, Instantane, Maree, Soleil, SpotLu
+from app.moteurs import assistant as assistant_moteur
+from app.moteurs import danger as moteur_danger
+from app.moteurs import marees, recommandations
+from app.schemas.marine import (
+    Assistant,
+    Conditions,
+    CreneauLu,
+    Danger,
+    DureesLues,
+    Heure,
+    Instantane,
+    Maree,
+    RaisonLue,
+    RecommandationsLues,
+    SensLu,
+    Soleil,
+    SpotLu,
+)
 from app.services.open_meteo import ConditionsIndisponibles, OpenMeteo
 
 # Mes plages (décision du 18/11/2026), créées pour chaque utilisateur à sa première visite.
@@ -60,6 +77,31 @@ def _valeur(table: dict[str, list[Any]], variable: str, index: int | None) -> An
         return None
     valeurs = table[variable]
     return valeurs[index] if index < len(valeurs) else None
+
+
+def _de_nuit(instant: dt.datetime, soleil: list[Soleil]) -> bool:
+    jour = next((s for s in soleil if s.jour == instant.date()), None)
+    return jour is not None and not jour.lever <= instant <= jour.coucher
+
+
+def danger_lu(evaluation: moteur_danger.Evaluation) -> Danger:
+    return Danger(
+        niveau=evaluation.niveau,
+        raisons=[RaisonLue(niveau=r.niveau, texte=r.texte) for r in evaluation.raisons],
+    )
+
+
+def situation_heure(h: Heure, eau_c: float | None, de_nuit: bool) -> moteur_danger.Situation:
+    return moteur_danger.Situation(
+        vent_kmh=h.vent_kmh,
+        rafales_kmh=h.rafales_kmh,
+        vent_direction_deg=h.vent_direction_deg,
+        vagues_m=h.vagues_m,
+        courant_kmh=h.courant_kmh,
+        eau_c=h.eau_c if h.eau_c is not None else eau_c,
+        code_meteo=h.code_meteo,
+        de_nuit=de_nuit,
+    )
 
 
 def _index_heure(instants: list[dt.datetime], instant: dt.datetime) -> int | None:
@@ -127,7 +169,10 @@ def assembler(
                 pluie_pct=_valeur(hm, "precipitation_probability", i),
                 eau_c=_valeur(hmar, "sea_surface_temperature", j),
                 vagues_m=_valeur(hmar, "wave_height", j),
+                courant_kmh=_valeur(hmar, "ocean_current_velocity", j),
+                courant_direction_deg=_valeur(hmar, "ocean_current_direction", j),
                 hauteur_eau_m=marees.hauteur_a(serie_zone, instant, decalage),
+                danger="vert",
             )
         )
 
@@ -149,12 +194,37 @@ def assembler(
         if dt.date.fromisoformat(jour) >= maintenant.date()
     ]
 
+    # Niveau de danger de chaque heure, puis de l'instant présent.
+    heures = [
+        h.model_copy(
+            update={
+                "danger": moteur_danger.evaluer(
+                    situation_heure(h, instantane.eau_c, _de_nuit(h.instant, soleil))
+                ).niveau
+            }
+        )
+        for h in heures
+    ]
+    actuel = moteur_danger.evaluer(
+        moteur_danger.Situation(
+            vent_kmh=instantane.vent_kmh,
+            rafales_kmh=instantane.rafales_kmh,
+            vent_direction_deg=instantane.vent_direction_deg,
+            vagues_m=instantane.vagues_m,
+            courant_kmh=instantane.courant_kmh,
+            eau_c=instantane.eau_c,
+            code_meteo=instantane.code_meteo,
+            de_nuit=_de_nuit(maintenant, soleil),
+        )
+    )
+
     return Conditions(
         spot=spot,
         maintenant=instantane,
         heures=heures,
         marees=liste_marees,
         soleil=soleil,
+        danger=danger_lu(actuel),
         perimees=perimees,
     )
 
@@ -220,3 +290,87 @@ def completer_conditions(service: OpenMeteo, sortie: SortieMer, spot: Spot | Non
         if getattr(sortie, champ) is None and valeur is not None:
             setattr(sortie, champ, valeur)
             sortie.conditions_relevees = True
+
+
+# --- Assistant de sortie ------------------------------------------------------------------------
+
+
+def danger_sortie(sortie: SortieMer) -> tuple[moteur_danger.Niveau | None, bool]:
+    """Niveau de danger d'après les conditions enregistrées, et easter egg « tempête »."""
+    if all(getattr(sortie, c) is None for c in ("vent_kmh", "rafales_kmh", "vagues_m", "eau_c")):
+        return None, False
+    evaluation = moteur_danger.evaluer(
+        moteur_danger.Situation(
+            vent_kmh=sortie.vent_kmh,
+            rafales_kmh=sortie.rafales_kmh,
+            vagues_m=sortie.vagues_m,
+            eau_c=sortie.eau_c,
+        )
+    )
+    return evaluation.niveau, moteur_danger.tempete(sortie.vent_kmh)
+
+
+def jours_depuis_derniere_sortie(
+    session: Session, utilisateur: Utilisateur, maintenant: dt.datetime
+) -> int | None:
+    derniere = session.exec(
+        select(SortieMer)
+        .where(SortieMer.utilisateur_id == utilisateur.id, SortieMer.debut <= maintenant)
+        .order_by(col(SortieMer.debut).desc())
+    ).first()
+    return (maintenant - derniere.debut).days if derniere else None
+
+
+def assistant(
+    conditions_du_spot: Conditions,
+    mode: recommandations.Mode,
+    duree_min: int,
+    combinaison: bool,
+    jours: int | None,
+) -> Assistant:
+    """Meilleurs créneaux et recommandations, à partir des conditions d'un spot."""
+    m = conditions_du_spot.maintenant
+    heures = [
+        assistant_moteur.HeurePrevue(
+            instant=h.instant,
+            situation=situation_heure(h, m.eau_c, de_nuit=False),
+            air_c=h.air_c,
+            hauteur_eau_m=h.hauteur_eau_m,
+        )
+        for h in conditions_du_spot.heures
+    ]
+    jours_soleil = [assistant_moteur.Jour(s.lever, s.coucher) for s in conditions_du_spot.soleil]
+    creneaux = assistant_moteur.meilleurs_creneaux(heures, jours_soleil, duree_min, m.instant)
+
+    conseils = None
+    if m.eau_c is not None:
+        r = recommandations.recommander(
+            m.eau_c, m.air_c, m.courant_kmh, m.courant_direction_deg, mode, combinaison, jours
+        )
+        conseils = RecommandationsLues(
+            durees=DureesLues(**asdict(r.durees)),
+            tenue=r.tenue,
+            sens=SensLu(**asdict(r.sens)),
+            reprise=r.reprise,
+            gestes=r.gestes,
+        )
+
+    return Assistant(
+        spot=conditions_du_spot.spot,
+        mode=mode,
+        duree_min=duree_min,
+        combinaison=combinaison,
+        eau_c=m.eau_c,
+        creneaux=[
+            CreneauLu(
+                debut=c.debut,
+                fin=c.fin,
+                danger=danger_lu(c.evaluation),
+                atouts=list(c.atouts),
+                reserves=list(c.reserves),
+            )
+            for c in creneaux
+        ],
+        recommandations=conseils,
+        jours_depuis_derniere_sortie=jours,
+    )

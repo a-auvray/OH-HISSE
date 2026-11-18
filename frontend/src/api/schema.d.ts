@@ -306,6 +306,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/marine/assistant': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Assistant
+     * @description Meilleurs créneaux des prochaines 48 h et recommandations pour préparer la sortie.
+     */
+    get: operations['assistant_api_marine_assistant_get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/api/marine/sorties': {
     parameters: {
       query?: never
@@ -398,6 +418,29 @@ export interface paths {
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
+    /**
+     * Assistant
+     * @description Réponse de l'assistant de sortie (note 04).
+     */
+    Assistant: {
+      spot: components['schemas']['SpotLu']
+      /**
+       * Mode
+       * @enum {string}
+       */
+      mode: 'baignade' | 'nage' | 'plongee'
+      /** Duree Min */
+      duree_min: number
+      /** Combinaison */
+      combinaison: boolean
+      /** Eau C */
+      eau_c: number | null
+      /** Creneaux */
+      creneaux: components['schemas']['CreneauLu'][]
+      recommandations: components['schemas']['RecommandationsLues'] | null
+      /** Jours Depuis Derniere Sortie */
+      jours_depuis_derniere_sortie: number | null
+    }
     /** AvancementBloc */
     AvancementBloc: {
       /** Id */
@@ -502,6 +545,7 @@ export interface components {
       marees: components['schemas']['Maree'][]
       /** Soleil */
       soleil: components['schemas']['Soleil'][]
+      danger: components['schemas']['Danger']
       /** Perimees */
       perimees: boolean
       /**
@@ -509,6 +553,43 @@ export interface components {
        * @default Open-Meteo · marées estimées, recalées sur l'annuaire SHOM de Ouistreham
        */
       source: string
+    }
+    /** CreneauLu */
+    CreneauLu: {
+      /**
+       * Debut
+       * Format: date-time
+       */
+      debut: string
+      /**
+       * Fin
+       * Format: date-time
+       */
+      fin: string
+      danger: components['schemas']['Danger']
+      /** Atouts */
+      atouts: string[]
+      /** Reserves */
+      reserves: string[]
+    }
+    /** Danger */
+    Danger: {
+      /**
+       * Niveau
+       * @enum {string}
+       */
+      niveau: 'vert' | 'rouge' | 'noir'
+      /** Raisons */
+      raisons: components['schemas']['RaisonLue'][]
+    }
+    /** DureesLues */
+    DureesLues: {
+      /** Conseille Min */
+      conseille_min: number | null
+      /** Maximum Min */
+      maximum_min: number | null
+      /** Texte */
+      texte: string
     }
     /** EtatSante */
     EtatSante: {
@@ -576,8 +657,17 @@ export interface components {
       eau_c: number | null
       /** Vagues M */
       vagues_m: number | null
+      /** Courant Kmh */
+      courant_kmh: number | null
+      /** Courant Direction Deg */
+      courant_direction_deg: number | null
       /** Hauteur Eau M */
       hauteur_eau_m: number | null
+      /**
+       * Danger
+       * @enum {string}
+       */
+      danger: 'vert' | 'rouge' | 'noir'
     }
     /** Identifiants */
     Identifiants: {
@@ -826,6 +916,27 @@ export interface components {
       /** Justifications */
       justifications: string[]
     }
+    /** RaisonLue */
+    RaisonLue: {
+      /**
+       * Niveau
+       * @enum {string}
+       */
+      niveau: 'vert' | 'rouge' | 'noir'
+      /** Texte */
+      texte: string
+    }
+    /** RecommandationsLues */
+    RecommandationsLues: {
+      durees: components['schemas']['DureesLues']
+      /** Tenue */
+      tenue: string[]
+      sens: components['schemas']['SensLu']
+      /** Reprise */
+      reprise: boolean
+      /** Gestes */
+      gestes: string[]
+    }
     /**
      * Record
      * @description 1RM estimé d'un exercice sur une séance.
@@ -903,6 +1014,13 @@ export interface components {
       poids_a_jour: boolean
       /** Records */
       records: components['schemas']['Record'][]
+    }
+    /** SensLu */
+    SensLu: {
+      /** Sens */
+      sens: ("vers l'ouest" | "vers l'est") | null
+      /** Texte */
+      texte: string
     }
     /** SerieEcrite */
     SerieEcrite: {
@@ -1063,6 +1181,10 @@ export interface components {
       spot: string | null
       /** Conditions Relevees */
       conditions_relevees: boolean
+      /** Danger */
+      danger: ('vert' | 'rouge' | 'noir') | null
+      /** Tempete */
+      tempete: boolean
     }
     /** SpotLu */
     SpotLu: {
@@ -1957,6 +2079,56 @@ export interface operations {
         }
         content: {
           'application/json': components['schemas']['Conditions']
+        }
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+      /** @description Service Unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  assistant_api_marine_assistant_get: {
+    parameters: {
+      query?: {
+        spot_id?: number | null
+        mode?: 'baignade' | 'nage' | 'plongee'
+        duree_min?: number
+        combinaison?: boolean
+      }
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['Assistant']
         }
       }
       /** @description Not Found */

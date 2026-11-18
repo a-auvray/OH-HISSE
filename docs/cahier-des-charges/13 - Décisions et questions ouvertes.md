@@ -41,6 +41,10 @@ statut: brouillon
 | Qualité outillée : uv, Ruff, mypy, ESLint, Prettier, Vitest, CI GitHub Actions | Chaque pull request est vérifiée automatiquement |
 | Suivi Super Productivity abandonné, journal conservé | Je ne code plus moi-même ; le journal garde la trace des choix |
 | Animations toujours actives, même si le système demande de les réduire | Elles font partie de l'identité de l'appli |
+| Seuils de danger vert / rouge / noir, dont le vent de terre (cf. [[04 - Marine#Seuils validés (18/11/2026)|note 04]]) | Côte orientée au nord : un vent du sud pousse vers le large |
+| Durées en eau froide prudentes, ×2 avec combinaison, ÷2 en reprise | Seuil de choc thermique 15 °C (RNLI), règle 1-10-1 (Giesbrecht) |
+| Easter egg : force 10 (≥ 89 km/h), ton de clin d'œil inquiet, jamais une réussite | Ne pas encourager à sortir par tempête |
+| Distance jusqu'à l'eau : indication qualitative (mer haute / basse) en attendant Litto3D | Le relief IGN s'arrête au haut de plage : pas de fausse précision |
 | Exercices de base : tractions, dips, muscle-up (pas de squat) | Mes trois mouvements ; les autres restent ajoutables |
 | Lest arrondi à 1,25 kg | Mon plus petit écart de charge disponible |
 | Auto-régulation par la table RPE (1RM récent × % cible), ±5 % max, deload localisé après 2 échecs | Une seule formule pour le 1RM et la charge proposée (cf. [[03 - Streetlifting#Règles validées (18/11/2026)|règles]]) |
@@ -58,8 +62,8 @@ statut: brouillon
 - [x] Cibles de RPE par format et par bloc → [[03 - Streetlifting#Règles validées (18/11/2026)|tableau validé]]
 
 ### Marine
-- [ ] Seuils des niveaux de danger vert / rouge / noir
-- [ ] Temps d'exposition en eau froide : quelles sources fiables ? ⚠️ information de sécurité, marges prudentes
+- [x] Seuils des niveaux de danger vert / rouge / noir → note 04
+- [x] Temps d'exposition en eau froide → RNLI (15 °C), Giesbrecht (1-10-1), Golden et Tipton ; table prudente en note 04
 - [ ] Carte : ~~Leaflet ou Mapbox ?~~ MapLibre GL ✓ — reste : représenter le sable découvert selon la marée (pente par spot, ou Litto3D)
 
 ### Vie courante
@@ -68,8 +72,8 @@ statut: brouillon
 
 ### Transversal
 - [x] Mode démo → bac à sable par visiteur, effacé après 24 h
-- [ ] Easter egg : seuil de tempête (force 10 Beaufort, ou rafales ?)
-- [ ] Easter egg : si le danger avait déconseillé la sortie, le badge s'affiche-t-il quand même ?
+- [x] Easter egg : seuil de tempête → vent moyen de force 10 (≥ 89 km/h)
+- [x] Easter egg : si le danger avait déconseillé la sortie → oui, mais en clin d'œil inquiet, jamais en réussite
 - [x] Librairie de graphiques → visx
 - [ ] Hébergement (au moment de la mise en ligne)
 - [x] ~~Formation CSS avancée~~ → sans objet
