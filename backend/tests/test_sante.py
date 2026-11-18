@@ -1,5 +1,7 @@
+import pytest
 from fastapi.testclient import TestClient
 
+from app.core.config import parametres
 from app.main import app
 
 
@@ -27,3 +29,13 @@ def test_le_cors_refuse_une_origine_inconnue() -> None:
     )
 
     assert "access-control-allow-origin" not in reponse.headers
+
+
+def test_la_production_refuse_la_cle_de_developpement(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OH_HISSE_ENVIRONNEMENT", "production")
+    parametres.cache_clear()
+    try:
+        with pytest.raises(RuntimeError, match="CLE_SECRETE"):
+            parametres()
+    finally:
+        parametres.cache_clear()

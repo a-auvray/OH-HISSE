@@ -24,7 +24,10 @@ class Parametres(BaseSettings):
     url_base_de_donnees: str = f"sqlite:///{RACINE_DEPOT / 'backend' / 'oh-hisse.db'}"
 
     # Sécurité : la clé par défaut n'est acceptée qu'en développement et en test.
-    cle_secrete: str = Field(default="dev-uniquement-a-changer", min_length=16)
+    # 32 caractères minimum : en dessous, une clé HMAC-SHA256 est jugée trop faible (RFC 7518).
+    cle_secrete: str = Field(
+        default="dev-uniquement-cle-de-developpement-a-ne-jamais-deployer", min_length=32
+    )
     duree_jeton_minutes: int = 60 * 24 * 7
 
     # Origines autorisées à appeler l'API (le frontend Vite en local).
