@@ -20,8 +20,8 @@ Ce n'est pas quatre applis juxtaposées : chaque donnée saisie sert ailleurs. L
 | 0 — Cadrage | Cahier des charges, API externes, décisions | ✅ |
 | 1 — Fondations | Backend, frontend, base, authentification, navigation | ✅ `v0.1.0` |
 | 2 — Streetlifting + Objectifs | Séances, 1RM, blocs, auto-régulation | ✅ `v0.2.0` |
-| 3 — Marine | Météo marine, marées, danger, carte | ⏳ |
-| 4 — Vie courante + croisements | Sommeil, récupération, cheat meal, briefings | — |
+| 3 — Marine | Météo marine, marées, danger, assistant, carnet, carte | ✅ `v0.3.0` |
+| 4 — Vie courante + croisements | Sommeil, récupération, cheat meal, briefings | ⏳ |
 | 5 — Accueil, démo, mise en ligne | Données de démo, finitions, production | — |
 
 Le détail est dans le [cahier des charges](docs/cahier-des-charges/00%20-%20Sommaire.md) (coffre Obsidian) et le [journal de développement](docs/JOURNAL.md).
@@ -30,10 +30,10 @@ Le détail est dans le [cahier des charges](docs/cahier-des-charges/00%20-%20Som
 
 | Couche | Choix |
 |---|---|
-| Frontend | React 19, TypeScript 7 (strict), Vite 8, Motion, visx, CSS Modules |
+| Frontend | React 19, TypeScript 7 (strict), Vite 8, Motion, visx, MapLibre GL, CSS Modules |
 | Backend | Python 3.14, FastAPI, SQLModel, Alembic |
 | Base | SQLite en local, PostgreSQL en production |
-| Données externes | Open-Meteo (météo et marine, sans clé), IGN Géoplateforme |
+| Données externes | Open-Meteo (météo et marine, sans clé), OpenFreeMap (fond de carte) |
 | Qualité | pytest, Vitest, Ruff, mypy strict, oxlint, Prettier, GitHub Actions |
 
 Toute la logique « intelligente » (auto-régulation, récupération, danger…) vit dans `backend/app/moteurs/`, sous forme de **fonctions pures et testées** : elles reçoivent des données et renvoient un résultat, sans toucher à la base ni au réseau.
