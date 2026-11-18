@@ -1,10 +1,11 @@
 """Fixtures communes : chaque test reçoit une base SQLite en mémoire, neuve."""
 
+import os
 from collections.abc import Iterator
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import Engine
+from sqlalchemy import Engine, text
 from sqlmodel import Session, SQLModel
 
 import app.models  # noqa: F401  (enregistre les tables)
@@ -28,18 +29,43 @@ def limiteurs_neufs() -> Iterator[None]:
     yield
 
 
-@pytest.fixture
-def moteur() -> Iterator[Engine]:
-    # Connexion unique : sinon chaque connexion verrait sa propre base en mémoire, vide.
-    moteur = creer_moteur("sqlite://", connexion_unique=True)
+# Par défaut, SQLite en mémoire. La CI rejoue aussi toute la suite sur PostgreSQL, la base de prod :
+#   OH_HISSE_URL_TESTS=postgresql+psycopg://oh_hisse:oh_hisse@localhost:5432/oh_hisse_tests
+URL_TESTS = os.environ.get("OH_HISSE_URL_TESTS")
+SOUS_POSTGRESQL = bool(URL_TESTS)
+
+
+@pytest.fixture(scope="session")
+def moteur_postgresql() -> Iterator[Engine]:
+    assert URL_TESTS
+    moteur = creer_moteur(URL_TESTS)
+    SQLModel.metadata.drop_all(moteur)
     SQLModel.metadata.create_all(moteur)
+    yield moteur
+    SQLModel.metadata.drop_all(moteur)
+    moteur.dispose()
+
+
+@pytest.fixture
+def moteur(request: pytest.FixtureRequest) -> Iterator[Engine]:
+    if SOUS_POSTGRESQL:
+        moteur: Engine = request.getfixturevalue("moteur_postgresql")
+        # Base vidée entre deux tests, compteurs d'identifiants remis à 1.
+        tables = ", ".join(f'"{t.name}"' for t in SQLModel.metadata.sorted_tables)
+        with moteur.begin() as connexion:
+            connexion.execute(text(f"TRUNCATE {tables} RESTART IDENTITY CASCADE"))
+    else:
+        # Connexion unique : sinon chaque connexion verrait sa propre base en mémoire, vide.
+        moteur = creer_moteur("sqlite://", connexion_unique=True)
+        SQLModel.metadata.create_all(moteur)
     # Les exercices de base, comme la migration les insère.
     with Session(moteur) as session:
         for slug, nom in EXERCICES_DE_BASE:
             session.add(Exercice(slug=slug, nom=nom))
         session.commit()
     yield moteur
-    moteur.dispose()
+    if not SOUS_POSTGRESQL:
+        moteur.dispose()
 
 
 @pytest.fixture
