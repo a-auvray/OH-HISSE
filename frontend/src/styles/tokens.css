@@ -41,6 +41,8 @@
   --police-texte: 'Manrope Variable', system-ui, 'Segoe UI', sans-serif;
   --police-marque: 'Unbounded Variable', var(--police-texte);
   --police-titre: var(--police-marque);
+  /* Police d'identité de l'espace courant (redéfinie par chaque espace) */
+  --police-espace: var(--police-marque);
   --police-chiffres: ui-monospace, 'Cascadia Mono', Consolas, monospace;
 
   /* Rythme */
@@ -63,21 +65,25 @@
 [data-espace='streetlifting'] {
   --accent: var(--streetlifting);
   --accent-clair: var(--streetlifting-clair);
+  --police-espace: 'Anton', 'Impact', sans-serif;
 }
 
 [data-espace='marine'] {
   --accent: var(--marine);
   --accent-clair: var(--marine-clair);
+  --police-espace: 'Fraunces Variable', Georgia, serif;
 }
 
 [data-espace='vie-courante'] {
   --accent: var(--vie-courante);
   --accent-clair: var(--vie-courante-clair);
+  --police-espace: 'Quicksand Variable', var(--police-texte);
 }
 
 [data-espace='objectifs'] {
   --accent: var(--objectifs);
   --accent-clair: var(--objectifs-clair);
+  --police-espace: 'Space Grotesk Variable', var(--police-texte);
 }
 
 @media (prefers-reduced-motion: reduce) {

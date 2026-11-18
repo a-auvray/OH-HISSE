@@ -1,0 +1,103 @@
+.tableau {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-6);
+  padding: var(--espace-8);
+  border-radius: 28px;
+  background: color-mix(in oklab, var(--fond-eleve) 78%, transparent);
+  border: 1px solid color-mix(in oklab, #ffffff 8%, transparent);
+  box-shadow:
+    0 40px 100px -40px rgb(0 0 0 / 0.8),
+    inset 0 1px 0 rgb(255 255 255 / 0.05);
+  backdrop-filter: blur(20px);
+}
+
+.entete {
+  display: grid;
+  gap: var(--espace-2);
+}
+
+.date {
+  color: var(--texte-faible);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.salut {
+  font-family: var(--police-marque);
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.salut span {
+  background: linear-gradient(95deg, var(--streetlifting-clair), var(--marine-clair));
+  background-clip: text;
+  color: transparent;
+}
+
+.titreBriefing {
+  font-family: var(--police-texte);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--texte-doux);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.indicateurs {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espace-3);
+  flex: 1;
+}
+
+.indicateur {
+  display: grid;
+  align-content: start;
+  gap: var(--espace-1);
+  padding: var(--espace-4);
+  border-radius: 16px;
+  background: rgb(0 0 0 / 0.25);
+  border: 1px solid var(--trait);
+  border-top: 2px solid var(--accent);
+}
+
+.libelle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-clair);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.valeur {
+  font-family: var(--police-espace);
+  font-size: 2rem;
+  line-height: 1.2;
+  color: var(--texte-faible);
+}
+
+.attente {
+  font-size: 0.82rem;
+  color: var(--texte-faible);
+}
+
+.deconnexion {
+  align-self: flex-end;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--trait);
+  background: transparent;
+  color: var(--texte-doux);
+  font-size: 0.82rem;
+}
+
+.deconnexion:hover {
+  color: var(--texte);
+  border-color: var(--texte-doux);
+}

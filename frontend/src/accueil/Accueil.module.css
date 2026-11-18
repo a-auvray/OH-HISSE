@@ -1,39 +1,54 @@
 .accueil {
+  position: relative;
   min-height: 100vh;
+  isolation: isolate;
+}
+
+/*
+ *          [ haut ]
+ * [gauche][ centre ][droite]
+ *          [  bas  ]
+ */
+.croix {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  min-height: 720px;
   display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: var(--espace-8);
-}
-
-.titre {
-  font-size: 4rem;
-  letter-spacing: -0.03em;
-}
-
-.espaces {
-  display: flex;
+  grid-template-columns: minmax(240px, 1fr) minmax(560px, 1.7fr) minmax(240px, 1fr);
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    '. haut .'
+    'gauche centre droite'
+    '. bas .';
   gap: var(--espace-4);
+  padding: var(--espace-6);
 }
 
-.espace {
-  padding: var(--espace-3) var(--espace-6);
-  border: 1px solid var(--trait);
-  border-radius: var(--rayon);
-  text-decoration: none;
-  color: var(--accent);
-  transition:
-    border-color var(--duree-rapide),
-    background var(--duree-rapide);
+.croix > div {
+  display: grid;
+  min-height: 0;
 }
 
-.espace:hover {
-  border-color: var(--accent);
-  background: color-mix(in oklab, var(--accent) 12%, transparent);
+.haut {
+  grid-area: haut;
+}
+.bas {
+  grid-area: bas;
+}
+.gauche {
+  grid-area: gauche;
+}
+.droite {
+  grid-area: droite;
+}
+.centre {
+  grid-area: centre;
 }
 
-.api {
-  color: var(--texte-faible);
-  font-family: var(--police-chiffres);
-  font-size: 0.85rem;
+/* Les colonnes latérales débordent sur les rangées haute et basse : la croix respire. */
+.gauche,
+.droite {
+  grid-row: 1 / -1;
+  padding: 72px 0;
 }

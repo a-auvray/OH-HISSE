@@ -1,35 +1,40 @@
-import { Link } from 'react-router'
+import { useEffect, useState } from 'react'
 
+import { Lueurs } from '../commun/Lueurs'
 import { ESPACES } from '../espaces/espaces'
 import { useSession } from '../session/contexte'
 import styles from './Accueil.module.css'
-import { useEtatApi } from './useEtatApi'
+import { TableauDeBord } from './TableauDeBord'
+import { TuileEspace } from './TuileEspace'
 
-/** Accueil provisoire du socle : remplacé par la coquille de navigation animée. */
+/**
+ * L'animation d'entrée ne se joue qu'une fois par connexion : en revenant
+ * d'un espace, l'accueil est déjà là. On retient pour quel utilisateur elle a été jouée.
+ */
+let entreeJoueePour: number | null = null
+
+/** Accueil en croix : le briefing au centre, les quatre espaces autour (note 11). */
 export function Accueil() {
-  const etat = useEtatApi()
-  const { etat: session, seDeconnecter } = useSession()
-  const nom = session.statut === 'connecte' ? session.utilisateur.nom_affiche : ''
+  const { etat } = useSession()
+  const utilisateurId = etat.statut === 'connecte' ? etat.utilisateur.id : null
+  const [entree] = useState(() => entreeJoueePour !== utilisateurId)
+  useEffect(() => {
+    entreeJoueePour = utilisateurId
+  }, [utilisateurId])
 
   return (
     <main className={styles.accueil}>
-      <h1 className={styles.titre}>Oh Hisse !</h1>
-      <p>Bonjour, {nom}.</p>
-      <nav className={styles.espaces} aria-label="Espaces">
-        {ESPACES.map((espace) => (
-          <Link key={espace.id} to={espace.chemin} data-espace={espace.id} className={styles.espace}>
-            {espace.nom}
-          </Link>
+      <Lueurs intensite={0.45} />
+      <div className={styles.croix}>
+        {ESPACES.map((espace, i) => (
+          <div key={espace.id} className={styles[espace.direction]}>
+            <TuileEspace espace={espace} entree={entree} delai={0.15 + i * 0.12} />
+          </div>
         ))}
-      </nav>
-      <p className={styles.api} role="status">
-        {etat.statut === 'chargement' && 'Connexion à l’API…'}
-        {etat.statut === 'ok' && `API en ligne · v${etat.version}`}
-        {etat.statut === 'injoignable' && 'API injoignable'}
-      </p>
-      <button type="button" className={styles.espace} onClick={() => void seDeconnecter()}>
-        Se déconnecter
-      </button>
+        <div className={styles.centre}>
+          <TableauDeBord entree={entree} />
+        </div>
+      </div>
     </main>
   )
 }
