@@ -1,4 +1,3 @@
-from collections.abc import Iterator
 from datetime import timedelta
 
 import pytest
@@ -8,18 +7,10 @@ from sqlmodel import Session, select
 from app.core.base_de_donnees import maintenant
 from app.core.securite import NOM_COOKIE, creer_jeton, hacher_mot_de_passe, verifier_mot_de_passe
 from app.models import Utilisateur
-from app.routers.auth import limiteur_connexion, limiteur_demo
 from app.services.demo import purger_bacs_a_sable_expires
 
 EMAIL = "moi@oh-hisse.fr"
 MDP = "une-phrase-de-passe-solide"
-
-
-@pytest.fixture(autouse=True)
-def limiteurs_neufs() -> Iterator[None]:
-    limiteur_connexion.reinitialiser()
-    limiteur_demo.reinitialiser()
-    yield
 
 
 @pytest.fixture

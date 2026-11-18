@@ -12,6 +12,7 @@ from sqlmodel import Session, col, delete
 
 from app.core.base_de_donnees import maintenant
 from app.models import Utilisateur
+from app.services import donnees_demo, vie_courante
 
 DUREE_BAC_A_SABLE = timedelta(hours=24)
 
@@ -33,11 +34,8 @@ def creer_bac_a_sable(session: Session) -> Utilisateur:
 
 
 def peupler(session: Session, utilisateur: Utilisateur) -> None:
-    """Copie les données fictives dans le bac à sable.
-
-    Vide pour l'instant : les données de démonstration arrivent en phase 5,
-    quand tous les espaces existent.
-    """
+    """Copie les données fictives dans le bac à sable, datées par rapport à aujourd'hui."""
+    donnees_demo.peupler(session, utilisateur, vie_courante.maintenant().date())
 
 
 def purger_bacs_a_sable_expires(session: Session) -> int:

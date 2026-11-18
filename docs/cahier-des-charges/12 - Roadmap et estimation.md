@@ -79,7 +79,7 @@ P4 --> P5["Phase 5<br/>Accueil, démo<br/>et mise en ligne"]:::cadrage
 
 ## Phase 5 — Accueil, démo et mise en ligne *(15–25 h)*
 - [ ] Dashboard d'accueil complet + animation d'entrée
-- [ ] Données fictives du mode démo
+- [x] Données fictives du mode démo
 - [ ] Passe de finition du design
 - [ ] Migration PostgreSQL + mise en ligne
 - [ ] README portfolio, journal, heures
