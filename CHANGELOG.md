@@ -7,6 +7,25 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased] (Non publié)
 
+## [0.2.0] — 2026-11-18 — Streetlifting et Objectifs
+
+### Ajouté
+- Moteurs de règles : table RPE, 1RM estimé sur poids du corps + lest, poids du corps en moyenne mobile, auto-régulation (charge tirée du 1RM, ±5 %, deload localisé, séries dans la plage du bloc, justification).
+- Règles de l'auto-régulation dans `backend/app/moteurs/regles/autoregulation.toml`.
+- Tables et API : exercices, séances, séries (prévu et réalisé), pesées, blocs, objectifs.
+- Blocs importés depuis un fichier JSON ; séance du jour calculée.
+- Espace Streetlifting : séance du jour, saisie, calendrier par blocs, graphiques d'évolution (visx), page des blocs.
+- Espace Objectifs : jauge de progression vers la cible, objectif principal, statuts.
+- Briefing de l'accueil : séance du jour et objectif principal.
+
+### Modifié
+- Les sous-pages d'un espace ne font plus glisser tout l'écran.
+- Les espaces Streetlifting et Objectifs sont chargés à la demande.
+
+### Corrigé
+- Les garde-fous de l'auto-régulation comparent au même format de répétitions.
+- Rechargement automatique de l'API bloqué par les connexions du proxy Vite.
+
 ## [0.1.0] — 2026-11-18 — Fondations
 
 ### Ajouté
