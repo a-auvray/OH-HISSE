@@ -6,10 +6,10 @@ from zoneinfo import ZoneInfo
 
 from sqlmodel import Session, col, select
 
-from app.models import Spot, Utilisateur
+from app.models import SortieMer, Spot, Utilisateur
 from app.moteurs import marees
 from app.schemas.marine import Conditions, Heure, Instantane, Maree, Soleil, SpotLu
-from app.services.open_meteo import OpenMeteo
+from app.services.open_meteo import ConditionsIndisponibles, OpenMeteo
 
 # Mes plages (décision du 18/11/2026), créées pour chaque utilisateur à sa première visite.
 SPOTS_PAR_DEFAUT = [
@@ -175,3 +175,48 @@ def conditions(service: OpenMeteo, spot: Spot, maintenant: dt.datetime | None = 
         maintenant or dt.datetime.now(_fuseau()),
         perimees=meteo.perimee or marine.perimee or brest.perimee,
     )
+
+
+# --- Carnet de sortie -----------------------------------------------------------------------
+
+CONDITIONS = ("eau_c", "air_c", "vent_kmh", "rafales_kmh", "vagues_m", "hauteur_eau_m")
+
+
+def releve(meteo: dict[str, Any], marine: dict[str, Any], instant: dt.datetime) -> dict[str, float | None]:
+    """Conditions à un instant passé ou futur proche, lues dans les séries horaires (fonction pure)."""
+    fuseau = _fuseau()
+    instant = instant.astimezone(fuseau)
+    i = _index_heure(_instants(meteo["hourly"]["time"], fuseau), instant)
+    j = _index_heure(_instants(marine["hourly"]["time"], fuseau), instant)
+    return {
+        "eau_c": _valeur(marine["hourly"], "sea_surface_temperature", j),
+        "air_c": _valeur(meteo["hourly"], "temperature_2m", i),
+        "vent_kmh": _valeur(meteo["hourly"], "wind_speed_10m", i),
+        "rafales_kmh": _valeur(meteo["hourly"], "wind_gusts_10m", i),
+        "vagues_m": _valeur(marine["hourly"], "wave_height", j),
+        "hauteur_eau_m": marees.hauteur_a(
+            _serie(marine["minutely_15"], fuseau), instant, marees.regles_maree().decalage_zh_m
+        ),
+    }
+
+
+def completer_conditions(service: OpenMeteo, sortie: SortieMer, spot: Spot | None) -> None:
+    """Complète les conditions laissées vides, si Open-Meteo couvre l'heure de la sortie.
+
+    Hors de la fenêtre couverte (plus de deux jours dans le passé) ou en cas de panne,
+    les champs restent vides : la sortie s'enregistre quand même.
+    """
+    if all(getattr(sortie, c) is not None for c in CONDITIONS):
+        return
+    zone = marees.regles_marine()["zone"]
+    latitude = spot.latitude if spot else float(zone["latitude"])
+    longitude = spot.longitude if spot else float(zone["longitude"])
+    try:
+        meteo = service.meteo(latitude, longitude).donnees
+        marine = service.marine(float(zone["latitude"]), float(zone["longitude"])).donnees
+    except ConditionsIndisponibles:
+        return
+    for champ, valeur in releve(meteo, marine, sortie.debut).items():
+        if getattr(sortie, champ) is None and valeur is not None:
+            setattr(sortie, champ, valeur)
+            sortie.conditions_relevees = True

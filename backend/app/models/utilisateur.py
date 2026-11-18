@@ -2,10 +2,9 @@
 
 from datetime import datetime
 
-from sqlalchemy import DateTime
 from sqlmodel import Field, SQLModel
 
-from app.core.base_de_donnees import maintenant
+from app.core.base_de_donnees import DateHeureUTC, maintenant
 
 
 class Utilisateur(SQLModel, table=True):
@@ -15,6 +14,6 @@ class Utilisateur(SQLModel, table=True):
     # Absent pour un compte démo : on y entre sans mot de passe.
     mdp_hash: str | None = Field(default=None, max_length=255)
     est_demo: bool = Field(default=False, index=True)
-    cree_le: datetime = Field(default_factory=maintenant, sa_type=DateTime(timezone=True))
+    cree_le: datetime = Field(default_factory=maintenant, sa_type=DateHeureUTC)
     # Un bac à sable démo est effacé (avec toutes ses données) après cette date.
-    expire_le: datetime | None = Field(default=None, sa_type=DateTime(timezone=True), index=True)
+    expire_le: datetime | None = Field(default=None, sa_type=DateHeureUTC, index=True)

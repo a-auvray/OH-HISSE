@@ -306,6 +306,42 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/marine/sorties': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Lister Sorties */
+    get: operations['lister_sorties_api_marine_sorties_get']
+    put?: never
+    /** Creer Sortie */
+    post: operations['creer_sortie_api_marine_sorties_post']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/marine/sorties/{sortie_id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /** Modifier Sortie */
+    put: operations['modifier_sortie_api_marine_sorties__sortie_id__put']
+    post?: never
+    /** Supprimer Sortie */
+    delete: operations['supprimer_sortie_api_marine_sorties__sortie_id__delete']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/api/vie-courante/pesees': {
     parameters: {
       query?: never
@@ -939,6 +975,94 @@ export interface components {
        * Format: date-time
        */
       coucher: string
+    }
+    /** SortieEcrite */
+    SortieEcrite: {
+      /** Eau C */
+      eau_c?: number | null
+      /** Air C */
+      air_c?: number | null
+      /** Vent Kmh */
+      vent_kmh?: number | null
+      /** Rafales Kmh */
+      rafales_kmh?: number | null
+      /** Vagues M */
+      vagues_m?: number | null
+      /** Hauteur Eau M */
+      hauteur_eau_m?: number | null
+      /**
+       * Type
+       * @enum {string}
+       */
+      type: 'baignade' | 'nage' | 'plongee'
+      /** Spot Id */
+      spot_id?: number | null
+      /**
+       * Debut
+       * Format: date-time
+       */
+      debut: string
+      /** Duree Min */
+      duree_min: number
+      /** Ressenti */
+      ressenti?: number | null
+      /** Note */
+      note?: string | null
+      /** Distance M */
+      distance_m?: number | null
+      /** Profondeur Max M */
+      profondeur_max_m?: number | null
+      /** Visibilite M */
+      visibilite_m?: number | null
+      /** Materiel */
+      materiel?: string | null
+    }
+    /** SortieLue */
+    SortieLue: {
+      /** Eau C */
+      eau_c?: number | null
+      /** Air C */
+      air_c?: number | null
+      /** Vent Kmh */
+      vent_kmh?: number | null
+      /** Rafales Kmh */
+      rafales_kmh?: number | null
+      /** Vagues M */
+      vagues_m?: number | null
+      /** Hauteur Eau M */
+      hauteur_eau_m?: number | null
+      /**
+       * Type
+       * @enum {string}
+       */
+      type: 'baignade' | 'nage' | 'plongee'
+      /** Spot Id */
+      spot_id?: number | null
+      /**
+       * Debut
+       * Format: date-time
+       */
+      debut: string
+      /** Duree Min */
+      duree_min: number
+      /** Ressenti */
+      ressenti?: number | null
+      /** Note */
+      note?: string | null
+      /** Distance M */
+      distance_m?: number | null
+      /** Profondeur Max M */
+      profondeur_max_m?: number | null
+      /** Visibilite M */
+      visibilite_m?: number | null
+      /** Materiel */
+      materiel?: string | null
+      /** Id */
+      id: number
+      /** Spot */
+      spot: string | null
+      /** Conditions Relevees */
+      conditions_relevees: boolean
     }
     /** SpotLu */
     SpotLu: {
@@ -1857,6 +1981,157 @@ export interface operations {
           [name: string]: unknown
         }
         content?: never
+      }
+    }
+  }
+  lister_sorties_api_marine_sorties_get: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SortieLue'][]
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  creer_sortie_api_marine_sorties_post: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SortieEcrite']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SortieLue']
+        }
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  modifier_sortie_api_marine_sorties__sortie_id__put: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        sortie_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SortieEcrite']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SortieLue']
+        }
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  supprimer_sortie_api_marine_sorties__sortie_id__delete: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        sortie_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
       }
     }
   }

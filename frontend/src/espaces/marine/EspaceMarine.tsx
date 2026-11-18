@@ -7,10 +7,14 @@ import { messageErreur } from '../../api/types'
 import { exiger, useDonnees } from '../../commun/useDonnees'
 import { BoutonRetour } from '../BoutonRetour'
 import { Motif } from '../Motifs'
+import { Carnet } from './Carnet'
 import { Conditions } from './Conditions'
 import styles from './EspaceMarine.module.css'
 
-const ONGLETS = [{ chemin: '/marine', libelle: 'Conditions', fin: true }] as const
+const ONGLETS = [
+  { chemin: '/marine', libelle: 'Conditions', fin: true },
+  { chemin: '/marine/carnet', libelle: 'Carnet', fin: false },
+] as const
 
 /** Espace Marine : fluide, profond, mouvement de vagues (note 11). */
 export function EspaceMarine() {
@@ -89,6 +93,7 @@ export function EspaceMarine() {
               ) : null
             }
           />
+          <Route path="carnet" element={<Carnet spots={spots.etat === 'pret' ? spots.valeur : []} />} />
         </Routes>
       </div>
     </main>

@@ -19,6 +19,8 @@ from app.moteurs.marees import regles_marine
 
 URL_METEO = "https://api.open-meteo.com/v1/forecast"
 URL_MARINE = "https://marine-api.open-meteo.com/v1/marine"
+# Deux jours d'historique : on peut relever les conditions d'une sortie notée le lendemain.
+JOURS_PASSES = 2
 
 VARIABLES_METEO = {
     "current": "temperature_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,"
@@ -76,6 +78,7 @@ class OpenMeteo:
             "longitude": round(longitude, 4),
             "timezone": _fuseau(),
             "forecast_days": 4,
+            "past_days": JOURS_PASSES,
             **VARIABLES_METEO,
         }
         return self._obtenir(URL_METEO, parametres, _validite("meteo_min"))
@@ -86,6 +89,7 @@ class OpenMeteo:
             "longitude": round(longitude, 4),
             "timezone": _fuseau(),
             "forecast_days": 4,
+            "past_days": JOURS_PASSES,
             "cell_selection": "sea",
             **VARIABLES_MARINE,
         }
@@ -98,6 +102,7 @@ class OpenMeteo:
             "longitude": maree["brest_longitude"],
             "timezone": _fuseau(),
             "forecast_days": 4,
+            "past_days": JOURS_PASSES,
             "cell_selection": "sea",
             "minutely_15": "sea_level_height_msl",
         }

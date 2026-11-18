@@ -5,7 +5,7 @@ from datetime import UTC, datetime
 from typing import Annotated, Any
 
 from fastapi import Depends
-from sqlalchemy import Engine, event
+from sqlalchemy import DateTime, Dialect, Engine, TypeDecorator, event
 from sqlalchemy.pool import StaticPool
 from sqlmodel import Session, create_engine
 
@@ -53,3 +53,25 @@ def maintenant() -> datetime:
 def en_utc(instant: datetime) -> datetime:
     """SQLite rend des dates-heures sans fuseau : on les relit comme de l'UTC."""
     return instant if instant.tzinfo else instant.replace(tzinfo=UTC)
+
+
+class DateHeureUTC(TypeDecorator[datetime]):
+    """Date-heure toujours stockée en UTC, relue avec son fuseau.
+
+    SQLite ignore le fuseau : sans cette conversion, 16 h à Paris serait relu
+    comme 16 h UTC. PostgreSQL convertit lui-même ; ce type garantit le même
+    résultat sur les deux bases.
+    """
+
+    impl = DateTime(timezone=True)
+    cache_ok = True
+
+    def process_bind_param(self, valeur: datetime | None, dialect: Dialect) -> datetime | None:
+        if valeur is None:
+            return None
+        if valeur.tzinfo is None:
+            raise ValueError("Date-heure sans fuseau : impossible de la stocker sans ambiguïté.")
+        return valeur.astimezone(UTC)
+
+    def process_result_value(self, valeur: datetime | None, dialect: Dialect) -> datetime | None:
+        return en_utc(valeur) if valeur is not None else None
