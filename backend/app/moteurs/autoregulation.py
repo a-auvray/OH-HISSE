@@ -119,9 +119,14 @@ class Performance:
 
 @dataclass(frozen=True)
 class Forme:
-    """État du jour, fourni par Vie courante (phase 4). Tout est facultatif."""
+    """État du jour, fourni par Vie courante (note 08 : croisements). Tout est facultatif."""
 
     sommeil_h: float | None = None
+    # Consigne de récupération (moteur `recuperation`).
+    rpe_baisse: float = 0.0
+    rpe_plafond: float | None = None
+    series_au_minimum: bool = False
+    raison_recuperation: str | None = None
 
 
 @dataclass(frozen=True)
@@ -147,7 +152,7 @@ def rpe_txt(valeur: float) -> str:
     return f"{valeur:g}".replace(".", ",")
 
 
-def _cible_selon_forme(rpe: float, forme: Forme, regles: Regles, raisons: list[str]) -> float:
+def _cible_selon_sommeil(rpe: float, forme: Forme, regles: Regles, raisons: list[str]) -> float:
     if forme.sommeil_h is None:
         return rpe
     if forme.sommeil_h < regles.sommeil_tres_court_h:
@@ -158,6 +163,18 @@ def _cible_selon_forme(rpe: float, forme: Forme, regles: Regles, raisons: list[s
     if forme.sommeil_h < regles.sommeil_court_h:
         raisons.append(f"Nuit courte ({rpe_txt(forme.sommeil_h)} h) : cible de RPE −1")
         return max(6.0, rpe - 1)
+    return rpe
+
+
+def _cible_selon_forme(rpe: float, forme: Forme, regles: Regles, raisons: list[str]) -> float:
+    rpe = _cible_selon_sommeil(rpe, forme, regles, raisons)
+    avant = rpe
+    if forme.rpe_baisse:
+        rpe = max(6.0, rpe - forme.rpe_baisse)
+    if forme.rpe_plafond is not None and rpe > forme.rpe_plafond:
+        rpe = forme.rpe_plafond
+    if rpe != avant and forme.raison_recuperation:
+        raisons.append(forme.raison_recuperation)
     return rpe
 
 
@@ -201,6 +218,10 @@ def proposer(
     derniere = meme_format[-1] if meme_format else None
 
     series = _series(prevu, derniere, rpe_cible, regles)
+    if forme.series_au_minimum and series > prevu.series_min:
+        series = prevu.series_min
+        if forme.raison_recuperation and forme.raison_recuperation not in raisons:
+            raisons.append(forme.raison_recuperation)
     if type_bloc == "deload":
         series = max(1, round(series * (1 - regles.reduction_series_deload)))
         raisons.append("Bloc deload : un tiers de séries en moins")

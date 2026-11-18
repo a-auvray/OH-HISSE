@@ -188,3 +188,5 @@ class Assistant(BaseModel):
     creneaux: list[CreneauLu]
     recommandations: RecommandationsLues | None
     jours_depuis_derniere_sortie: int | None
+    # Croisement avec Vie courante : récupération incomplète → baignade de récupération active.
+    recuperation_active: str | None = None

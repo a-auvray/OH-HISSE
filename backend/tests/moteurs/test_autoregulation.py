@@ -161,3 +161,28 @@ def test_le_garde_fou_compare_au_meme_format() -> None:
     # Calcul : +12,5 kg, mais la dernière série de 8 était à +5 kg : plafonné à 80 kg × 1,05 = 84 kg.
     assert proposition.lest_kg == 8.75
     assert any("±5 %" in j for j in proposition.justifications)
+
+
+def test_une_recuperation_incomplete_allege_la_seance() -> None:
+    forme = Forme(
+        rpe_baisse=0.5, series_au_minimum=True, raison_recuperation="Récupération incomplète (30 h)"
+    )
+
+    proposition = proposer(TRACTION_5X5, "force", [seance(rpe=7)], PDC, forme)
+
+    assert proposition.rpe_cible == 7.5
+    assert proposition.series == 3  # bas de la plage malgré une séance facile
+    assert "Récupération incomplète (30 h)" in proposition.justifications
+
+
+def test_plus_de_48_h_pas_de_tentative_de_max() -> None:
+    single = ExercicePrevu("traction", 2, 3, reps=1)  # cible par défaut 9
+    forme = Forme(rpe_baisse=0.5, rpe_plafond=8.0, series_au_minimum=True, raison_recuperation="Pas de max")
+
+    assert proposer(single, "force", [], PDC, forme).rpe_cible == 8.0
+
+
+def test_sommeil_et_recuperation_se_cumulent() -> None:
+    forme = Forme(sommeil_h=5, rpe_baisse=0.5, raison_recuperation="Récup")
+
+    assert proposer(TRACTION_5X5, "force", [], PDC, forme).rpe_cible == 6.5  # 8 − 1 − 0,5

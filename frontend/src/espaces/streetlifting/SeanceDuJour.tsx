@@ -92,6 +92,20 @@ export function SeanceDuJour() {
 
       <h1 className={`${ui.titre} ${styles.nom}`}>{seance.nom}</h1>
 
+      {seance.forme && seance.forme.consignes.length > 0 && (
+        <div className={styles.forme} role="note">
+          <span className={styles.formeTitre}>Forme du jour</span>
+          <ul>
+            {seance.forme.consignes.map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+          </ul>
+          <Link to="/vie-courante" className={styles.formeLien}>
+            Voir ma récupération →
+          </Link>
+        </div>
+      )}
+
       <ol className={styles.exercices}>
         {seance.propositions.map((p, i) => (
           <motion.li

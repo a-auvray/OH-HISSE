@@ -549,6 +549,8 @@ export interface components {
       recommandations: components['schemas']['RecommandationsLues'] | null
       /** Jours Depuis Derniere Sortie */
       jours_depuis_derniere_sortie: number | null
+      /** Recuperation Active */
+      recuperation_active?: string | null
     }
     /** AvancementBloc */
     AvancementBloc: {
@@ -772,6 +774,18 @@ export interface components {
       slug: string
       /** Nom */
       nom: string
+    }
+    /**
+     * FormeDuJour
+     * @description Ce que Vie courante transmet à la séance du jour (note 08 : croisements).
+     */
+    FormeDuJour: {
+      /** Sommeil H */
+      sommeil_h: number | null
+      /** Recuperation Restant H */
+      recuperation_restant_h: number
+      /** Consignes */
+      consignes: string[]
     }
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -1143,6 +1157,7 @@ export interface components {
       propositions: components['schemas']['Proposition'][]
       /** Message */
       message?: string | null
+      forme?: components['schemas']['FormeDuJour'] | null
     }
     /** SeanceDuProgramme */
     SeanceDuProgramme: {

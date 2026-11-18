@@ -131,6 +131,12 @@ function Resultat({ donnees }: { donnees: DonneesAssistant }) {
             Préparer ma sortie
           </h2>
 
+          {donnees.recuperation_active && (
+            <div className={styles.recuperation} role="note">
+              <strong>Récupération active.</strong> {donnees.recuperation_active}
+            </div>
+          )}
+
           <AnimatePresence>
             {r.reprise && (
               <motion.div className={styles.reprise} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>

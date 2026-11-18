@@ -95,12 +95,21 @@ class PoidsUtilise(BaseModel):
     a_jour: bool
 
 
+class FormeDuJour(BaseModel):
+    """Ce que Vie courante transmet à la séance du jour (note 08 : croisements)."""
+
+    sommeil_h: float | None
+    recuperation_restant_h: float
+    consignes: list[str]
+
+
 class SeanceDuJour(BaseModel):
     bloc: AvancementBloc | None
     nom: str | None
     poids: PoidsUtilise | None
     propositions: list[Proposition]
     message: str | None = None
+    forme: FormeDuJour | None = None
 
     @model_validator(mode="after")
     def _coherence(self) -> Self:
