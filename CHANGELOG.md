@@ -7,6 +7,19 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased] (Non publié)
 
+## [0.4.0] — 2026-11-18 — Vie courante et croisements
+
+### Ajouté
+- Récupération : durée selon le type de séance, allongée par un ressenti rouge ou une nuit courte, modulée par les sorties en mer.
+- Verdict « écart mérité ? » par points sur 48 h, avec sa raison ; suivi des écarts pris.
+- Sommeil : saisie rapide de la nuit, moyenne sur 7 jours, 30 dernières nuits.
+- Croisements : le sommeil et la récupération allègent la séance du jour ; l'assistant de sortie propose une baignade de récupération.
+- Briefings du jour, de la semaine, de début et de fin de bloc.
+- Espace Vie courante ; indicateur « Récupération » sur l'accueil.
+
+### Supprimé
+- La page d'attente des espaces : les quatre espaces sont construits.
+
 ## [0.3.0] — 2026-11-18 — Marine
 
 ### Ajouté

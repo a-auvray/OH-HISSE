@@ -68,13 +68,14 @@ P4 --> P5["Phase 5<br/>Accueil, démo<br/>et mise en ligne"]:::cadrage
 - [x] Tag `v0.3.0`
 
 ## Phase 4 — Vie courante + croisements *(55–85 h)*
-- [ ] Suivi du sommeil
-- [ ] Gestionnaire de récupération
-- [ ] Gestionnaire de cheat meal
-- [ ] Brancher sommeil et récupération sur la génération de séance
-- [ ] Brancher la récupération sur l'assistant de sortie
-- [ ] Briefings
-- [ ] Identité visuelle de l'espace
+- [x] Suivi du sommeil
+- [x] Gestionnaire de récupération
+- [x] Gestionnaire de cheat meal
+- [x] Brancher sommeil et récupération sur la génération de séance
+- [x] Brancher la récupération sur l'assistant de sortie
+- [x] Briefings (jour, semaine, début et fin de bloc)
+- [x] Identité visuelle de l'espace
+- [x] Tag `v0.4.0`
 
 ## Phase 5 — Accueil, démo et mise en ligne *(15–25 h)*
 - [ ] Dashboard d'accueil complet + animation d'entrée

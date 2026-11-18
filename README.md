@@ -21,8 +21,8 @@ Ce n'est pas quatre applis juxtaposées : chaque donnée saisie sert ailleurs. L
 | 1 — Fondations | Backend, frontend, base, authentification, navigation | ✅ `v0.1.0` |
 | 2 — Streetlifting + Objectifs | Séances, 1RM, blocs, auto-régulation | ✅ `v0.2.0` |
 | 3 — Marine | Météo marine, marées, danger, assistant, carnet, carte | ✅ `v0.3.0` |
-| 4 — Vie courante + croisements | Sommeil, récupération, cheat meal, briefings | ⏳ |
-| 5 — Accueil, démo, mise en ligne | Données de démo, finitions, production | — |
+| 4 — Vie courante + croisements | Sommeil, récupération, cheat meal, briefings | ✅ `v0.4.0` |
+| 5 — Accueil, démo, mise en ligne | Données de démo, finitions, production | ⏳ |
 
 Le détail est dans le [cahier des charges](docs/cahier-des-charges/00%20-%20Sommaire.md) (coffre Obsidian) et le [journal de développement](docs/JOURNAL.md).
 
