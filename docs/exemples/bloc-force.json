@@ -1,0 +1,29 @@
+{
+  "nom": "Force — cap 55 kg",
+  "type": "force",
+  "cycles": 6,
+  "seances": [
+    {
+      "nom": "A — Tirage lourd",
+      "exercices": [
+        { "exercice": "traction", "series": [3, 5], "reps": 3, "rpe_cible": 8 },
+        { "exercice": "dips", "series": 4, "reps": 5, "rpe_cible": 7.5 }
+      ]
+    },
+    {
+      "nom": "B — Muscle-up et volume",
+      "exercices": [
+        { "exercice": "muscle-up", "series": [4, 6], "reps": 1 },
+        { "exercice": "traction", "series": 3, "reps": 8, "rpe_cible": 7 },
+        { "exercice": "dips", "series": [3, 4], "reps": 10 }
+      ]
+    },
+    {
+      "nom": "C — Singles",
+      "exercices": [
+        { "exercice": "traction", "series": [2, 3], "reps": 1, "rpe_cible": 9 },
+        { "exercice": "dips", "series": [2, 3], "reps": 1, "rpe_cible": 9 }
+      ]
+    }
+  ]
+}
