@@ -42,7 +42,7 @@ statut: brouillon
 ---
 
 ## Où j'en suis
-**Phase actuelle :** 1 — Fondations *(phase 0 terminée le 18/11/2026)*
+**Phase actuelle :** 2 — Streetlifting + Objectifs *(phase 1 terminée le 18/11/2026, `v0.1.0`)*
 
 - [ ] Relire chaque note, garder ou supprimer les 💡
 - [x] Trancher les questions prioritaires de [[13 - Décisions et questions ouvertes|la note 13]]
