@@ -28,6 +28,7 @@ dev = [
 [tool.ruff]
 line-length = 110
 target-version = "py314"
+extend-exclude = ["alembic/versions"]  # migrations générées
 
 [tool.ruff.lint]
 select = [
