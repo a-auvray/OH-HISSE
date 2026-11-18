@@ -51,7 +51,7 @@ cd backend
 uv sync
 uv run alembic upgrade head
 uv run python scripts/creer_compte.py   # crée ton compte personnel
-uv run uvicorn app.main:app --reload
+uv run uvicorn app.main:app --reload --timeout-graceful-shutdown 1
 
 # Interface — http://localhost:5173
 cd frontend

@@ -1,0 +1,29 @@
+.pesee {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espace-4);
+  padding: var(--espace-4) var(--espace-6);
+  border-radius: 14px;
+  border: 1px dashed color-mix(in oklab, var(--alerte) 55%, transparent);
+  background: color-mix(in oklab, var(--alerte) 7%, transparent);
+}
+
+.raison {
+  color: var(--texte-doux);
+  font-size: 0.9rem;
+}
+
+.saisie {
+  display: flex;
+  align-items: center;
+  gap: var(--espace-2);
+  margin-left: auto;
+  color: var(--texte-doux);
+}
+
+.saisie input {
+  width: 90px;
+  text-align: right;
+  font-family: var(--police-chiffres);
+}

@@ -34,3 +34,9 @@ export function sensDuTrajet(depuis: string, vers: string): Direction | null {
   if (origine && cible) return cible.direction
   return null
 }
+
+/** Espace d'une adresse : « /streetlifting/calendrier » → « /streetlifting ». */
+export function racine(chemin: string): string {
+  const segment = chemin.split('/')[1]
+  return segment ? `/${segment}` : '/'
+}

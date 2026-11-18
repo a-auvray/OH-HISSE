@@ -99,6 +99,11 @@ class Performance:
         return self.poids_du_corps_kg + max(s.lest_kg for s in self.series)
 
     @property
+    def reps_max(self) -> int:
+        """Le format de la séance : le plus grand nombre de répétitions d'une série."""
+        return max(s.reps for s in self.series)
+
+    @property
     def lest_max(self) -> float:
         return max(s.lest_kg for s in self.series)
 
@@ -185,18 +190,22 @@ def proposer(
     rpe_cible = prevu.rpe_cible or regles.rpe_par_defaut(type_bloc, prevu.reps)
     rpe_cible = _cible_selon_forme(rpe_cible, forme, regles, raisons)
 
-    # Dernière séance qui permet d'estimer un 1RM (il faut au moins une série avec RPE).
+    # Le 1RM vient de la dernière séance estimable, tous formats confondus…
     reference = next(
         (p for p in reversed(historique) if meilleur_e1rm(list(p.series), p.poids_du_corps_kg)),
         None,
     )
-    derniere = historique[-1] if historique else None
+    # … mais les comparaisons (garde-fous, séries, justification) se font dans le même format :
+    # des triples lourds ne disent rien de la charge d'une série de 8.
+    meme_format = [p for p in historique if p.reps_max == prevu.reps]
+    derniere = meme_format[-1] if meme_format else None
+
     series = _series(prevu, derniere, rpe_cible, regles)
     if type_bloc == "deload":
         series = max(1, round(series * (1 - regles.reduction_series_deload)))
         raisons.append("Bloc deload : un tiers de séries en moins")
 
-    if reference is None or derniere is None:
+    if reference is None:
         raisons.append("Pas encore d'historique avec RPE : choisis la charge, l'algorithme prendra le relais")
         return Proposition(prevu.exercice, series, prevu.reps, rpe_cible, None, tuple(raisons))
 
@@ -205,40 +214,44 @@ def proposer(
     assert e1rm is not None and pourcentage is not None  # noqa: S101  (garantis ci-dessus)
     total = e1rm * pourcentage
 
-    # Garde-fous, par rapport à la charge la plus lourde de la dernière séance.
-    precedent = derniere.charge_max_totale
     echecs_consecutifs = 0
-    for performance in reversed(historique):
+    for performance in reversed(meme_format):
         if not performance.a_echoue:
             break
         echecs_consecutifs += 1
 
-    if echecs_consecutifs >= regles.echecs_avant_deload:
-        total = precedent * (1 - regles.baisse_deload)
-        raisons.append(
-            f"Deload localisé : {echecs_consecutifs} séances de suite en échec, "
-            f"−{round(regles.baisse_deload * 100)} %"
-        )
-    else:
-        haut, bas = precedent * (1 + regles.variation_max), precedent * (1 - regles.variation_max)
-        if not bas <= total <= haut:
-            total = min(max(total, bas), haut)
+    if derniere is not None:
+        # Garde-fous, par rapport à la charge la plus lourde de la dernière séance de ce format.
+        precedent = derniere.charge_max_totale
+        if echecs_consecutifs >= regles.echecs_avant_deload:
+            total = precedent * (1 - regles.baisse_deload)
             raisons.append(
-                f"Variation limitée à ±{round(regles.variation_max * 100)} % d'une séance à l'autre"
+                f"Deload localisé : {echecs_consecutifs} séances de suite en échec, "
+                f"−{round(regles.baisse_deload * 100)} %"
             )
+        else:
+            haut, bas = precedent * (1 + regles.variation_max), precedent * (1 - regles.variation_max)
+            if not bas <= total <= haut:
+                total = min(max(total, bas), haut)
+                raisons.append(
+                    f"Variation limitée à ±{round(regles.variation_max * 100)} % d'une séance à l'autre"
+                )
 
     lest = arrondir(total - poids_du_corps_kg, regles.pas_de_lest_kg)
     if lest < 0:
         lest = 0.0
         raisons.append("Au poids du corps : la charge calculée est sous ton poids")
 
-    ecart = lest - derniere.lest_max
-    rpe_precedent = derniere.rpe_moyen
-    if rpe_precedent is not None and not echecs_consecutifs:
+    if derniere is None:
+        format_ = f"{prevu.reps} rep{'s' if prevu.reps > 1 else ''}"
+        raisons.insert(0, f"Premier passage à {format_} : charge tirée de ton 1RM estimé")
+    elif derniere.rpe_moyen is not None and not echecs_consecutifs:
+        ecart = lest - derniere.lest_max
+        rpe_precedent = rpe_txt(round(derniere.rpe_moyen, 1))
         if ecart > 0:
-            raisons.insert(0, f"+{kg(ecart)} : RPE {rpe_txt(round(rpe_precedent, 1))} la dernière fois")
+            raisons.insert(0, f"+{kg(ecart)} : RPE {rpe_precedent} la dernière fois")
         elif ecart < 0:
-            raisons.insert(0, f"−{kg(-ecart)} : RPE {rpe_txt(round(rpe_precedent, 1))} la dernière fois")
+            raisons.insert(0, f"−{kg(-ecart)} : RPE {rpe_precedent} la dernière fois")
         else:
             raisons.insert(0, "Charge maintenue : la dernière séance était dans la cible")
 
