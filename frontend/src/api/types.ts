@@ -22,6 +22,9 @@ export type SortieEcrite = Schemas['SortieEcrite']
 export type Assistant = Schemas['Assistant']
 export type Danger = Schemas['Danger']
 export type Niveau = Schemas['Danger']['niveau']
+export type EtatDuJour = Schemas['EtatDuJour']
+export type Nuit = Schemas['NuitLue']
+export type Briefing = Schemas['BriefingLu']
 
 /** Message lisible d'une erreur FastAPI : `detail` texte, ou liste d'erreurs de validation. */
 export function messageErreur(erreur: unknown, parDefaut = 'Une erreur est survenue.'): string {

@@ -1,0 +1,71 @@
+.espace {
+  position: relative;
+  min-height: 100vh;
+  isolation: isolate;
+  overflow: hidden;
+  padding: var(--espace-12) var(--espace-12) 120px;
+  /* Lumière douce de fin de journée, qui tombe d'en haut. */
+  background:
+    radial-gradient(90% 60% at 50% -10%, rgb(63 174 94 / 0.22), transparent 70%),
+    linear-gradient(180deg, #0b1a12 0%, #07120c 100%);
+}
+
+/* La lune et ses anneaux respirent lentement, en grand, derrière tout. */
+.lune {
+  position: absolute;
+  z-index: -1;
+  top: -180px;
+  right: -180px;
+  width: 720px;
+  aspect-ratio: 1;
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+.entete {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--espace-8);
+  margin-bottom: var(--espace-8);
+}
+
+.marque {
+  font-family: var(--police-espace);
+  font-weight: 300;
+  font-size: 4.2rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--vie-courante-clair);
+}
+
+.onglets {
+  display: flex;
+  gap: var(--espace-1);
+  margin-bottom: 8px;
+}
+
+.onglet {
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-family: var(--police-espace);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--texte-doux);
+  text-decoration: none;
+  transition:
+    color var(--duree),
+    background var(--duree);
+}
+
+.onglet:hover {
+  color: var(--texte);
+}
+
+.actif {
+  color: #06140c;
+  background: var(--vie-courante-clair);
+}
+
+.contenu {
+  max-width: 1240px;
+}

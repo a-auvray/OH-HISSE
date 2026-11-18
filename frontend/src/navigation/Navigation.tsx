@@ -4,8 +4,6 @@ import { Route, Routes, useLocation } from 'react-router'
 
 import { Accueil } from '../accueil/Accueil'
 import type { Direction } from '../espaces/espaces'
-import { CadreEspace } from '../espaces/CadreEspace'
-import { ESPACES } from '../espaces/espaces'
 import { racine, sensDuTrajet } from './directions'
 import { Scene } from './Scene'
 
@@ -20,6 +18,10 @@ const EspaceObjectifs = lazy(() =>
 
 const EspaceMarine = lazy(() =>
   import('../espaces/marine/EspaceMarine').then((m) => ({ default: m.EspaceMarine })),
+)
+
+const EspaceVieCourante = lazy(() =>
+  import('../espaces/vie-courante/EspaceVieCourante').then((m) => ({ default: m.EspaceVieCourante })),
 )
 
 interface Trajet {
@@ -69,9 +71,14 @@ export function Navigation() {
               </Suspense>
             }
           />
-          {ESPACES.filter((e) => e.id === 'vie-courante').map((e) => (
-            <Route key={e.id} path={e.chemin} element={<CadreEspace id={e.id} />} />
-          ))}
+          <Route
+            path="/vie-courante/*"
+            element={
+              <Suspense fallback={null}>
+                <EspaceVieCourante />
+              </Suspense>
+            }
+          />
           <Route path="*" element={<Accueil />} />
         </Routes>
       </Scene>

@@ -1,0 +1,110 @@
+.sommeil {
+  display: grid;
+  gap: var(--espace-6);
+  padding: var(--espace-8);
+  border-radius: 32px;
+  background: linear-gradient(170deg, rgb(192 232 192 / 0.07), rgb(10 30 18 / 0.35));
+  border: 1px solid rgb(192 232 192 / 0.1);
+}
+
+.resume {
+  display: flex;
+  gap: var(--espace-12);
+  align-items: flex-end;
+}
+
+.etiquette {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--vie-courante-clair) 65%, transparent);
+}
+
+.geant {
+  font-family: var(--police-espace);
+  font-weight: 300;
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--vie-courante-clair);
+}
+
+.moyen {
+  font-family: var(--police-espace);
+  font-size: 2.2rem;
+  line-height: 1;
+  color: var(--texte);
+}
+
+.graphique {
+  position: relative;
+  height: 280px;
+  display: grid;
+  grid-template-columns: repeat(30, 1fr);
+  gap: 6px;
+  align-items: end;
+  padding-bottom: 22px;
+}
+
+.colonne {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.barre {
+  width: 100%;
+  border-radius: 10px 10px 4px 4px;
+  transform-origin: bottom;
+  background: linear-gradient(
+    0deg,
+    color-mix(in oklab, var(--vie-courante) 45%, transparent),
+    var(--vie-courante-clair)
+  );
+}
+
+.barre[data-courte] {
+  background: linear-gradient(0deg, rgb(232 162 58 / 0.35), #f3c97a);
+}
+
+.barre[data-vide] {
+  background: rgb(192 232 192 / 0.08);
+}
+
+.jour {
+  position: absolute;
+  bottom: -20px;
+  font-size: 0.68rem;
+  color: var(--texte-faible);
+  white-space: nowrap;
+}
+
+.repere {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed rgb(192 232 192 / 0.35);
+  margin-bottom: 22px;
+  pointer-events: none;
+}
+
+.repere::after {
+  content: attr(data-libelle);
+  position: absolute;
+  right: 0;
+  top: -18px;
+  font-size: 0.7rem;
+  color: var(--texte-faible);
+}
+
+.alerte {
+  border-top-color: rgb(232 162 58 / 0.45);
+}
+
+.note {
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+}
