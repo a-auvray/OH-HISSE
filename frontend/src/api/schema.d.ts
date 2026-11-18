@@ -272,6 +272,40 @@ export interface paths {
     patch: operations['changer_statut_api_objectifs__objectif_id__statut_patch']
     trace?: never
   }
+  '/api/marine/spots': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Lister Spots */
+    get: operations['lister_spots_api_marine_spots_get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/marine/conditions': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Conditions */
+    get: operations['conditions_api_marine_conditions_get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/api/vie-courante/pesees': {
     parameters: {
       query?: never
@@ -422,6 +456,24 @@ export interface components {
        */
       detacher_objectif: boolean
     }
+    /** Conditions */
+    Conditions: {
+      spot: components['schemas']['SpotLu']
+      maintenant: components['schemas']['Instantane']
+      /** Heures */
+      heures: components['schemas']['Heure'][]
+      /** Marees */
+      marees: components['schemas']['Maree'][]
+      /** Soleil */
+      soleil: components['schemas']['Soleil'][]
+      /** Perimees */
+      perimees: boolean
+      /**
+       * Source
+       * @default Open-Meteo · marées estimées, recalées sur l'annuaire SHOM de Ouistreham
+       */
+      source: string
+    }
     /** EtatSante */
     EtatSante: {
       /**
@@ -463,12 +515,100 @@ export interface components {
       /** Detail */
       detail?: components['schemas']['ValidationError'][]
     }
+    /** Heure */
+    Heure: {
+      /**
+       * Instant
+       * Format: date-time
+       */
+      instant: string
+      /** Air C */
+      air_c: number | null
+      /** Vent Kmh */
+      vent_kmh: number | null
+      /** Rafales Kmh */
+      rafales_kmh: number | null
+      /** Vent Direction Deg */
+      vent_direction_deg: number | null
+      /** Nuages Pct */
+      nuages_pct: number | null
+      /** Code Meteo */
+      code_meteo: number | null
+      /** Pluie Pct */
+      pluie_pct: number | null
+      /** Eau C */
+      eau_c: number | null
+      /** Vagues M */
+      vagues_m: number | null
+      /** Hauteur Eau M */
+      hauteur_eau_m: number | null
+    }
     /** Identifiants */
     Identifiants: {
       /** Email */
       email: string
       /** Mot De Passe */
       mot_de_passe: string
+    }
+    /**
+     * Instantane
+     * @description Les conditions à cet instant.
+     */
+    Instantane: {
+      /**
+       * Instant
+       * Format: date-time
+       */
+      instant: string
+      /** Air C */
+      air_c: number | null
+      /** Ressenti C */
+      ressenti_c: number | null
+      /** Vent Kmh */
+      vent_kmh: number | null
+      /** Rafales Kmh */
+      rafales_kmh: number | null
+      /** Vent Direction Deg */
+      vent_direction_deg: number | null
+      /** Nuages Pct */
+      nuages_pct: number | null
+      /** Code Meteo */
+      code_meteo: number | null
+      /** Eau C */
+      eau_c: number | null
+      /** Vagues M */
+      vagues_m: number | null
+      /** Houle M */
+      houle_m: number | null
+      /** Periode S */
+      periode_s: number | null
+      /** Vagues Direction Deg */
+      vagues_direction_deg: number | null
+      /** Courant Kmh */
+      courant_kmh: number | null
+      /** Courant Direction Deg */
+      courant_direction_deg: number | null
+      /** Hauteur Eau M */
+      hauteur_eau_m: number | null
+      /** Tendance */
+      tendance: ('montante' | 'descendante' | 'etale') | null
+    }
+    /** Maree */
+    Maree: {
+      /**
+       * Type
+       * @enum {string}
+       */
+      type: 'PM' | 'BM'
+      /**
+       * Instant
+       * Format: date-time
+       */
+      instant: string
+      /** Hauteur M */
+      hauteur_m: number
+      /** Coefficient */
+      coefficient: number | null
     }
     /** ObjectifEcrit */
     ObjectifEcrit: {
@@ -781,6 +921,35 @@ export interface components {
       id: number
       /** Ordre */
       ordre: number
+    }
+    /** Soleil */
+    Soleil: {
+      /**
+       * Jour
+       * Format: date
+       */
+      jour: string
+      /**
+       * Lever
+       * Format: date-time
+       */
+      lever: string
+      /**
+       * Coucher
+       * Format: date-time
+       */
+      coucher: string
+    }
+    /** SpotLu */
+    SpotLu: {
+      /** Id */
+      id: number
+      /** Nom */
+      nom: string
+      /** Latitude */
+      latitude: number
+      /** Longitude */
+      longitude: number
     }
     /** UtilisateurPublic */
     UtilisateurPublic: {
@@ -1610,6 +1779,84 @@ export interface operations {
         content: {
           'application/json': components['schemas']['HTTPValidationError']
         }
+      }
+    }
+  }
+  lister_spots_api_marine_spots_get: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SpotLu'][]
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  conditions_api_marine_conditions_get: {
+    parameters: {
+      query?: {
+        spot_id?: number | null
+      }
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['Conditions']
+        }
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+      /** @description Service Unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
     }
   }

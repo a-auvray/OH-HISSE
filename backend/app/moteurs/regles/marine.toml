@@ -1,0 +1,27 @@
+# Règles et constantes du module Marine (phase 3).
+# Sources et mesures : docs/recherche/api-externes.md
+
+[zone]
+# Point de requête marine : la maille Open-Meteo couvre Ouistreham, Colleville et Hermanville.
+latitude = 49.2955
+longitude = -0.2930
+fuseau = "Europe/Paris"
+
+[maree]
+# Open-Meteo donne la hauteur par rapport au niveau moyen ; l'annuaire SHOM la donne au-dessus
+# du zéro hydrographique (ZH). Décalage calibré sur l'annuaire de Ouistreham (18-21/11/2026).
+decalage_zh_m = 4.9
+# Coefficient = marnage à Brest / unité de hauteur de Brest × 100 (définition SHOM).
+unite_hauteur_brest_m = 6.10
+brest_latitude = 48.36
+brest_longitude = -4.55
+# La PM de Brest associée à une PM de Ouistreham la suit d'environ 6 h (constaté sur l'annuaire).
+decalage_brest_h = 6.0
+# Fenêtre de recherche des extrema : ± 2 h autour d'un point de la série au pas de 15 min.
+demi_fenetre_pas = 8
+
+[cache]
+# Durées de validité (minutes) : on reste très loin des limites d'Open-Meteo.
+meteo_min = 30
+marine_min = 60
+brest_min = 360

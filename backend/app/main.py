@@ -10,7 +10,7 @@ from sqlmodel import Session
 
 from app.core.base_de_donnees import moteur
 from app.core.config import parametres
-from app.routers import auth, blocs, objectifs, sante, streetlifting, vie_courante
+from app.routers import auth, blocs, marine, objectifs, sante, streetlifting, vie_courante
 from app.services.demo import purger_bacs_a_sable_expires
 
 
@@ -46,6 +46,7 @@ def creer_application() -> FastAPI:
     application.include_router(streetlifting.routeur, prefix="/api")
     application.include_router(blocs.routeur, prefix="/api")
     application.include_router(objectifs.routeur, prefix="/api")
+    application.include_router(marine.routeur, prefix="/api")
     application.include_router(vie_courante.routeur, prefix="/api")
     return application
 
