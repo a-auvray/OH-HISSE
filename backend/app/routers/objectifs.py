@@ -1,63 +1,17 @@
 """Routes des objectifs."""
 
-import datetime as dt
-
 from fastapi import APIRouter, status
 from sqlmodel import Session, col, select
 
 from app.core.acces import a_moi
 from app.core.authentification import UtilisateurDep
 from app.core.base_de_donnees import SessionDep
-from app.models import Bloc, Exercice, Objectif, Utilisateur
-from app.schemas.objectifs import BlocAssocie, ObjectifEcrit, ObjectifLu, ObjectifStatut, Progression
+from app.models import Objectif, Utilisateur
+from app.schemas.objectifs import ObjectifEcrit, ObjectifLu, ObjectifStatut
 from app.services import streetlifting as service
+from app.services.objectifs import lecture
 
 routeur = APIRouter(prefix="/objectifs", tags=["objectifs"])
-
-# Le 1RM « actuel » : le meilleur estimé sur les quatre dernières semaines.
-FENETRE_PROGRESSION = dt.timedelta(weeks=4)
-
-
-def _progression(
-    session: Session, utilisateur: Utilisateur, objectif: Objectif, jour: dt.date
-) -> Progression | None:
-    points = [
-        p for p in service.evolution(session, utilisateur, objectif.exercice_id) if p.e1rm_lest_kg is not None
-    ]
-    if not points:
-        return None
-    recents = [p for p in points if p.date > jour - FENETRE_PROGRESSION] or [points[-1]]
-    meilleur = max(recents, key=lambda p: p.e1rm_lest_kg or 0)
-    assert meilleur.e1rm_lest_kg is not None  # noqa: S101
-    cible = objectif.valeur_cible_kg
-    pourcentage = 100.0 if cible <= 0 else min(100.0, max(0.0, meilleur.e1rm_lest_kg / cible * 100))
-    return Progression(
-        e1rm_lest_kg=meilleur.e1rm_lest_kg,
-        le=meilleur.date,
-        pourcentage=round(pourcentage, 1),
-        cible_atteinte=meilleur.e1rm_lest_kg >= cible,
-    )
-
-
-def _lecture(session: Session, utilisateur: Utilisateur, objectif: Objectif) -> ObjectifLu:
-    jour = dt.date.today()
-    exercice = session.get(Exercice, objectif.exercice_id)
-    blocs = session.exec(select(Bloc).where(Bloc.objectif_id == objectif.id).order_by(col(Bloc.debut))).all()
-    assert objectif.id is not None and exercice is not None  # noqa: S101
-    return ObjectifLu(
-        id=objectif.id,
-        titre=objectif.titre,
-        type=objectif.type,
-        exercice_id=objectif.exercice_id,
-        exercice=exercice.nom,
-        valeur_cible_kg=objectif.valeur_cible_kg,
-        date_cible=objectif.date_cible,
-        principal=objectif.principal,
-        statut=objectif.statut,
-        jours_restants=(objectif.date_cible - jour).days,
-        progression=_progression(session, utilisateur, objectif, jour),
-        blocs=[BlocAssocie(id=b.id, nom=b.nom) for b in blocs if b.id is not None],
-    )
 
 
 def _un_seul_principal(session: Session, utilisateur: Utilisateur, garder: Objectif) -> None:
@@ -78,7 +32,7 @@ def lister(utilisateur: UtilisateurDep, session: SessionDep) -> list[ObjectifLu]
         .where(Objectif.utilisateur_id == utilisateur.id)
         .order_by(col(Objectif.principal).desc(), col(Objectif.date_cible))
     ).all()
-    return [_lecture(session, utilisateur, o) for o in objectifs]
+    return [lecture(session, utilisateur, o) for o in objectifs]
 
 
 @routeur.post("", status_code=status.HTTP_201_CREATED, responses={422: {}})
@@ -91,7 +45,7 @@ def creer(donnees: ObjectifEcrit, utilisateur: UtilisateurDep, session: SessionD
     _un_seul_principal(session, utilisateur, objectif)
     session.commit()
     session.refresh(objectif)
-    return _lecture(session, utilisateur, objectif)
+    return lecture(session, utilisateur, objectif)
 
 
 @routeur.put("/{objectif_id}", responses={404: {}, 422: {}})
@@ -106,7 +60,7 @@ def modifier(
     session.add(objectif)
     session.commit()
     session.refresh(objectif)
-    return _lecture(session, utilisateur, objectif)
+    return lecture(session, utilisateur, objectif)
 
 
 @routeur.patch("/{objectif_id}/statut", responses={404: {}})
@@ -118,7 +72,7 @@ def changer_statut(
     session.add(objectif)
     session.commit()
     session.refresh(objectif)
-    return _lecture(session, utilisateur, objectif)
+    return lecture(session, utilisateur, objectif)
 
 
 @routeur.delete("/{objectif_id}", status_code=status.HTTP_204_NO_CONTENT, responses={404: {}})
