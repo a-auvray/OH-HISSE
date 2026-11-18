@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { NavLink, Route, Routes } from 'react-router'
 
 import { api } from '../../api/client'
@@ -12,9 +12,13 @@ import { Carnet } from './Carnet'
 import { Conditions } from './Conditions'
 import styles from './EspaceMarine.module.css'
 
+// La carte (MapLibre) est lourde : elle n'est chargée qu'à l'ouverture de son onglet.
+const Carte = lazy(() => import('./Carte').then((m) => ({ default: m.Carte })))
+
 const ONGLETS = [
   { chemin: '/marine', libelle: 'Conditions', fin: true },
   { chemin: '/marine/assistant', libelle: 'Assistant', fin: false },
+  { chemin: '/marine/carte', libelle: 'Carte', fin: false },
   { chemin: '/marine/carnet', libelle: 'Carnet', fin: false },
 ] as const
 
@@ -96,6 +100,14 @@ export function EspaceMarine() {
             }
           />
           <Route path="assistant" element={<Assistant spotId={spotId} />} />
+          <Route
+            path="carte"
+            element={
+              <Suspense fallback={<p className={styles.attente}>Chargement de la carte…</p>}>
+                {spots.etat === 'pret' && <Carte spots={spots.valeur} />}
+              </Suspense>
+            }
+          />
           <Route path="carnet" element={<Carnet spots={spots.etat === 'pret' ? spots.valeur : []} />} />
         </Routes>
       </div>

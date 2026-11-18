@@ -12,6 +12,10 @@ export default defineConfig({
       '/api': 'http://localhost:8000',
     },
   },
+  build: {
+    // La carte (MapLibre, ~1 Mo) est un morceau à part, chargé seulement à l'ouverture de son onglet.
+    chunkSizeWarningLimit: 1200,
+  },
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],

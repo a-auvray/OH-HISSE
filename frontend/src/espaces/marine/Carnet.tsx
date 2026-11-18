@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { type FormEvent, useState } from 'react'
+import { useLocation } from 'react-router'
 
 import { api } from '../../api/client'
 import { messageErreur, type Sortie, type Spot } from '../../api/types'
@@ -73,7 +74,22 @@ export function Carnet({ spots }: { spots: Spot[] }) {
     async () => exiger(await api.GET('/api/marine/sorties'), (e) => messageErreur(e)),
     [],
   )
-  const [edition, setEdition] = useState<{ id: number | null; formulaire: FormulaireSortie } | null>(null)
+  // Depuis la carte : une nage tracée arrive avec sa distance et sa plage.
+  const depuisCarte = (
+    useLocation().state as { nage?: { distance_m: number; spot_id: number | null } } | null
+  )?.nage
+  const [edition, setEdition] = useState<{ id: number | null; formulaire: FormulaireSortie } | null>(() =>
+    depuisCarte
+      ? {
+          id: null,
+          formulaire: {
+            ...formulaireVierge(new Date(), depuisCarte.spot_id ?? spots[0]?.id ?? null),
+            type: 'nage',
+            distance_m: String(depuisCarte.distance_m),
+          },
+        }
+      : null,
+  )
   const [tempete, setTempete] = useState(false)
 
   const ouvrir = () =>
