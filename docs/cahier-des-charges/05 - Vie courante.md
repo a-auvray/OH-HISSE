@@ -63,6 +63,26 @@ statut: brouillon
 - reçoit ← [[03 - Streetlifting#Saisie d'une séance|séances]] et [[04 - Marine#Carnet de sortie|sorties en mer]]
 - envoie → [[03 - Streetlifting#Génération automatique de séance|Génération de séance]] et [[04 - Marine#Assistant de sortie|Assistant de sortie]]
 
+### Règles validées (18/11/2026)
+Heuristiques à calibrer à l'usage ; toutes les valeurs vivent dans `backend/app/moteurs/regles/vie_courante.toml`.
+
+**Récupération** (une séance est placée à 18 h le jour où elle a eu lieu) :
+
+| Séance | Récupération |
+|---|---|
+| Tentative de max (single ou double, RPE ≥ 9) | 96 h |
+| Force (≤ 5 reps, RPE 8 à 9) | 72 h |
+| Volume (≥ 6 reps) | 48 h |
+| Légère (RPE moyen ≤ 7) | 24 h |
+
+- Ressenti ≤ 4 : +24 h ; nuit de moins de 6 h après la séance : +12 h
+- Nage de plus de 30 min ou eau sous 12 °C : +12 h de fatigue ; baignade de 20 min ou moins dans une eau ≥ 12 °C : récupération active, −12 h
+- Plus de 24 h restantes : séance du jour allégée (RPE cible −0,5, séries en bas de la plage) ; plus de 48 h : pas de tentative de max (RPE plafonné à 8) et baignade de récupération suggérée
+
+**Cheat meal** (points sur les dernières 48 h) : séance lourde (RPE ≥ 8,5) +2, autre séance +1, nage ≥ 30 min +1, eau < 12 °C +1, dernier écart il y a moins de 4 jours −2. Verdict : ≥ 3 « ce soir, t'as le droit », 2 « un petit écart, oui », ≤ 1 « pas cette fois », toujours avec sa raison.
+
+**Sommeil** : la nuit est datée du jour du réveil ; moyenne sur 7 jours.
+
 ## Briefings
 **Écran :** briefing du jour sur le [[07 - Transversal#Dashboard d'accueil|dashboard d'accueil]] + écrans de bilan
 
