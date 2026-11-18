@@ -1,4 +1,9 @@
+import '@fontsource/anton'
+import '@fontsource-variable/fraunces'
+import '@fontsource-variable/fraunces/opsz-italic.css'
 import '@fontsource-variable/manrope'
+import '@fontsource-variable/quicksand'
+import '@fontsource-variable/space-grotesk'
 import '@fontsource-variable/unbounded'
 import './styles/global.css'
 

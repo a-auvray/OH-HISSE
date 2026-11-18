@@ -1,0 +1,164 @@
+.tuile {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  isolation: isolate;
+  padding: var(--espace-6);
+  border-radius: 24px;
+  text-decoration: none;
+  color: var(--texte);
+  background:
+    radial-gradient(
+      120% 120% at var(--foyer, 50% 50%),
+      color-mix(in oklab, var(--accent) 16%, transparent),
+      transparent 70%
+    ),
+    var(--fond-eleve);
+  border: 1px solid color-mix(in oklab, var(--accent) 22%, var(--trait));
+  transition:
+    border-color var(--duree) var(--courbe-sortie),
+    box-shadow var(--duree) var(--courbe-sortie),
+    scale var(--duree) var(--courbe-sortie);
+}
+
+.tuile:hover,
+.tuile:focus-visible {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 1px var(--accent),
+    0 24px 60px -24px color-mix(in oklab, var(--accent) 70%, transparent);
+  scale: 1.012;
+}
+
+/* Disposition : bandeaux en haut et en bas, colonnes à gauche et à droite. */
+.tuile[data-direction='haut'],
+.tuile[data-direction='bas'] {
+  align-items: center;
+  min-height: 150px;
+}
+.tuile[data-direction='haut'] {
+  --foyer: 50% 0%;
+}
+.tuile[data-direction='bas'] {
+  --foyer: 50% 100%;
+}
+.tuile[data-direction='gauche'],
+.tuile[data-direction='droite'] {
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.tuile[data-direction='gauche'] {
+  --foyer: 0% 50%;
+}
+.tuile[data-direction='droite'] {
+  --foyer: 100% 50%;
+}
+
+.motif {
+  position: absolute;
+  z-index: -1;
+  opacity: 0.85;
+  transition: opacity var(--duree);
+  pointer-events: none;
+}
+.tuile[data-direction='gauche'] .motif {
+  inset: 6% -38% auto auto;
+  width: 120%;
+  aspect-ratio: 1;
+}
+.tuile[data-direction='droite'] .motif {
+  inset: auto -10% -6% -10%;
+  height: 75%;
+}
+.tuile[data-direction='haut'] .motif,
+.tuile[data-direction='bas'] .motif {
+  inset: -30% 2% -30% auto;
+  width: 34%;
+}
+
+.texte {
+  display: grid;
+  gap: var(--espace-2);
+}
+
+.nom {
+  font-family: var(--police-espace);
+  color: var(--accent-clair);
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.devise {
+  color: var(--texte-doux);
+  font-size: 0.95rem;
+  max-width: 28ch;
+}
+
+.fleche {
+  position: absolute;
+  font-size: 1.4rem;
+  color: var(--accent);
+  opacity: 0.6;
+  transition:
+    translate var(--duree) var(--courbe-sortie),
+    opacity var(--duree);
+}
+.tuile[data-direction='haut'] .fleche {
+  top: var(--espace-4);
+  left: 50%;
+}
+.tuile[data-direction='bas'] .fleche {
+  bottom: var(--espace-4);
+  left: 50%;
+}
+.tuile[data-direction='gauche'] .fleche {
+  left: var(--espace-4);
+  top: var(--espace-4);
+}
+.tuile[data-direction='droite'] .fleche {
+  right: var(--espace-4);
+  top: var(--espace-4);
+}
+.tuile:hover .fleche {
+  opacity: 1;
+}
+.tuile[data-direction='haut']:hover .fleche {
+  translate: 0 -4px;
+}
+.tuile[data-direction='bas']:hover .fleche {
+  translate: 0 4px;
+}
+.tuile[data-direction='gauche']:hover .fleche {
+  translate: -4px 0;
+}
+.tuile[data-direction='droite']:hover .fleche {
+  translate: 4px 0;
+}
+
+/* --- Identité typographique de chaque espace --- */
+
+.tuile[data-espace='streetlifting'] .nom {
+  font-size: 3.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 0.88;
+}
+
+.tuile[data-espace='marine'] .nom {
+  font-style: italic;
+  font-weight: 500;
+  font-size: 3.2rem;
+  font-variation-settings: 'opsz' 144;
+}
+
+.tuile[data-espace='vie-courante'] .nom {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.tuile[data-espace='objectifs'] .nom {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 2rem;
+}

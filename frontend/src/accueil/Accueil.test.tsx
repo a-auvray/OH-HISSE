@@ -1,34 +1,34 @@
 import { screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
-import { rendre } from '../test/rendu'
+import { MOI, rendre } from '../test/rendu'
 import { Accueil } from './Accueil'
 
-function afficher() {
-  rendre(<Accueil />)
-}
-
 describe('Accueil', () => {
-  it('propose les quatre espaces', () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ statut: 'ok', version: '0.1.0' }))
-    afficher()
+  it('ouvre les quatre espaces d’un clic', () => {
+    rendre(<Accueil />)
 
-    for (const nom of ['Vie courante', 'Streetlifting', 'Marine', 'Objectifs']) {
-      expect(screen.getByRole('link', { name: nom })).toBeInTheDocument()
+    const liens = {
+      'Vie courante': '/vie-courante',
+      Streetlifting: '/streetlifting',
+      Marine: '/marine',
+      Objectifs: '/objectifs',
+    }
+    for (const [nom, chemin] of Object.entries(liens)) {
+      expect(screen.getByRole('link', { name: new RegExp(nom) })).toHaveAttribute('href', chemin)
     }
   })
 
-  it("affiche la version de l'API quand elle répond", async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ statut: 'ok', version: '0.1.0' }))
-    afficher()
+  it('salue l’utilisateur et présente le briefing du jour', () => {
+    rendre(<Accueil />)
 
-    expect(await screen.findByText('API en ligne · v0.1.0')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Antoine')
+    expect(screen.getByRole('heading', { name: 'Briefing du jour' })).toBeInTheDocument()
   })
 
-  it('signale une API injoignable', async () => {
-    vi.spyOn(globalThis, 'fetch').mockRejectedValue(new TypeError('Failed to fetch'))
-    afficher()
+  it('ne propose pas « Se déconnecter » en démo (le bandeau s’en charge)', () => {
+    rendre(<Accueil />, { etat: { statut: 'connecte', utilisateur: { ...MOI, est_demo: true } } })
 
-    expect(await screen.findByText('API injoignable')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Se déconnecter' })).not.toBeInTheDocument()
   })
 })

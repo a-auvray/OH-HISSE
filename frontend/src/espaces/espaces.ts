@@ -12,6 +12,8 @@ export interface Espace {
   chemin: `/${IdEspace}`
   direction: Direction
   devise: string
+  /** Ce que l'espace contiendra (périmètre V1, note 02 du CDC). */
+  fonctionnalites: readonly string[]
 }
 
 export const ESPACES: readonly Espace[] = [
@@ -21,6 +23,13 @@ export const ESPACES: readonly Espace[] = [
     chemin: '/vie-courante',
     direction: 'haut',
     devise: 'Sommeil, récupération, écarts mérités',
+    fonctionnalites: [
+      'Suivi du sommeil',
+      'Pesée hebdomadaire',
+      'Jauge de récupération',
+      'Verdict cheat meal',
+      'Briefings du jour, de la semaine et des blocs',
+    ],
   },
   {
     id: 'streetlifting',
@@ -28,6 +37,14 @@ export const ESPACES: readonly Espace[] = [
     chemin: '/streetlifting',
     direction: 'gauche',
     devise: 'Le carnet qui calcule la séance suivante',
+    fonctionnalites: [
+      'Saisie des séances (reps, lest, RPE, ressenti)',
+      'Historique en calendrier',
+      '1RM estimé sur poids du corps + lest',
+      'Graphiques d’évolution',
+      'Blocs force, volume, deload',
+      'Séance du jour auto-régulée',
+    ],
   },
   {
     id: 'marine',
@@ -35,6 +52,14 @@ export const ESPACES: readonly Espace[] = [
     chemin: '/marine',
     direction: 'droite',
     devise: 'Quand y aller, avec quoi, par où nager',
+    fonctionnalites: [
+      'Météo marine en direct',
+      'Meilleur créneau selon la marée et la lumière',
+      'Tenue, durée et direction de nage conseillées',
+      'Niveau de danger vert, rouge, noir',
+      'Carte animée de la côte',
+      'Carnet de sortie : baignade, nage, plongée',
+    ],
   },
   {
     id: 'objectifs',
@@ -42,6 +67,11 @@ export const ESPACES: readonly Espace[] = [
     chemin: '/objectifs',
     direction: 'bas',
     devise: 'Le cap qui structure les blocs',
+    fonctionnalites: [
+      'Objectifs : un max, une compétition',
+      'Progression vers la cible',
+      'Blocs d’entraînement qui y mènent',
+    ],
   },
 ]
 
