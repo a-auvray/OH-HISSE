@@ -40,6 +40,7 @@ statut: brouillon
 | Seuils des moteurs en fichiers de configuration | Ajustables sans toucher au code |
 | Qualité outillée : uv, Ruff, mypy, ESLint, Prettier, Vitest, CI GitHub Actions | Chaque pull request est vérifiée automatiquement |
 | Suivi Super Productivity abandonné, journal conservé | Je ne code plus moi-même ; le journal garde la trace des choix |
+| Animations toujours actives, même si le système demande de les réduire | Elles font partie de l'identité de l'appli |
 
 ## Questions ouvertes
 

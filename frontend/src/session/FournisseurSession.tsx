@@ -5,12 +5,15 @@ import { ContexteSession, type EtatSession, type Session } from './contexte'
 
 const INJOIGNABLE = 'Le serveur ne répond pas. Réessaie dans un instant.'
 
-/** Message lisible à partir d'une erreur renvoyée par FastAPI (`{ detail: "…" }`). */
-function messageErreur(erreur: unknown, parDefaut: string): string {
+/**
+ * Message lisible à partir d'une réponse en erreur. FastAPI renvoie `{ detail: "…" }` ; sans
+ * ce détail, c'est que la requête n'a pas atteint l'API (serveur arrêté, proxy absent…).
+ */
+function messageErreur(erreur: unknown, statut: number, parDefaut: string): string {
   if (erreur && typeof erreur === 'object' && 'detail' in erreur && typeof erreur.detail === 'string') {
     return erreur.detail
   }
-  return parDefaut
+  return statut === 404 || statut >= 500 ? INJOIGNABLE : parDefaut
 }
 
 export function FournisseurSession({ children }: { children: ReactNode }) {
@@ -34,10 +37,10 @@ export function FournisseurSession({ children }: { children: ReactNode }) {
 
   const seConnecter = useCallback(async (email: string, motDePasse: string) => {
     try {
-      const { data, error } = await api.POST('/api/auth/connexion', {
+      const { data, error, response } = await api.POST('/api/auth/connexion', {
         body: { email, mot_de_passe: motDePasse },
       })
-      if (!data) return messageErreur(error, 'Connexion impossible.')
+      if (!data) return messageErreur(error, response.status, 'Connexion impossible.')
       setEtat({ statut: 'connecte', utilisateur: data })
       return null
     } catch {
@@ -47,8 +50,8 @@ export function FournisseurSession({ children }: { children: ReactNode }) {
 
   const entrerEnDemo = useCallback(async () => {
     try {
-      const { data, error } = await api.POST('/api/auth/demo')
-      if (!data) return messageErreur(error, 'Impossible d’ouvrir la démo.')
+      const { data, error, response } = await api.POST('/api/auth/demo')
+      if (!data) return messageErreur(error, response.status, 'Impossible d’ouvrir la démo.')
       setEtat({ statut: 'connecte', utilisateur: data })
       return null
     } catch {
