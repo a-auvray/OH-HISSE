@@ -7,6 +7,22 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased] (Non publié)
 
+## [0.3.0] — 2026-11-18 — Marine
+
+### Ajouté
+- Marées : pleines et basses mers, hauteur au zéro hydrographique, coefficient via Brest ; vérifiées contre l'annuaire SHOM.
+- Client Open-Meteo avec cache et repli sur la dernière réponse en cas de panne.
+- Espace Marine : conditions en direct, courbe de marée, rose des vents, 48 h heure par heure.
+- Niveau de danger vert / rouge / noir avec ses raisons, dont le vent de terre.
+- Assistant de sortie : meilleurs créneaux, temps dans l'eau froide, tenue, sens de nage, gestes de sécurité.
+- Carnet de sortie (baignade, nage, plongée) avec conditions relevées automatiquement.
+- Carte de la côte : spots, eau, vent et courant animés, tracé de nage.
+- Easter egg « Essuyer une tempête ! ».
+- Accueil : l'indicateur « En mer ».
+
+### Corrigé
+- Les dates-heures sont stockées en UTC (SQLite ignorait le fuseau).
+
 ## [0.2.0] — 2026-11-18 — Streetlifting et Objectifs
 
 ### Ajouté

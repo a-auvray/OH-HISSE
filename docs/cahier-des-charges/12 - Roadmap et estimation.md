@@ -56,14 +56,16 @@ P4 --> P5["Phase 5<br/>Accueil, démo<br/>et mise en ligne"]:::cadrage
 > C'est l'espace que j'utiliserai tous les jours : dès qu'il fonctionne, j'accumule de vraies données, indispensables pour tester les croisements plus tard.
 
 ## Phase 3 — Marine *(70–90 h)*
-- [ ] Prototype isolé de la carte ⚠️ (peut être avancé pour lever le risque tôt)
-- [ ] Services API externes + cache
-- [ ] Dashboard météo marine
-- [ ] Carnet de sortie (trois modes)
-- [ ] Assistant de sortie + recommandations
-- [ ] Niveau de danger
-- [ ] Carte interactive intégrée
-- [ ] Identité visuelle de l'espace
+- [x] ~~Prototype isolé de la carte~~ : carte intégrée directement (MapLibre), le risque portait sur le trait de côte selon la marée
+- [x] Services API externes + cache (repli sur la dernière réponse si Open-Meteo tombe)
+- [x] Dashboard météo marine
+- [x] Carnet de sortie (trois modes, conditions relevées automatiquement)
+- [x] Assistant de sortie + recommandations
+- [x] Niveau de danger
+- [x] Carte interactive intégrée (spots, eau, vent, courant, tracé de nage)
+- [ ] Trait de côte et distance jusqu'à l'eau selon la marée : relevés Litto3D à intégrer
+- [x] Identité visuelle de l'espace
+- [x] Tag `v0.3.0`
 
 ## Phase 4 — Vie courante + croisements *(55–85 h)*
 - [ ] Suivi du sommeil

@@ -86,3 +86,28 @@
 - `calendrier.ts` et `Calendrier.tsx` se télescopaient sous Windows (casse ignorée) → la logique est renommée `chronologie.ts`.
 - `ParentSize` (visx) attendait un premier signal de ResizeObserver → hook `useLargeur` qui mesure dès le montage.
 - Le tuple `[min, max]` de l'API devenait un tableau côté client → le backend émet une liste de deux nombres.
+
+---
+
+## 18/11/2026 — Phase 3 : Marine (`v0.3.0`)
+
+**Branches :** `feature/marine-services`, `feature/marine-interface`, `feature/marine-carnet`, `feature/marine-danger`, `feature/marine-assistant-interface`, `feature/marine-carte`
+
+### Ce qui a été fait
+- Moteur des marées testé contre l'annuaire SHOM sur une vraie série enregistrée ; client Open-Meteo avec cache.
+- Espace Marine : conditions, courbe de marée, vent, 48 h ; carnet en trois modes avec conditions relevées.
+- Moteurs de danger, de recommandations et d'assistant, avec les seuils validés ; badge, onglet Assistant, easter egg.
+- Carte MapLibre : spots, eau, vent et courant animés, tracé de nage vers le carnet.
+
+### Choix techniques
+- **Aucun appel réseau dans les tests** : les réponses Open-Meteo du 18/11 sont enregistrées dans `tests/donnees/` et rejouées.
+- **Panne d'Open-Meteo** : la dernière réponse connue est servie, marquée périmée, plutôt qu'une erreur.
+- **Vent de terre** : la côte regarde vers le nord, un vent du sud pousse vers le large ; c'est un critère à part du niveau de danger.
+- **Durées en eau froide** : pas de table officielle ; repères RNLI (15 °C) et 1-10-1 (Giesbrecht), marges prudentes, sources notées au CDC.
+- **Pas de fausse précision** : la distance jusqu'à l'eau reste qualitative tant que le relief de l'estran (Litto3D) n'est pas intégré.
+
+### Ce qui a bloqué / Solutions trouvées
+- SQLite ignorait le fuseau : 16 h à Paris relu comme 16 h UTC → type de colonne `DateHeureUTC`.
+- `carnet.ts` et `Carnet.tsx` se seraient télescopés sous Windows → `formulaireSortie.ts`.
+- MapLibre 6 n'a plus d'export par défaut → imports nommés ; carte chargée à la demande (~1 Mo).
+- L'écart IGN69 / zéro hydrographique à Ouistreham n'est pas trouvable en ligne → à lire dans les Références Altimétriques Maritimes du SHOM avec Litto3D.
