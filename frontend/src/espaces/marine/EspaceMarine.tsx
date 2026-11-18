@@ -7,12 +7,14 @@ import { messageErreur } from '../../api/types'
 import { exiger, useDonnees } from '../../commun/useDonnees'
 import { BoutonRetour } from '../BoutonRetour'
 import { Motif } from '../Motifs'
+import { Assistant } from './Assistant'
 import { Carnet } from './Carnet'
 import { Conditions } from './Conditions'
 import styles from './EspaceMarine.module.css'
 
 const ONGLETS = [
   { chemin: '/marine', libelle: 'Conditions', fin: true },
+  { chemin: '/marine/assistant', libelle: 'Assistant', fin: false },
   { chemin: '/marine/carnet', libelle: 'Carnet', fin: false },
 ] as const
 
@@ -93,6 +95,7 @@ export function EspaceMarine() {
               ) : null
             }
           />
+          <Route path="assistant" element={<Assistant spotId={spotId} />} />
           <Route path="carnet" element={<Carnet spots={spots.etat === 'pret' ? spots.valeur : []} />} />
         </Routes>
       </div>

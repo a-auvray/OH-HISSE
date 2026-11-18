@@ -41,9 +41,16 @@ describe('Accueil', () => {
 })
 
 describe('Briefing du jour', () => {
-  it('affiche la séance du jour et l’objectif principal', async () => {
+  it('affiche la séance du jour, la mer et l’objectif principal', async () => {
     vi.spyOn(globalThis, 'fetch').mockImplementation(async (requete) => {
       const url = requete instanceof Request ? requete.url : String(requete)
+      if (url.includes('marine/conditions')) {
+        return Response.json({
+          spot: { nom: 'Colleville-Montgomery' },
+          maintenant: { eau_c: 12.3 },
+          danger: { niveau: 'rouge', raisons: [{ niveau: 'rouge', texte: 'Vent moyen de 32 km/h' }] },
+        })
+      }
       if (url.includes('seance-du-jour')) {
         return Response.json({
           bloc: { id: 1, nom: 'Force', type: 'force', numero: 4, total: 18, rang_modele: 0 },
@@ -69,5 +76,7 @@ describe('Briefing du jour', () => {
     expect(screen.getByText('Séance 4 / 18 · 2 exercices')).toBeInTheDocument()
     expect(screen.getByText('+42,1 / 55 kg')).toBeInTheDocument()
     expect(screen.getByText('55 kg aux tractions · 77 %')).toBeInTheDocument()
+    expect(screen.getByText('Rouge · eau 12 °C')).toBeInTheDocument()
+    expect(screen.getByText('Vent moyen de 32 km/h')).toBeInTheDocument()
   })
 })

@@ -1,0 +1,339 @@
+.assistant {
+  display: grid;
+  gap: var(--espace-8);
+}
+
+.titre {
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 2.2rem;
+  color: var(--marine-clair);
+  margin-bottom: var(--espace-4);
+}
+
+.etiquette {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--marine-clair) 70%, transparent);
+}
+
+/* --- Réglages --- */
+
+.reglages {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espace-4);
+}
+
+.modes,
+.durees {
+  display: inline-flex;
+  padding: 4px;
+  gap: 2px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 0.25);
+  border: 1px solid rgb(176 216 255 / 0.15);
+}
+
+.modes button,
+.durees button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--texte-doux);
+  transition:
+    background var(--duree-rapide),
+    color var(--duree-rapide);
+}
+
+.modes button[aria-checked='true'],
+.durees button[aria-checked='true'] {
+  color: #041320;
+  background: var(--marine-clair);
+}
+
+/* Interrupteur « avec combinaison » */
+.interrupteur {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espace-2);
+  font-size: 0.88rem;
+  color: var(--texte-doux);
+  cursor: pointer;
+}
+
+.interrupteur input {
+  position: absolute;
+  opacity: 0;
+}
+
+.interrupteur span {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgb(176 216 255 / 0.15);
+  transition: background var(--duree);
+}
+
+.interrupteur span::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--texte);
+  transition: translate var(--duree) var(--courbe-sortie);
+}
+
+.interrupteur input:checked + span {
+  background: var(--marine);
+}
+
+.interrupteur input:checked + span::after {
+  translate: 18px 0;
+}
+
+.interrupteur input:focus-visible + span {
+  outline: 2px solid var(--marine-clair);
+  outline-offset: 2px;
+}
+
+/* --- Créneaux --- */
+
+.creneaux {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--espace-4);
+}
+
+.creneau {
+  display: grid;
+  align-content: start;
+  gap: var(--espace-3);
+  padding: var(--espace-6);
+  border-radius: 24px;
+  background: linear-gradient(160deg, rgb(120 190 255 / 0.09), rgb(10 40 70 / 0.3));
+  border: 1px solid rgb(176 216 255 / 0.14);
+  backdrop-filter: blur(12px);
+}
+
+.jour {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--texte-faible);
+}
+
+.horaire {
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.horaire span {
+  color: var(--texte-faible);
+  font-style: normal;
+  font-size: 1.4rem;
+}
+
+.atouts,
+.reserves {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 0.88rem;
+}
+
+.atouts li::before {
+  content: '✓ ';
+  color: var(--succes);
+  font-weight: 700;
+}
+
+.reserves li::before {
+  content: '! ';
+  color: var(--alerte);
+  font-weight: 700;
+}
+
+.aucun {
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--texte-doux);
+}
+
+/* --- Préparer ma sortie --- */
+
+.preparer {
+  display: grid;
+  gap: var(--espace-4);
+}
+
+.reprise {
+  padding: var(--espace-4) var(--espace-6);
+  border-radius: 16px;
+  color: #ffe2b8;
+  background: rgb(232 162 58 / 0.12);
+  border: 1px solid rgb(232 162 58 / 0.4);
+}
+
+.grille {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.3fr;
+  gap: var(--espace-4);
+}
+
+.carte,
+.gestes {
+  display: grid;
+  align-content: start;
+  gap: var(--espace-3);
+  padding: var(--espace-6);
+  border-radius: 24px;
+  background: linear-gradient(160deg, rgb(120 190 255 / 0.08), rgb(10 40 70 / 0.25));
+  border: 1px solid rgb(176 216 255 / 0.12);
+}
+
+.grand {
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 4.2rem;
+  line-height: 0.95;
+  color: var(--marine-clair);
+}
+
+.grand span {
+  font-size: 1.4rem;
+  color: var(--texte-doux);
+}
+
+.grand small {
+  font-family: var(--police-texte);
+  font-style: normal;
+  font-size: 0.95rem;
+  color: var(--texte-doux);
+}
+
+.detail {
+  font-size: 0.88rem;
+  color: var(--texte-doux);
+}
+
+.sens svg {
+  width: 100%;
+  max-width: 220px;
+  overflow: visible;
+}
+
+.sens svg[data-sens="vers l'ouest"] {
+  scale: -1 1;
+}
+
+.plage {
+  stroke: #e8d3a8;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.fleche {
+  fill: none;
+  stroke: var(--marine-clair);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 6 6;
+  animation: courir 1.2s linear infinite;
+}
+
+@keyframes courir {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+
+.tenue ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.tenue label {
+  display: flex;
+  align-items: center;
+  gap: var(--espace-2);
+  cursor: pointer;
+  font-size: 0.92rem;
+}
+
+.tenue input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--marine);
+}
+
+.tenue input:checked + span {
+  color: var(--texte-faible);
+  text-decoration: line-through;
+}
+
+.gestes ol {
+  padding-left: 1.2em;
+  display: grid;
+  gap: 4px;
+  color: var(--texte-doux);
+}
+
+.mention {
+  font-size: 0.82rem;
+  color: var(--texte-faible);
+}
+
+.mention a {
+  color: var(--marine-clair);
+}
+
+.attente {
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--texte-doux);
+}
+
+.erreur {
+  display: flex;
+  align-items: center;
+  gap: var(--espace-4);
+  padding: var(--espace-4) var(--espace-6);
+  border-radius: 16px;
+  color: #ffd2a6;
+  background: rgb(232 162 58 / 0.12);
+  border: 1px solid rgb(232 162 58 / 0.4);
+}
+
+.erreur button {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  background: transparent;
+}

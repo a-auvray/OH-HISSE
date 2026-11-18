@@ -1,0 +1,89 @@
+.tempete {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, #1b2530 0%, #05080b 70%);
+  cursor: pointer;
+}
+
+.rafale {
+  position: absolute;
+  left: 0;
+  width: 22vw;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, rgb(200 220 240 / 0.55), transparent);
+}
+
+.eclair {
+  position: absolute;
+  inset: 0;
+  background: rgb(220 235 255 / 0.35);
+  pointer-events: none;
+}
+
+.badge {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--espace-3);
+  padding: var(--espace-12) var(--espace-12) var(--espace-8);
+  border-radius: 32px;
+  text-align: center;
+  cursor: default;
+  background: linear-gradient(160deg, #26323d, #0b1015);
+  border: 2px solid #ffffff;
+  box-shadow:
+    0 0 0 8px rgb(255 255 255 / 0.06),
+    0 40px 120px -20px #000000;
+}
+
+.icone {
+  width: 96px;
+  height: 96px;
+  fill: none;
+  stroke: #dfe7ef;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.foudre {
+  stroke: #ffd84a;
+  filter: drop-shadow(0 0 8px #ffd84a);
+}
+
+.titre {
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-size: 3.2rem;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.clin {
+  font-size: 1.2rem;
+  color: #dfe7ef;
+}
+
+.serieux {
+  max-width: 34ch;
+  font-size: 0.85rem;
+  color: var(--texte-faible);
+}
+
+.badge button {
+  margin-top: var(--espace-4);
+  padding: 9px 22px;
+  border-radius: 999px;
+  border: 1px solid #ffffff;
+  background: transparent;
+  font-weight: 700;
+}
+
+.badge button:hover {
+  background: rgb(255 255 255 / 0.1);
+}

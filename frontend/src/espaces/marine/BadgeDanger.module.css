@@ -1,0 +1,102 @@
+[data-niveau='vert'] {
+  --niveau: #3fae5e;
+  --niveau-texte: #c9f2d4;
+}
+[data-niveau='rouge'] {
+  --niveau: #e5484d;
+  --niveau-texte: #ffc9cb;
+}
+/* Le noir se distingue par un anneau blanc : un disque noir seul disparaîtrait sur le fond. */
+[data-niveau='noir'] {
+  --niveau: #000000;
+  --niveau-texte: #ffffff;
+}
+
+.pastille {
+  display: inline-block;
+  flex: none;
+  border-radius: 50%;
+  background: var(--niveau);
+  box-shadow: 0 0 10px color-mix(in oklab, var(--niveau) 70%, transparent);
+}
+
+.pastille[data-niveau='noir'] {
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+.badge {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espace-4);
+  padding: var(--espace-4) var(--espace-6);
+  border-radius: 20px;
+  background: color-mix(in oklab, var(--niveau) 14%, rgb(4 19 32 / 0.6));
+  border: 1px solid color-mix(in oklab, var(--niveau) 50%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.badge[data-niveau='noir'] {
+  background: #000000;
+  border-color: #ffffff;
+}
+
+.disque {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--niveau);
+  box-shadow: 0 0 24px color-mix(in oklab, var(--niveau) 80%, transparent);
+}
+
+.badge[data-niveau='noir'] .disque {
+  box-shadow: 0 0 0 3px #ffffff;
+}
+
+.badge[data-grand] .disque {
+  width: 56px;
+  height: 56px;
+}
+
+.texte {
+  display: grid;
+  gap: 2px;
+}
+
+.texte strong {
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--niveau-texte);
+}
+
+.badge[data-grand] .texte strong {
+  font-size: 2.4rem;
+}
+
+.texte > span {
+  font-size: 0.88rem;
+  color: var(--texte-doux);
+}
+
+.texte ul {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--espace-2);
+  display: grid;
+  gap: 2px;
+  font-size: 0.85rem;
+}
+
+.texte li::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  vertical-align: middle;
+  background: var(--niveau);
+  outline: 1px solid rgb(255 255 255 / 0.5);
+}

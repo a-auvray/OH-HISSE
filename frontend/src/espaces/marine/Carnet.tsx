@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { type FormEvent, useState } from 'react'
 
 import { api } from '../../api/client'
-import { messageErreur, type Spot } from '../../api/types'
+import { messageErreur, type Sortie, type Spot } from '../../api/types'
 import { couleurRessenti, nombre } from '../../commun/format'
 import { exiger, useDonnees } from '../../commun/useDonnees'
 import {
@@ -13,7 +13,9 @@ import {
   type TypeSortie,
   versEcriture,
 } from './formulaireSortie'
+import { Pastille } from './BadgeDanger'
 import styles from './Carnet.module.css'
+import { Tempete } from './Tempete'
 
 const DATE = new Intl.DateTimeFormat('fr-FR', {
   weekday: 'long',
@@ -72,6 +74,7 @@ export function Carnet({ spots }: { spots: Spot[] }) {
     [],
   )
   const [edition, setEdition] = useState<{ id: number | null; formulaire: FormulaireSortie } | null>(null)
+  const [tempete, setTempete] = useState(false)
 
   const ouvrir = () =>
     setEdition({ id: null, formulaire: formulaireVierge(new Date(), spots[0]?.id ?? null) })
@@ -98,13 +101,17 @@ export function Carnet({ spots }: { spots: Spot[] }) {
             identifiant={edition.id}
             initial={edition.formulaire}
             fermer={() => setEdition(null)}
-            apresEnregistrement={() => {
+            apresEnregistrement={(enregistree) => {
               setEdition(null)
               recharger()
+              // L'easter egg n'apparaît qu'au retour d'une sortie notée en tempête.
+              if (enregistree?.tempete) setTempete(true)
             }}
           />
         )}
       </AnimatePresence>
+
+      <AnimatePresence>{tempete && <Tempete fermer={() => setTempete(false)} />}</AnimatePresence>
 
       {sorties.etat === 'erreur' && <p className={styles.erreur}>{sorties.message}</p>}
       {sorties.etat === 'pret' && sorties.valeur.length === 0 && !edition && (
@@ -124,6 +131,15 @@ export function Carnet({ spots }: { spots: Spot[] }) {
             >
               <span className={styles.icone}>
                 <IconeMode type={s.type} />
+                {s.tempete && (
+                  <span
+                    className={styles.orage}
+                    title="Essuyer une tempête !"
+                    aria-label="Essuyer une tempête !"
+                  >
+                    ⚡
+                  </span>
+                )}
               </span>
               <div className={styles.corps}>
                 <p className={styles.quand}>{DATE.format(new Date(s.debut))}</p>
@@ -153,6 +169,7 @@ export function Carnet({ spots }: { spots: Spot[] }) {
                 {s.note && <p className={styles.note}>« {s.note} »</p>}
               </div>
               <div className={styles.cote}>
+                {s.danger && <Pastille niveau={s.danger} taille={12} />}
                 {s.ressenti && (
                   <span className={styles.ressenti} data-couleur={couleurRessenti(s.ressenti)}>
                     {s.ressenti}/10
@@ -179,7 +196,7 @@ interface PropsFormulaire {
   identifiant: number | null
   initial: FormulaireSortie
   fermer: () => void
-  apresEnregistrement: () => void
+  apresEnregistrement: (sortie?: Sortie) => void
 }
 
 function Formulaire({ spots, identifiant, initial, fermer, apresEnregistrement }: PropsFormulaire) {
@@ -200,7 +217,7 @@ function Formulaire({ spots, identifiant, initial, fermer, apresEnregistrement }
       return
     }
     setEnCours(true)
-    const { error } = identifiant
+    const { data, error } = identifiant
       ? await api.PUT('/api/marine/sorties/{sortie_id}', {
           params: { path: { sortie_id: identifiant } },
           body: corps,
@@ -208,7 +225,7 @@ function Formulaire({ spots, identifiant, initial, fermer, apresEnregistrement }
       : await api.POST('/api/marine/sorties', { body: corps })
     setEnCours(false)
     if (error) setProblemes([messageErreur(error, 'Enregistrement impossible.')])
-    else apresEnregistrement()
+    else apresEnregistrement(data)
   }
 
   async function supprimer() {

@@ -19,6 +19,9 @@ export type Conditions = Schemas['Conditions']
 export type Spot = Schemas['SpotLu']
 export type Sortie = Schemas['SortieLue']
 export type SortieEcrite = Schemas['SortieEcrite']
+export type Assistant = Schemas['Assistant']
+export type Danger = Schemas['Danger']
+export type Niveau = Schemas['Danger']['niveau']
 
 /** Message lisible d'une erreur FastAPI : `detail` texte, ou liste d'erreurs de validation. */
 export function messageErreur(erreur: unknown, parDefaut = 'Une erreur est survenue.'): string {

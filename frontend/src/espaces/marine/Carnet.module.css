@@ -322,3 +322,22 @@
   font-style: italic;
   font-size: 1.3rem;
 }
+
+.icone {
+  position: relative;
+}
+
+/* Trace discrète de l'easter egg dans la frise. */
+.orage {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  background: #000000;
+  box-shadow: 0 0 0 2px #ffffff;
+}
