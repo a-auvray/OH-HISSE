@@ -1,0 +1,33 @@
+# Règles de l'auto-régulation (note 03 du CDC, validées le 18/11/2026).
+# Modifier ces valeurs ne demande pas de toucher au code.
+
+# Plus petit écart de lest disponible : les charges proposées sont arrondies dessus.
+pas_de_lest_kg = 1.25
+
+# Variation maximale de la charge totale d'une séance à l'autre (0.05 = ±5 %).
+variation_max = 0.05
+
+# Échecs consécutifs sur un exercice avant un deload localisé, et sa baisse de charge.
+echecs_avant_deload = 2
+baisse_deload = 0.10
+
+# En bloc deload, le nombre de séries baisse d'un tiers.
+reduction_series_deload = 0.333
+
+# Écart de RPE toléré autour de la cible avant d'ajuster le nombre de séries.
+tolerance_rpe = 0.5
+
+# Cible de RPE par défaut, quand le bloc n'en précise pas.
+# Clés : nombre de répétitions maximal du format → RPE par type de bloc.
+# (« specifique » suit les valeurs de « force »)
+[rpe_cible]
+"1" = { force = 9.0, volume = 8.0, deload = 6.0 }       # single
+"3" = { force = 8.5, volume = 8.0, deload = 6.0 }       # 2 à 3 reps
+"6" = { force = 8.0, volume = 7.5, deload = 6.0 }       # 4 à 6 reps (5×5)
+"99" = { force = 7.5, volume = 7.0, deload = 6.0 }      # 7 reps et plus
+
+# Forme du jour (branchée en phase 4 sur le sommeil et la récupération).
+[forme]
+sommeil_court_h = 6.0         # en dessous : cible de RPE −1
+sommeil_tres_court_h = 4.0    # en dessous : pas de tentative de max (RPE plafonné)
+rpe_plafond_si_epuise = 8.0
