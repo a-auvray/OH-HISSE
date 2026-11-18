@@ -1,0 +1,276 @@
+.calendrier {
+  display: grid;
+  gap: var(--espace-4);
+}
+
+.entete {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--espace-4);
+}
+
+.mois {
+  font-size: 4rem;
+  color: var(--accent-clair);
+}
+
+.commandes {
+  display: flex;
+  gap: var(--espace-2);
+  align-items: center;
+}
+
+/* Couleurs des types de bloc, partagées par la grille et la légende. */
+[data-bloc='force'] {
+  --bloc: var(--streetlifting);
+}
+[data-bloc='volume'] {
+  --bloc: #e8b23a;
+}
+[data-bloc='deload'] {
+  --bloc: #8fa382;
+}
+[data-bloc='specifique'] {
+  --bloc: #d9534f;
+}
+
+.grille {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.jourSemaine {
+  padding: 0 var(--espace-2);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texte-faible);
+}
+
+.case {
+  position: relative;
+  min-height: 104px;
+  padding: var(--espace-2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: 10px;
+  background: rgb(255 255 255 / 0.025);
+  border: 1px solid #261e19;
+  overflow: hidden;
+}
+
+/* Bande du bloc en bas de la case. */
+.case[data-bloc]::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: var(--bloc);
+  opacity: 0.85;
+}
+
+.case[data-bloc] {
+  background: color-mix(in oklab, var(--bloc) 6%, rgb(255 255 255 / 0.02));
+}
+
+.case[data-hors-mois] {
+  opacity: 0.35;
+}
+
+.case[data-aujourdhui] {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.numero {
+  font-family: var(--police-espace);
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--texte-doux);
+}
+
+.case[data-aujourdhui] .numero {
+  color: var(--accent-clair);
+}
+
+.seance {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 5px 7px;
+  border-radius: 6px;
+  border: 1px solid #3a2f28;
+  background: #1d1612;
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition:
+    border-color var(--duree-rapide),
+    transform var(--duree-rapide);
+}
+
+.seance:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.nomSeance {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pastille,
+.ressenti::before {
+  --teinte: var(--texte-faible);
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--teinte);
+  box-shadow: 0 0 8px var(--teinte);
+}
+
+[data-couleur='vert'] {
+  --teinte: var(--succes);
+}
+[data-couleur='orange'] {
+  --teinte: var(--alerte);
+}
+[data-couleur='rouge'] {
+  --teinte: var(--danger);
+}
+
+.legende {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: var(--espace-6);
+  font-size: 0.8rem;
+  color: var(--texte-doux);
+}
+
+.legende li::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 4px;
+  margin-right: var(--espace-2);
+  vertical-align: middle;
+  border-radius: 2px;
+  background: var(--bloc);
+}
+
+/* --- Panneau de détail --- */
+
+.voile {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgb(0 0 0 / 0.55);
+  backdrop-filter: blur(3px);
+}
+
+.detail {
+  position: fixed;
+  z-index: 21;
+  top: var(--espace-4);
+  right: var(--espace-4);
+  bottom: var(--espace-4);
+  width: 440px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-4);
+  background: #18120e;
+}
+
+.detail h2 {
+  font-size: 3rem;
+  color: var(--accent-clair);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espace-4);
+  font-size: 0.88rem;
+  color: var(--texte-doux);
+}
+
+.ressenti {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ressenti::before {
+  content: '';
+}
+
+.records {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: var(--espace-6);
+}
+
+.records li {
+  display: grid;
+}
+
+.records li > span:last-child {
+  font-size: 2.6rem;
+}
+
+.groupe h3 {
+  font-family: var(--police-espace);
+  font-weight: 400;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  margin-bottom: var(--espace-2);
+}
+
+.groupe ol {
+  padding-left: 1.4em;
+  display: grid;
+  gap: 2px;
+  font-family: var(--police-chiffres);
+  font-size: 0.9rem;
+}
+
+.groupe li {
+  display: flex;
+  gap: var(--espace-4);
+}
+
+.groupe li::marker {
+  color: var(--texte-faible);
+}
+
+.echec {
+  color: var(--danger);
+}
+
+.prevu {
+  margin-left: auto;
+  color: var(--texte-faible);
+}
+
+.note {
+  font-style: italic;
+  color: var(--texte-doux);
+}
+
+.actions {
+  margin-top: auto;
+  display: flex;
+  gap: var(--espace-3);
+}

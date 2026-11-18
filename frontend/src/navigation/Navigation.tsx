@@ -1,14 +1,18 @@
 import { AnimatePresence } from 'motion/react'
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Route, Routes, useLocation } from 'react-router'
 
 import { Accueil } from '../accueil/Accueil'
 import type { Direction } from '../espaces/espaces'
 import { CadreEspace } from '../espaces/CadreEspace'
 import { ESPACES } from '../espaces/espaces'
-import { EspaceStreetlifting } from '../espaces/streetlifting/EspaceStreetlifting'
 import { racine, sensDuTrajet } from './directions'
 import { Scene } from './Scene'
+
+// Chargé à la demande : ses graphiques (visx) n'alourdissent pas l'accueil ni la connexion.
+const EspaceStreetlifting = lazy(() =>
+  import('../espaces/streetlifting/EspaceStreetlifting').then((m) => ({ default: m.EspaceStreetlifting })),
+)
 
 interface Trajet {
   chemin: string
@@ -33,7 +37,14 @@ export function Navigation() {
       <Scene key={espace} sens={trajet.sens}>
         <Routes location={position}>
           <Route path="/" element={<Accueil />} />
-          <Route path="/streetlifting/*" element={<EspaceStreetlifting />} />
+          <Route
+            path="/streetlifting/*"
+            element={
+              <Suspense fallback={null}>
+                <EspaceStreetlifting />
+              </Suspense>
+            }
+          />
           {ESPACES.filter((e) => e.id !== 'streetlifting').map((e) => (
             <Route key={e.id} path={e.chemin} element={<CadreEspace id={e.id} />} />
           ))}

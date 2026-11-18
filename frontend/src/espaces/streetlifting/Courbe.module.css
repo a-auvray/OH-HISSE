@@ -1,0 +1,38 @@
+.courbe {
+  position: relative;
+}
+
+.courbe svg {
+  display: block;
+  overflow: visible;
+}
+
+.bulle {
+  position: absolute;
+  translate: -50% calc(-100% - 14px);
+  display: grid;
+  gap: 2px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  pointer-events: none;
+  white-space: nowrap;
+  background: #241b16;
+  border: 1px solid var(--streetlifting);
+  box-shadow: 0 12px 30px -10px rgb(0 0 0 / 0.8);
+  font-size: 0.8rem;
+  color: var(--texte-doux);
+}
+
+.bulle strong {
+  font-family: var(--police-espace);
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--streetlifting-clair);
+}
+
+.bulle strong span {
+  font-family: var(--police-texte);
+  font-size: 0.8rem;
+  color: var(--texte-doux);
+}

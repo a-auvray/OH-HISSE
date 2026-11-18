@@ -1,0 +1,81 @@
+.analyse {
+  display: grid;
+  gap: var(--espace-4);
+}
+
+.filtres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espace-4);
+}
+
+.segments {
+  display: inline-flex;
+  padding: 4px;
+  gap: 2px;
+  border-radius: 12px;
+  background: rgb(0 0 0 / 0.3);
+  border: 1px solid #2c2420;
+}
+
+.segments button {
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--texte-doux);
+  transition:
+    background var(--duree-rapide),
+    color var(--duree-rapide);
+}
+
+.segments button:hover {
+  color: var(--texte);
+}
+
+.segments button[aria-checked='true'] {
+  color: #1a0f07;
+  background: var(--accent);
+}
+
+.tuiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--espace-3);
+}
+
+.tuile {
+  display: grid;
+  gap: var(--espace-1);
+}
+
+.tuile > span:nth-child(2) {
+  font-size: 3.2rem;
+}
+
+.tuile small {
+  font-family: var(--police-texte);
+  font-size: 1rem;
+  color: var(--texte-doux);
+}
+
+.detail {
+  font-size: 0.82rem;
+  color: var(--texte-faible);
+}
+
+.graphique {
+  display: grid;
+  gap: var(--espace-4);
+  min-height: 460px;
+}
+
+.vide {
+  align-self: center;
+  justify-self: center;
+  max-width: 46ch;
+  text-align: center;
+  color: var(--texte-doux);
+}
