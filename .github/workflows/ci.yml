@@ -31,6 +31,12 @@ jobs:
         run: uv run mypy app tests
       - name: Tests
         run: uv run pytest --cov=app --cov-report=term-missing
+      - name: Migrations à jour avec les modèles
+        env:
+          OH_HISSE_URL_BASE_DE_DONNEES: sqlite:///./ci.db
+        run: |
+          uv run alembic upgrade head
+          uv run alembic check
 
   frontend:
     name: Frontend (format, lint, types, tests, build)
