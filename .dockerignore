@@ -1,0 +1,18 @@
+# Seul le code utile à l'image part au constructeur.
+.git
+.github
+.env
+.env.*
+docs
+**/__pycache__
+**/*.db
+**/*.db-journal
+backend/.venv
+backend/.pytest_cache
+backend/.mypy_cache
+backend/.ruff_cache
+backend/.coverage
+backend/htmlcov
+frontend/node_modules
+frontend/dist
+frontend/*.tsbuildinfo
