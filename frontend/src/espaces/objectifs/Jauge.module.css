@@ -1,0 +1,70 @@
+.jauge {
+  position: relative;
+  flex: none;
+}
+
+.jauge svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.graduation {
+  stroke: color-mix(in oklab, var(--objectifs) 40%, transparent);
+  stroke-width: 1;
+}
+
+.piste {
+  fill: none;
+  stroke: #241a2b;
+  stroke-width: 12;
+  stroke-linecap: round;
+}
+
+.progression {
+  fill: none;
+  stroke-width: 12;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 8px color-mix(in oklab, var(--objectifs) 70%, transparent));
+}
+
+.jauge[data-atteinte] .progression {
+  filter: drop-shadow(0 0 16px var(--objectifs-clair));
+}
+
+.centre {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.valeur {
+  font-family: var(--police-espace);
+  font-weight: 700;
+  font-size: 3.4rem;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--objectifs-clair);
+}
+
+.cible {
+  font-family: var(--police-espace);
+  font-size: 1.1rem;
+  color: var(--texte-doux);
+}
+
+.pourcentage {
+  margin-top: var(--espace-2);
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #120a16;
+  background: var(--objectifs-clair);
+}

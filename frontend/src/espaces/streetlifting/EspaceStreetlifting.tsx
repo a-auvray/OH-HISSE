@@ -4,6 +4,7 @@ import { BoutonRetour } from '../BoutonRetour'
 import { Motif } from '../Motifs'
 import styles from './EspaceStreetlifting.module.css'
 import { Analyse } from './Analyse'
+import { Blocs } from './Blocs'
 import { Calendrier } from './Calendrier'
 import { Saisie } from './Saisie'
 import { SeanceDuJour } from './SeanceDuJour'
@@ -13,6 +14,7 @@ const ONGLETS = [
   { chemin: '/streetlifting/saisie', libelle: 'Saisie', fin: false },
   { chemin: '/streetlifting/calendrier', libelle: 'Calendrier', fin: false },
   { chemin: '/streetlifting/analyse', libelle: 'Analyse', fin: false },
+  { chemin: '/streetlifting/blocs', libelle: 'Blocs', fin: false },
 ] as const
 
 /** Espace Streetlifting : brut, chaud, métal et craie (note 11 du CDC). */
@@ -48,6 +50,7 @@ export function EspaceStreetlifting() {
           <Route path="saisie/:id" element={<SaisieNeuve />} />
           <Route path="calendrier" element={<Calendrier />} />
           <Route path="analyse" element={<Analyse />} />
+          <Route path="blocs" element={<Blocs />} />
         </Routes>
       </div>
     </main>

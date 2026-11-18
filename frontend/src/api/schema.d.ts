@@ -440,7 +440,7 @@ export interface components {
        */
       exercice: string
       /** Series */
-      series: number | [number, number]
+      series: number | number[]
       /**
        * Reps
        * @description De 1 à 12 : la limite de la table RPE

@@ -21,20 +21,6 @@
   align-items: center;
 }
 
-/* Couleurs des types de bloc, partagées par la grille et la légende. */
-[data-bloc='force'] {
-  --bloc: var(--streetlifting);
-}
-[data-bloc='volume'] {
-  --bloc: #e8b23a;
-}
-[data-bloc='deload'] {
-  --bloc: #8fa382;
-}
-[data-bloc='specifique'] {
-  --bloc: #d9534f;
-}
-
 .grille {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
