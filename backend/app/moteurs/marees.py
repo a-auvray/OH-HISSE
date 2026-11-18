@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from functools import lru_cache
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 FICHIER_REGLES = Path(__file__).parent / "regles" / "marine.toml"
 
@@ -24,7 +24,7 @@ class ReglesMaree:
 
 
 @lru_cache
-def regles_marine() -> dict[str, dict[str, float | str]]:
+def regles_marine() -> dict[str, dict[str, Any]]:
     with FICHIER_REGLES.open("rb") as f:
         return tomllib.load(f)
 

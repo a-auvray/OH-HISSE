@@ -47,10 +47,10 @@ Les quatre espaces s'ouvrent **par un clic** depuis l'accueil, selon une disposi
 **Badges :** un système de badges (vitrine des récompenses obtenues sur le journal) est prévu en **V+**. Il n'est pas dans la V1.
 
 **Easter egg « Essuyer une tempête ! »** (V1, secret) :
-- **Déclencheur :** une sortie en mer validée dans le journal, dont les conditions enregistrées correspondent à une tempête (vent moyen de force 10 Beaufort ou plus ❓ seuil à confirmer)
+- **Déclencheur :** une sortie en mer validée dans le journal, dont les conditions enregistrées correspondent à une tempête : vent moyen de force 10 Beaufort ou plus, soit ≥ 89 km/h (validé le 18/11/2026)
 - **Affichage :** rien n'est annoncé à l'avance. Le badge n'apparaît qu'au retour de la nage, une fois la sortie validée, avec une courte animation d'apparition
 - **Intention :** un clin d'œil d'humour, pas une invitation. Il ne doit jamais être présenté comme un objectif ni apparaître dans une aide, une liste ou un tutoriel
 
 > [!warning] ⚠️ Pas de récompense pour le danger
-> Si le moteur de danger avait déconseillé la sortie, le badge ne doit pas s'afficher comme une réussite. ❓ Voir [[13 - Décisions et questions ouvertes|Décisions]]
+> Si le moteur de danger avait déconseillé la sortie, le badge ne doit pas s'afficher comme une réussite. **Décidé :** à ce vent, le niveau est toujours noir ; le badge apparaît sur un ton de clin d'œil inquiet (« Tu es rentré. On n'en parle plus. »), jamais comme un exploit.
 

@@ -61,7 +61,22 @@ statut: brouillon
 - Risques identifiés, et rappel des gestes de sécurité si je n'ai pas nagé depuis longtemps (ex. deux mois sans pratique, puis une heure en plein hiver)
 
 > [!warning] ⚠️ Information de sécurité
-> Les durées d'exposition au froid doivent venir de sources fiables, avec des marges prudentes : l'app aide à décider, elle ne remplace pas le bon sens sur place ❓
+> Les durées d'exposition au froid doivent venir de sources fiables, avec des marges prudentes : l'app aide à décider, elle ne remplace pas le bon sens sur place.
+
+### Durées en eau froide validées (18/11/2026)
+Il n'existe pas de table officielle « durée de nage selon la température » : les tables de survie (Golden et Tipton, *Essentials of Sea Survival*) sont des projections théoriques. Les durées retenues s'appuient sur le seuil de choc thermique de **15 °C** (RNLI) et la règle **1-10-1** (Giesbrecht), avec des marges prudentes.
+
+| Eau | Conseillé | Maximum |
+|---|---|---|
+| ≥ 18 °C | pas de limite liée au froid | — |
+| 15–18 °C | 45 min | 60 min |
+| 12–15 °C | 25 min | 40 min |
+| 10–12 °C | 15 min | 25 min |
+| 8–10 °C | 10 min | 15 min |
+| 5–8 °C | 5 min | 10 min |
+| < 5 °C | 1 à 2 min | — |
+
+Combinaison de 4 à 5 mm : durées doublées (estimation). **Reprise** (aucune sortie depuis plus de 4 semaines) : durées divisées par deux et rappel des gestes de sécurité.
 
 ## Niveau de danger
 **Écran :** badge affiché sur l'assistant, le dashboard du module et le [[07 - Transversal#Dashboard d'accueil|dashboard d'accueil]]
@@ -69,7 +84,20 @@ statut: brouillon
 **Données affichées :**
 - 🟢 Vert / 🔴 Rouge / ⚫ Noir, avec les raisons principales (ex. « eau à 6 °C + vent à 40 km/h »)
 
-❓ Seuils de chaque niveau à définir
+### Seuils validés (18/11/2026)
+Le niveau est le plus grave des critères ; chaque raison est affichée.
+
+| Critère | 🔴 Rouge | ⚫ Noir |
+|---|---|---|
+| Vent moyen | ≥ 30 km/h (force 5) | ≥ 50 km/h (force 7) |
+| Rafales | ≥ 60 km/h | ≥ 75 km/h |
+| Vent de terre (du sud : il pousse vers le large) | ≥ 20 km/h | ≥ 35 km/h |
+| Vagues | ≥ 1 m | ≥ 2 m |
+| Courant | ≥ 2 km/h | ≥ 3 km/h |
+| Eau | < 8 °C | < 5 °C |
+| Ciel | brouillard, nuit | orage |
+
+Entre 8 et 15 °C, l'eau froide ne change pas le niveau : elle réduit les durées conseillées.
 
 ## Carte interactive
 **Écran :** carte plein écran de la côte (bande d'environ 20 km)

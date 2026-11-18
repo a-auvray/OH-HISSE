@@ -13,6 +13,19 @@ class SpotLu(BaseModel):
     longitude: float
 
 
+Niveau = Literal["vert", "rouge", "noir"]
+
+
+class RaisonLue(BaseModel):
+    niveau: Niveau
+    texte: str
+
+
+class Danger(BaseModel):
+    niveau: Niveau
+    raisons: list[RaisonLue]
+
+
 class Instantane(BaseModel):
     """Les conditions à cet instant."""
 
@@ -46,7 +59,10 @@ class Heure(BaseModel):
     pluie_pct: float | None
     eau_c: float | None
     vagues_m: float | None
+    courant_kmh: float | None
+    courant_direction_deg: float | None
     hauteur_eau_m: float | None
+    danger: Niveau
 
 
 class Maree(BaseModel):
@@ -68,6 +84,7 @@ class Conditions(BaseModel):
     heures: list[Heure]
     marees: list[Maree]
     soleil: list[Soleil]
+    danger: Danger
     # Vrai si Open-Meteo ne répond plus et que ces données viennent du cache.
     perimees: bool
     source: str = "Open-Meteo · marées estimées, recalées sur l'annuaire SHOM de Ouistreham"
@@ -124,3 +141,50 @@ class SortieLue(SortieEcrite):
     spot: str | None
     # Vrai si au moins une condition a été complétée automatiquement depuis Open-Meteo.
     conditions_relevees: bool
+    # Niveau de danger d'après les conditions enregistrées (None : aucune condition connue).
+    danger: Niveau | None
+    # Easter egg « Essuyer une tempête ! » (note 07) : vent moyen de force 10 ou plus.
+    tempete: bool
+
+
+Mode = Literal["baignade", "nage", "plongee"]
+
+
+class CreneauLu(BaseModel):
+    debut: dt.datetime
+    fin: dt.datetime
+    danger: Danger
+    atouts: list[str]
+    reserves: list[str]
+
+
+class DureesLues(BaseModel):
+    conseille_min: int | None
+    maximum_min: int | None
+    texte: str
+
+
+class SensLu(BaseModel):
+    sens: Literal["vers l'ouest", "vers l'est"] | None
+    texte: str
+
+
+class RecommandationsLues(BaseModel):
+    durees: DureesLues
+    tenue: list[str]
+    sens: SensLu
+    reprise: bool
+    gestes: list[str]
+
+
+class Assistant(BaseModel):
+    """Réponse de l'assistant de sortie (note 04)."""
+
+    spot: SpotLu
+    mode: Mode
+    duree_min: int
+    combinaison: bool
+    eau_c: float | None
+    creneaux: list[CreneauLu]
+    recommandations: RecommandationsLues | None
+    jours_depuis_derniere_sortie: int | None
