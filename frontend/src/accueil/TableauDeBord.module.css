@@ -56,8 +56,17 @@
   flex: 1;
 }
 
+.indicateurs li {
+  display: grid;
+}
+
 .indicateur {
   display: grid;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color var(--duree-rapide),
+    transform var(--duree-rapide) var(--courbe-sortie);
   align-content: start;
   gap: var(--espace-1);
   padding: var(--espace-4);
@@ -100,4 +109,18 @@
 .deconnexion:hover {
   color: var(--texte);
   border-color: var(--texte-doux);
+}
+
+.indicateur:hover {
+  border-color: color-mix(in oklab, var(--accent) 60%, var(--trait));
+  transform: translateY(-2px);
+}
+
+/* Une vraie donnée : à la couleur de l'espace. */
+.indicateur[data-rempli] .valeur {
+  font-size: 1.6rem;
+  color: var(--accent-clair);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

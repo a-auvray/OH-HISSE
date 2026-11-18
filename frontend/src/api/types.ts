@@ -25,7 +25,9 @@ export function messageErreur(erreur: unknown, parDefaut = 'Une erreur est surve
     return detail
       .map((e: { loc?: unknown[]; msg?: string }) => {
         const champ = (e.loc ?? []).filter((x) => x !== 'body').join(' › ')
-        return champ ? `${champ} : ${e.msg ?? ''}` : (e.msg ?? '')
+        // Pydantic préfixe les erreurs de nos validateurs par « Value error, » : inutile à l'écran.
+        const message = (e.msg ?? '').replace(/^Value error, /, '')
+        return champ ? `${champ} : ${message}` : message
       })
       .join('\n')
   }

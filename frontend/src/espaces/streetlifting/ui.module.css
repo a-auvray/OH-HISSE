@@ -144,3 +144,17 @@ button:disabled {
   max-width: 52ch;
   color: var(--texte-doux);
 }
+
+/* Couleurs des types de bloc, partagées par le calendrier et la page des blocs. */
+[data-bloc='force'] {
+  --bloc: var(--streetlifting);
+}
+[data-bloc='volume'] {
+  --bloc: #e8b23a;
+}
+[data-bloc='deload'] {
+  --bloc: #8fa382;
+}
+[data-bloc='specifique'] {
+  --bloc: #d9534f;
+}

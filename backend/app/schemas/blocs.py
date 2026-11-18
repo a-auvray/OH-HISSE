@@ -1,7 +1,7 @@
 """Format d'un bloc importé (note 03 du CDC) et séance du jour."""
 
 import datetime as dt
-from typing import Literal, Self
+from typing import Annotated, Literal, Self
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
@@ -13,14 +13,14 @@ TypeBloc = Literal["force", "volume", "deload", "specifique"]
 class ExerciceDuProgramme(BaseModel):
     exercice: str = Field(description="Identifiant de l'exercice : traction, dips, muscle-up…")
     # Un nombre fixe, ou une plage [min, max] dans laquelle l'algorithme choisit.
-    series: int | tuple[int, int]
+    series: int | Annotated[list[int], Field(min_length=2, max_length=2)]
     reps: int = Field(ge=1, le=12, description="De 1 à 12 : la limite de la table RPE")
     rpe_cible: Rpe | None = None
 
     @field_validator("series")
     @classmethod
-    def _series_valides(cls, valeur: int | tuple[int, int]) -> int | tuple[int, int]:
-        bas, haut = (valeur, valeur) if isinstance(valeur, int) else valeur
+    def _series_valides(cls, valeur: int | list[int]) -> int | list[int]:
+        bas, haut = (valeur, valeur) if isinstance(valeur, int) else (valeur[0], valeur[1])
         if not 1 <= bas <= haut <= 20:
             raise ValueError("Séries : un nombre de 1 à 20, ou une plage [min, max] croissante.")
         return valeur
