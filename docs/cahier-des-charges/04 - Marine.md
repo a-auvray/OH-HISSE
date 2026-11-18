@@ -28,7 +28,7 @@ statut: brouillon
 - Marée : horaires, coefficient, hauteur d'eau
 - Couverture nuageuse, lever et coucher du soleil
 
-**Source :** API externes → [[10 - Architecture technique#API externes|pistes à valider]]
+**Source :** Open-Meteo, météo et marine, sans clé → [[10 - Architecture technique#API externes|validé en phase 0]]. Zone : Ouistreham, Colleville-Montgomery, Hermanville-sur-Mer.
 
 ## Assistant de sortie
 **Écran :** « Planifier une sortie »

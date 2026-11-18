@@ -24,6 +24,7 @@ erDiagram
     UTILISATEUR ||--o{ SPOT : "enregistre"
     UTILISATEUR ||--o{ NUIT : "dort"
     UTILISATEUR ||--o{ CHEAT-MEAL : "prend"
+    UTILISATEUR ||--o{ PESEE : "se pèse"
 
     OBJECTIF |o--o{ BLOC : "structure"
     BLOC |o--o{ SEANCE : "encadre"
@@ -54,7 +55,7 @@ erDiagram
     PESEE {
         int id PK
         int utilisateur_id FK
-        date date "un lundi sur deux, ou chaque semaine"
+        date date "chaque lundi matin"
         float poids_kg
     }
     SERIE {

@@ -21,21 +21,33 @@ statut: brouillon
 | Pas d'export PDF | Peu utile |
 | Pas de mode hors ligne en V1 | J'ai toujours du réseau |
 | Git : GitHub Flow, jamais de commit direct sur `main` | Apprendre à travailler comme en entreprise |
-| Je code tout moi-même | L'apprentissage est l'objectif |
+| ~~Je code tout moi-même~~ → développement confié à Claude, sous ma validation | Le projet a changé (novembre 2026) ; tout écart au CDC est validé avant d'être codé |
 | Jours flexibles : bloc = suite ordonnée de séances, sans jour fixe | Décaler une séance ne doit rien casser |
 | Blocs importés depuis un fichier JSON, pas d'IA branchée | Pas d'IA dans l'appli ; l'import est un vrai morceau de backend |
-| 1RM en lest = formule RPE (poids du corps + lest, puis retirer le poids du corps) | Le calcul sur le lest seul sous-estime fortement |
+| 1RM en lest = formule RPE (poids du corps + lest, puis retirer le poids du corps) | Le calcul sur le lest seul sous-estime fortement. Formule RPE seule, sans Epley ni Brzycki (cf. [[03 - Streetlifting#Calcul du 1RM estimé|détail]]) |
 | L'algorithme n'ajuste que la charge (et les séries dans la plage du bloc) | Le programme reste celui défini par l'utilisateur |
 | Système de badges reporté en V+ ; en V1, seul l'easter egg « Essuyer une tempête ! » | Garder la V1 simple ; le badge est une anecdote, pas un objectif |
 | Easter egg secret : affiché uniquement au retour d'une nage validée en tempête | Un clin d'œil qui ne pousse pas à sortir par mauvais temps |
+| Nom du projet : **Oh Hisse !** | La traction et la mer, en un cri |
+| Zone : Ouistreham, Colleville-Montgomery, Hermanville-sur-Mer | Mes plages ; une seule maille marine Open-Meteo les couvre |
+| Marées : Open-Meteo recalé au zéro hydrographique, coefficient calculé via Brest | Gratuit, sans clé ; précision mesurée contre l'annuaire SHOM (cf. [`recherche`](../recherche/api-externes.md)) |
+| Front en TypeScript, types générés depuis l'OpenAPI | Le front et le back ne peuvent plus se désynchroniser |
+| Carte : MapLibre GL + OpenFreeMap | Gratuit, WebGL, animations fluides |
+| Graphiques : visx | Rendu entièrement sur mesure |
+| Migrations : Alembic dès le départ | Passage à PostgreSQL sans douleur |
+| JWT dans un cookie httpOnly | Protégé contre le vol par script (XSS) |
+| Mode démo : bac à sable par visiteur, effacé après 24 h | Tout est testable, rien n'est partagé, mes données restent hors d'atteinte |
+| Seuils des moteurs en fichiers de configuration | Ajustables sans toucher au code |
+| Qualité outillée : uv, Ruff, mypy, ESLint, Prettier, Vitest, CI GitHub Actions | Chaque pull request est vérifiée automatiquement |
+| Suivi Super Productivity abandonné, journal conservé | Je ne code plus moi-même ; le journal garde la trace des choix |
 
 ## Questions ouvertes
 
 ### Prioritaires (avant de coder)
-- [ ] Nom du projet
-- [ ] Programme type d'un bloc : d'où vient la structure de base des séances (exercices, format 5×5…) ? L'algorithme n'ajuste-t-il que les charges ?
-- [ ] Blocs : créés à la main, ou proposés automatiquement à partir d'un objectif ?
-- [ ] Source des données de marée : gratuite, fiable et précise pour la Normandie ?
+- [x] Nom du projet → **Oh Hisse !**
+- [x] Programme type d'un bloc → défini dans le fichier JSON du bloc ; l'algorithme n'ajuste que la charge et les séries dans la plage du bloc
+- [x] Blocs → importés depuis un fichier JSON, puis rattachés à un objectif
+- [x] Source des données de marée → Open-Meteo recalé, coefficient via Brest (cf. décisions)
 
 ### Streetlifting
 - [x] Poids du corps : pesée hebdomadaire séparée (lundi matin), moyenne mobile 2-3 semaines pour le 1RM
@@ -44,16 +56,16 @@ statut: brouillon
 ### Marine
 - [ ] Seuils des niveaux de danger vert / rouge / noir
 - [ ] Temps d'exposition en eau froide : quelles sources fiables ? ⚠️ information de sécurité, marges prudentes
-- [ ] Carte : Leaflet ou Mapbox ? Comment représenter le sable découvert selon la marée ?
+- [ ] Carte : ~~Leaflet ou Mapbox ?~~ MapLibre GL ✓ — reste : représenter le sable découvert selon la marée (pente par spot, ou Litto3D)
 
 ### Vie courante
 - [ ] Durées de récupération (≈ 96 h, ≈ 48 h…) : calibrées sur quelles références ?
 - [ ] Règles du verdict cheat meal
 
 ### Transversal
-- [ ] Mode démo : lecture seule, ou modifiable avec réinitialisation régulière ?
+- [x] Mode démo → bac à sable par visiteur, effacé après 24 h
 - [ ] Easter egg : seuil de tempête (force 10 Beaufort, ou rafales ?)
 - [ ] Easter egg : si le danger avait déconseillé la sortie, le badge s'affiche-t-il quand même ?
-- [ ] Librairie de graphiques
+- [x] Librairie de graphiques → visx
 - [ ] Hébergement (au moment de la mise en ligne)
-- [ ] Formation CSS avancée avant d'attaquer le design ?
+- [x] ~~Formation CSS avancée~~ → sans objet

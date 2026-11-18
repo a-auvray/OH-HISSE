@@ -28,11 +28,11 @@ P4 --> P5["Phase 5<br/>Accueil, démo<br/>et mise en ligne"]:::cadrage
 ```
 
 ## Phase 0 — Cadrage *(15–25 h)*
-- [ ] Finaliser ce cahier des charges
-- [ ] Trouver le nom du projet
-- [ ] Créer le repo GitHub, protéger `main`
-- [ ] Rechercher et tester les API externes (météo, météo marine, marées)
-- [ ] Moodboards de chaque espace
+- [x] Finaliser ce cahier des charges
+- [x] Trouver le nom du projet → **Oh Hisse !**
+- [x] Créer le repo GitHub, protéger `main`
+- [x] Rechercher et tester les API externes (météo, météo marine, marées) → [`docs/recherche/api-externes.md`](../recherche/api-externes.md)
+- [ ] Moodboards de chaque espace *(faits avec chaque espace, au moment de son identité visuelle)*
 
 ## Phase 1 — Fondations *(20–30 h)*
 - [ ] Arborescence backend + frontend

@@ -54,4 +54,4 @@ Les couleurs reprennent celles des diagrammes de ce cahier des charges, pour gar
 ## À faire
 - [ ] Un moodboard par espace (captures de sites et d'applis qui m'inspirent)
 - [ ] Choisir les typographies
-- [ ] ❓ Suivre une formation CSS avancée (OpenClassrooms ?) avant d'attaquer le design
+- [x] ~~Suivre une formation CSS avancée~~ : sans objet, le développement est confié à Claude

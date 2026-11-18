@@ -18,11 +18,11 @@ statut: brouillon
 
 **Fonctionnement :**
 - **Compte personnel :** mes vraies données, privées
-- **Compte démo :** données fictives pré-remplies, pour les visiteurs et les recruteurs ❓ lecture seule ou modifiable ?
+- **Compte démo :** données fictives pré-remplies, pour les visiteurs et les recruteurs. **Bac à sable par visiteur** : chacun reçoit sa propre copie, modifiable librement, effacée au bout de 24 h. Les visiteurs ne se gênent pas entre eux.
 - Base pensée **multi-utilisateurs dès le départ** (chaque donnée rattachée à un utilisateur) : ouvrir l'inscription plus tard ne demandera pas de refonte
 
 > [!warning] ⚠️ Sécurité
-> **Acquis du site tableaux :** mots de passe hashés (bcrypt), jetons JWT, clé secrète dans `.env`, même message d'erreur pour un email inconnu et un mauvais mot de passe, rate limiting sur la connexion, CORS restreint en production.
+> **Acquis du site tableaux :** mots de passe hashés (bcrypt), jetons JWT (stockés dans un cookie httpOnly, hors de portée du JavaScript), clé secrète dans `.env`, même message d'erreur pour un email inconnu et un mauvais mot de passe, rate limiting sur la connexion, CORS restreint en production.
 >
 > **Nouveau ici — l'autorisation :** être connecté ne suffit plus. Chaque requête ne doit renvoyer que les données **de l'utilisateur connecté** : le compte démo ne doit jamais pouvoir lire ou modifier mes vraies données (sommeil, séances… ce sont des données personnelles).
 

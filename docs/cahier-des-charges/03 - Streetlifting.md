@@ -48,11 +48,21 @@ statut: brouillon
 - Consulter le 1RM estimé actuel de chaque mouvement et son historique
 
 **Données affichées :**
-- 1RM estimé (formules Epley / Brzycki) sur tractions, dips et muscle-up
+- 1RM estimé sur tractions, dips et muscle-up, par la **formule RPE** appliquée à la charge totale (poids du corps + lest)
 - Date et détail de la meilleure performance
 
 > [!warning] ⚠️ Mouvements au poids du corps
-> Sur une traction lestée, la charge réellement soulevée = poids du corps + lest. Le calcul doit se faire sur ce total, puis retrancher le poids du corps pour afficher un 1RM « en lest ». Il faut donc connaître mon poids du corps à la date de la séance ❓
+> Sur une traction lestée, la charge réellement soulevée = poids du corps + lest. Le calcul doit se faire sur ce total, puis retrancher le poids du corps pour afficher un 1RM « en lest ». Le poids du corps vient de la [[05 - Vie courante#Pesée hebdomadaire|pesée hebdomadaire]] (moyenne mobile à la date de la séance).
+
+> [!example] Formule retenue (décision du 18/11/2026)
+> 1. **Charge totale** = poids du corps (moyenne mobile des pesées) + lest
+> 2. **Effort équivalent** = répétitions + répétitions en réserve, avec réserve = 10 − RPE
+> 3. **% du 1RM** lu dans la table RPE (Tuchscherer) pour cet effort équivalent
+> 4. **1RM total** = charge totale ÷ % · **1RM en lest** = 1RM total − poids du corps
+>
+> *Exemple : 75 kg de poids du corps, 5 reps à +20 kg, RPE 8 → effort équivalent 7 reps → 81,1 % → 95 ÷ 0,811 = 117,1 kg → **1RM en lest ≈ 42 kg**.*
+>
+> Pas d'Epley ni de Brzycki : une série sans RPE n'entre pas dans le calcul. Une série en échec compte ses répétitions réussies à RPE 10. Le 1RM retenu à une date est le meilleur des séries de la séance.
 
 **Croisements :** envoie le 1RM estimé → [[06 - Objectifs|Objectifs]] (calcul de la progression)
 
