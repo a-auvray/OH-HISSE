@@ -89,6 +89,129 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/streetlifting/exercices': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Lister Exercices */
+    get: operations['lister_exercices_api_streetlifting_exercices_get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/streetlifting/seances': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Lister Seances */
+    get: operations['lister_seances_api_streetlifting_seances_get']
+    put?: never
+    /** Creer Seance */
+    post: operations['creer_seance_api_streetlifting_seances_post']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/streetlifting/seances/{seance_id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Lire Seance */
+    get: operations['lire_seance_api_streetlifting_seances__seance_id__get']
+    /** Modifier Seance */
+    put: operations['modifier_seance_api_streetlifting_seances__seance_id__put']
+    post?: never
+    /** Supprimer Seance */
+    delete: operations['supprimer_seance_api_streetlifting_seances__seance_id__delete']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/streetlifting/evolution/{exercice_id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Evolution */
+    get: operations['evolution_api_streetlifting_evolution__exercice_id__get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/vie-courante/pesees': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Lister Pesees */
+    get: operations['lister_pesees_api_vie_courante_pesees_get']
+    put?: never
+    /** Enregistrer Pesee */
+    post: operations['enregistrer_pesee_api_vie_courante_pesees_post']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/vie-courante/pesees/{pesee_id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /** Supprimer Pesee */
+    delete: operations['supprimer_pesee_api_vie_courante_pesees__pesee_id__delete']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/vie-courante/poids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Poids Actuel */
+    get: operations['poids_actuel_api_vie_courante_poids_get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
 }
 export type webhooks = Record<string, never>
 export interface components {
@@ -103,6 +226,15 @@ export interface components {
       /** Version */
       version: string
     }
+    /** ExerciceLu */
+    ExerciceLu: {
+      /** Id */
+      id: number
+      /** Slug */
+      slug: string
+      /** Nom */
+      nom: string
+    }
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
@@ -114,6 +246,184 @@ export interface components {
       email: string
       /** Mot De Passe */
       mot_de_passe: string
+    }
+    /** PeseeEcrite */
+    PeseeEcrite: {
+      /**
+       * Date
+       * Format: date
+       */
+      date: string
+      /** Poids Kg */
+      poids_kg: number
+    }
+    /** PeseeLue */
+    PeseeLue: {
+      /**
+       * Date
+       * Format: date
+       */
+      date: string
+      /** Poids Kg */
+      poids_kg: number
+      /** Id */
+      id: number
+    }
+    /**
+     * PoidsActuel
+     * @description Poids retenu aujourd'hui pour les calculs (moyenne mobile).
+     */
+    PoidsActuel: {
+      /** Kg */
+      kg: number
+      /** A Jour */
+      a_jour: boolean
+      /**
+       * Derniere Pesee
+       * Format: date
+       */
+      derniere_pesee: string
+    }
+    /**
+     * PointEvolution
+     * @description Une séance vue par un exercice, pour les graphiques d'évolution.
+     */
+    PointEvolution: {
+      /** Seance Id */
+      seance_id: number
+      /**
+       * Date
+       * Format: date
+       */
+      date: string
+      /** E1Rm Lest Kg */
+      e1rm_lest_kg: number | null
+      /** E1Rm Total Kg */
+      e1rm_total_kg: number | null
+      /** Tonnage Kg */
+      tonnage_kg: number
+      /** Series */
+      series: number
+      /** Reps */
+      reps: number
+      /** Rpe Moyen */
+      rpe_moyen: number | null
+      /** Poids Du Corps Kg */
+      poids_du_corps_kg: number | null
+    }
+    /**
+     * Record
+     * @description 1RM estimé d'un exercice sur une séance.
+     */
+    Record: {
+      /** Exercice Id */
+      exercice_id: number
+      /** E1Rm Lest Kg */
+      e1rm_lest_kg: number
+      /** E1Rm Total Kg */
+      e1rm_total_kg: number
+    }
+    /** SeanceEcrite */
+    SeanceEcrite: {
+      /**
+       * Date
+       * Format: date
+       */
+      date: string
+      /** Nom */
+      nom?: string | null
+      /** Ressenti */
+      ressenti?: number | null
+      /** Note */
+      note?: string | null
+      /** Bloc Id */
+      bloc_id?: number | null
+      /** Rang Modele */
+      rang_modele?: number | null
+      /** Series */
+      series: components['schemas']['SerieEcrite'][]
+    }
+    /** SeanceLue */
+    SeanceLue: {
+      /** Id */
+      id: number
+      /**
+       * Date
+       * Format: date
+       */
+      date: string
+      /** Nom */
+      nom: string | null
+      /** Ressenti */
+      ressenti: number | null
+      /** Note */
+      note: string | null
+      /** Bloc Id */
+      bloc_id: number | null
+      /** Rang Modele */
+      rang_modele: number | null
+      /** Series */
+      series: components['schemas']['SerieLue'][]
+      /** Poids Du Corps Kg */
+      poids_du_corps_kg: number | null
+      /** Poids A Jour */
+      poids_a_jour: boolean
+      /** Records */
+      records: components['schemas']['Record'][]
+    }
+    /** SerieEcrite */
+    SerieEcrite: {
+      /** Exercice Id */
+      exercice_id: number
+      /** Reps */
+      reps: number
+      /**
+       * Lest Kg
+       * @default 0
+       */
+      lest_kg: number
+      /** Rpe */
+      rpe?: number | null
+      /**
+       * Echec
+       * @default false
+       */
+      echec: boolean
+      /** Reps Prevues */
+      reps_prevues?: number | null
+      /** Lest Prevu Kg */
+      lest_prevu_kg?: number | null
+      /** Rpe Cible */
+      rpe_cible?: number | null
+    }
+    /** SerieLue */
+    SerieLue: {
+      /** Exercice Id */
+      exercice_id: number
+      /** Reps */
+      reps: number
+      /**
+       * Lest Kg
+       * @default 0
+       */
+      lest_kg: number
+      /** Rpe */
+      rpe?: number | null
+      /**
+       * Echec
+       * @default false
+       */
+      echec: boolean
+      /** Reps Prevues */
+      reps_prevues?: number | null
+      /** Lest Prevu Kg */
+      lest_prevu_kg?: number | null
+      /** Rpe Cible */
+      rpe_cible?: number | null
+      /** Id */
+      id: number
+      /** Ordre */
+      ordre: number
     }
     /** UtilisateurPublic */
     UtilisateurPublic: {
@@ -300,6 +610,411 @@ export interface operations {
       }
       /** @description Unauthorized */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  lister_exercices_api_streetlifting_exercices_get: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ExerciceLu'][]
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  lister_seances_api_streetlifting_seances_get: {
+    parameters: {
+      query?: {
+        debut?: string | null
+        fin?: string | null
+      }
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SeanceLue'][]
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  creer_seance_api_streetlifting_seances_post: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SeanceEcrite']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SeanceLue']
+        }
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  lire_seance_api_streetlifting_seances__seance_id__get: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        seance_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SeanceLue']
+        }
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  modifier_seance_api_streetlifting_seances__seance_id__put: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        seance_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SeanceEcrite']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SeanceLue']
+        }
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  supprimer_seance_api_streetlifting_seances__seance_id__delete: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        seance_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  evolution_api_streetlifting_evolution__exercice_id__get: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        exercice_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PointEvolution'][]
+        }
+      }
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  lister_pesees_api_vie_courante_pesees_get: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PeseeLue'][]
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  enregistrer_pesee_api_vie_courante_pesees_post: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PeseeEcrite']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PeseeLue']
+        }
+      }
+      /** @description Conflict */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  supprimer_pesee_api_vie_courante_pesees__pesee_id__delete: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        pesee_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  poids_actuel_api_vie_courante_poids_get: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PoidsActuel']
+        }
+      }
+      /** @description Not Found */
+      404: {
         headers: {
           [name: string]: unknown
         }
