@@ -1,0 +1,165 @@
+.espace {
+  position: relative;
+  min-height: 100vh;
+  isolation: isolate;
+  overflow: hidden;
+  padding: var(--espace-8) var(--espace-12) 220px 150px;
+  /* De la surface éclairée vers le fond : on descend dans l'eau. */
+  background:
+    radial-gradient(80% 50% at 70% -10%, rgb(120 190 255 / 0.28), transparent 70%),
+    linear-gradient(180deg, #0a2a47 0%, #061a2e 45%, #030d18 100%);
+}
+
+/* Reflets de lumière qui ondulent, très lents. */
+.espace::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  z-index: -1;
+  opacity: 0.18;
+  pointer-events: none;
+  background:
+    repeating-radial-gradient(
+      ellipse at 30% 20%,
+      transparent 0 38px,
+      rgb(176 216 255 / 0.25) 40px,
+      transparent 44px
+    ),
+    repeating-radial-gradient(
+      ellipse at 75% 10%,
+      transparent 0 52px,
+      rgb(176 216 255 / 0.18) 54px,
+      transparent 58px
+    );
+  filter: blur(6px);
+  animation: ondoyer 18s ease-in-out infinite alternate;
+}
+
+@keyframes ondoyer {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(3%, 2%) scale(1.05);
+  }
+}
+
+.houle {
+  position: absolute;
+  z-index: -1;
+  inset: auto 0 0 0;
+  height: 300px;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.entete {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: var(--espace-8);
+  margin-bottom: var(--espace-8);
+}
+
+.marque {
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: 'opsz' 144;
+  font-size: 4.6rem;
+  line-height: 0.9;
+  color: var(--marine-clair);
+}
+
+.onglets {
+  display: flex;
+  gap: var(--espace-1);
+  margin-bottom: 6px;
+}
+
+.onglet {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--texte-doux);
+  text-decoration: none;
+  transition:
+    color var(--duree-rapide),
+    background var(--duree-rapide);
+}
+
+.onglet:hover {
+  color: var(--texte);
+}
+
+.actif {
+  color: #041320;
+  background: var(--marine-clair);
+}
+
+.spots {
+  margin-left: auto;
+  display: inline-flex;
+  padding: 4px;
+  gap: 2px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 0.25);
+  border: 1px solid rgb(176 216 255 / 0.15);
+}
+
+.spots button {
+  position: relative;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--texte-doux);
+}
+
+.spots button span {
+  position: relative;
+}
+
+.spots button[aria-checked='true'] {
+  color: #041320;
+}
+
+/* La pastille glisse d'une plage à l'autre (layoutId). */
+.pastille {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--marine-clair);
+}
+
+.contenu {
+  max-width: 1240px;
+}
+
+.attente {
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--texte-doux);
+}
+
+.erreur {
+  display: flex;
+  align-items: center;
+  gap: var(--espace-4);
+  padding: var(--espace-4) var(--espace-6);
+  border-radius: 16px;
+  color: #ffd2a6;
+  background: rgb(232 162 58 / 0.12);
+  border: 1px solid rgb(232 162 58 / 0.4);
+}
+
+.erreur button {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  background: transparent;
+}
