@@ -69,62 +69,6 @@
   color: var(--accent);
 }
 
-/* --- Bouton de retour, du côté de l'accueil --- */
-
-.retour {
-  position: fixed;
-  z-index: 10;
-  padding: 10px 18px;
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--accent-clair);
-  background: color-mix(in oklab, var(--fond-eleve) 80%, transparent);
-  border: 1px solid color-mix(in oklab, var(--accent) 40%, var(--trait));
-  backdrop-filter: blur(10px);
-  transition:
-    border-color var(--duree-rapide),
-    translate var(--duree) var(--courbe-sortie);
-}
-
-.retour:hover {
-  border-color: var(--accent);
-}
-
-.retour[data-cote='haut'] {
-  top: var(--espace-6);
-  left: 50%;
-  translate: -50% 0;
-}
-.retour[data-cote='bas'] {
-  bottom: var(--espace-6);
-  left: 50%;
-  translate: -50% 0;
-}
-.retour[data-cote='gauche'] {
-  left: var(--espace-6);
-  top: 50%;
-  translate: 0 -50%;
-}
-.retour[data-cote='droite'] {
-  right: var(--espace-6);
-  top: 50%;
-  translate: 0 -50%;
-}
-.retour[data-cote='haut']:hover {
-  translate: -50% -3px;
-}
-.retour[data-cote='bas']:hover {
-  translate: -50% 3px;
-}
-.retour[data-cote='gauche']:hover {
-  translate: -3px -50%;
-}
-.retour[data-cote='droite']:hover {
-  translate: 3px -50%;
-}
-
 /* --- Identité typographique --- */
 
 .cadre[data-espace='streetlifting'] .titre {

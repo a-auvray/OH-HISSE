@@ -133,7 +133,7 @@ statut: brouillon
 
 **Charge proposée** — même table RPE que le 1RM :
 - charge totale = 1RM estimé récent × %(reps, RPE cible) ; lest = charge totale − poids du corps, **arrondi à 1,25 kg**, jamais négatif
-- garde-fous : ±5 % au plus d'une séance à l'autre ; deux séances de suite en échec → deload localisé (−10 %)
+- garde-fous : ±5 % au plus d'une séance à l'autre ; deux séances de suite en échec → deload localisé (−10 %). Ces comparaisons se font **dans le même format** (même nombre de reps) : des triples lourds ne brident pas une série de 8
 - séries : bas de la plage si la dernière séance était trop dure (ou en échec), haut si elle était trop facile, milieu sinon
 - chaque proposition affiche sa justification (ex. « −3,75 kg : RPE 9,5 la dernière fois »)
 

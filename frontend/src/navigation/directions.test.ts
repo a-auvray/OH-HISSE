@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { sensDuTrajet } from './directions'
+import { racine, sensDuTrajet } from './directions'
 
 describe('sensDuTrajet', () => {
   it.each([
@@ -23,5 +23,15 @@ describe('sensDuTrajet', () => {
 
   it('une adresse inconnue donne un simple fondu', () => {
     expect(sensDuTrajet('/', '/inconnue')).toBeNull()
+  })
+})
+
+describe('racine', () => {
+  it.each([
+    ['/', '/'],
+    ['/streetlifting', '/streetlifting'],
+    ['/streetlifting/saisie/12', '/streetlifting'],
+  ])('%s → %s', (chemin, attendu) => {
+    expect(racine(chemin)).toBe(attendu)
   })
 })

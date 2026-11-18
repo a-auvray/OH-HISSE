@@ -1,26 +1,13 @@
 import { motion } from 'motion/react'
-import { Link } from 'react-router'
 
-import { OPPOSE } from '../navigation/directions'
+import { BoutonRetour } from './BoutonRetour'
 import styles from './CadreEspace.module.css'
-import { espaceParId, type Direction, type IdEspace } from './espaces'
+import { espaceParId, type IdEspace } from './espaces'
 import { Motif } from './Motifs'
 
-const RETOUR: Record<Direction, string> = {
-  haut: '↑ Accueil',
-  bas: '↓ Accueil',
-  gauche: '← Accueil',
-  droite: 'Accueil →',
-}
-
-/**
- * Cadre commun d'un espace. Le bouton de retour est posé du côté où se
- * trouve l'accueil : en Vie courante (en haut), on redescend ; en Marine
- * (à droite), on repart vers la gauche.
- */
+/** Page d'attente d'un espace pas encore construit. */
 export function CadreEspace({ id }: { id: IdEspace }) {
   const espace = espaceParId(id)
-  const versAccueil = OPPOSE[espace.direction]
 
   return (
     <main className={styles.cadre} data-espace={id}>
@@ -28,9 +15,7 @@ export function CadreEspace({ id }: { id: IdEspace }) {
         <Motif espace={espace.id} />
       </div>
 
-      <Link to="/" className={styles.retour} data-cote={versAccueil}>
-        {RETOUR[versAccueil]}
-      </Link>
+      <BoutonRetour espace={id} />
 
       <div className={styles.contenu}>
         <motion.h1

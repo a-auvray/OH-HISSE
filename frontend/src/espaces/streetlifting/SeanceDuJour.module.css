@@ -1,0 +1,162 @@
+.page {
+  display: grid;
+  gap: var(--espace-6);
+}
+
+.bandeau {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--espace-8);
+}
+
+.bloc {
+  display: flex;
+  align-items: center;
+  gap: var(--espace-3);
+  font-weight: 700;
+}
+
+.type {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #1a0f07;
+  background: var(--accent);
+}
+
+.avancement {
+  display: grid;
+  gap: var(--espace-2);
+}
+
+/* Une encoche par séance du bloc : on voit d'un coup d'œil où l'on en est. */
+.crans {
+  display: grid;
+  gap: 3px;
+  height: 10px;
+}
+
+.crans span {
+  border-radius: 2px;
+  background: #2c2420;
+}
+
+.crans span[data-etat='fait'] {
+  background: color-mix(in oklab, var(--accent) 70%, #2c2420);
+}
+
+.crans span[data-etat='courant'] {
+  background: var(--accent-clair);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.poids {
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+}
+
+.poids strong {
+  font-family: var(--police-espace);
+  font-weight: 400;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.alerte {
+  font-size: 0.78rem;
+  color: var(--alerte);
+}
+
+.nom {
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  color: var(--accent-clair);
+  margin-top: var(--espace-4);
+}
+
+.exercices {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--espace-3);
+}
+
+.exercice {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: var(--espace-8);
+  row-gap: var(--espace-3);
+}
+
+.programme h2 {
+  font-size: 2.6rem;
+}
+
+.format {
+  margin-top: var(--espace-2);
+  font-family: var(--police-chiffres);
+  font-size: 1.15rem;
+}
+
+.format span {
+  color: var(--texte-doux);
+}
+
+.charge {
+  display: flex;
+  align-items: baseline;
+  gap: var(--espace-2);
+}
+
+.charge :global(*) {
+  white-space: nowrap;
+}
+
+.charge > span:first-child {
+  font-size: 4.6rem;
+}
+
+.unite {
+  font-size: 1.4rem;
+  color: var(--texte-doux);
+}
+
+.aChoisir {
+  font-family: var(--police-espace);
+  font-size: 2rem !important;
+  color: var(--texte-faible);
+  text-transform: uppercase;
+}
+
+/* Les justifications, écrites « à la craie ». */
+.raisons {
+  grid-column: 1 / -1;
+  list-style: none;
+  padding: var(--espace-3) 0 0;
+  border-top: 1px dashed #3a2f28;
+  display: grid;
+  gap: 2px;
+  font-size: 0.9rem;
+  color: #e8ddd3;
+}
+
+.raisons li::before {
+  content: '↳ ';
+  color: var(--accent);
+}
+
+.lancer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--espace-4);
+}
+
+.actionsVide {
+  display: flex;
+  gap: var(--espace-3);
+  margin-top: var(--espace-4);
+}

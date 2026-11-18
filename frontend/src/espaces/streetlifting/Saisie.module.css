@@ -1,0 +1,244 @@
+.saisie {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  align-items: start;
+  gap: var(--espace-6);
+}
+
+.titre {
+  font-size: 3.6rem;
+  color: var(--accent-clair);
+  margin-bottom: var(--espace-2);
+}
+
+.groupes {
+  display: grid;
+  gap: var(--espace-4);
+}
+
+.groupe {
+  margin: 0;
+  display: grid;
+  gap: var(--espace-4);
+  justify-items: start;
+}
+
+.enteteGroupe {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--espace-4);
+}
+
+.exercice {
+  font-family: var(--police-espace);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  padding: 6px 12px;
+}
+
+.prevu {
+  flex: 1;
+  font-family: var(--police-chiffres);
+  font-size: 0.88rem;
+  color: var(--texte-doux);
+}
+
+.series {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+}
+
+.series th {
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--texte-faible);
+  padding: 0 8px;
+}
+
+.series td {
+  padding: 0 8px 0 0;
+}
+
+.series td input:not([type='checkbox']),
+.series td select {
+  width: 100%;
+  max-width: 120px;
+  font-family: var(--police-chiffres);
+}
+
+.series tr[data-echec] td input,
+.series tr[data-echec] td select {
+  border-color: color-mix(in oklab, var(--danger) 60%, transparent);
+}
+
+.numero {
+  width: 36px;
+  font-family: var(--police-espace);
+  font-size: 1.3rem;
+  color: var(--texte-faible);
+}
+
+.echec {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--danger);
+}
+
+.ajouterExercice {
+  justify-self: start;
+  border-style: dashed;
+}
+
+/* --- Récapitulatif (colonne de droite, toujours visible) --- */
+
+.recap {
+  position: sticky;
+  top: var(--espace-6);
+  display: grid;
+  gap: var(--espace-4);
+}
+
+.champRecap {
+  display: grid;
+  gap: var(--espace-1);
+  font-size: 0.82rem;
+  color: var(--texte-doux);
+}
+
+.champRecap textarea {
+  resize: vertical;
+}
+
+.ressenti {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--espace-2);
+}
+
+.ressenti legend {
+  font-size: 0.82rem;
+  color: var(--texte-doux);
+  margin-bottom: var(--espace-2);
+}
+
+.notes {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+}
+
+.notes button {
+  --teinte: var(--succes);
+  aspect-ratio: 1;
+  border-radius: 6px;
+  border: 1px solid color-mix(in oklab, var(--teinte) 35%, transparent);
+  background: color-mix(in oklab, var(--teinte) 8%, transparent);
+  font-family: var(--police-chiffres);
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+  transition:
+    background var(--duree-rapide),
+    transform var(--duree-rapide);
+}
+
+.notes button[data-couleur='rouge'] {
+  --teinte: var(--danger);
+}
+.notes button[data-couleur='orange'] {
+  --teinte: var(--alerte);
+}
+
+.notes button:hover {
+  transform: translateY(-1px);
+}
+
+.notes button[aria-pressed='true'] {
+  background: var(--teinte);
+  color: #0b0d10;
+  font-weight: 700;
+}
+
+.totaux {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--espace-2);
+  padding: var(--espace-3) 0;
+  border-block: 1px dashed #3a2f28;
+}
+
+.totaux div {
+  display: grid;
+}
+
+.totaux dt {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--texte-faible);
+}
+
+.totaux dd {
+  margin: 0;
+  font-family: var(--police-espace);
+  font-size: 2rem;
+  color: var(--accent-clair);
+}
+
+.resume {
+  list-style: none;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+}
+
+/* --- Bilan après enregistrement --- */
+
+.bilan {
+  display: grid;
+  gap: var(--espace-4);
+  padding: var(--espace-12);
+}
+
+.bilan h2 {
+  font-size: 4rem;
+  color: var(--accent-clair);
+}
+
+.records {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espace-12);
+  margin: var(--espace-4) 0;
+}
+
+.records li {
+  display: grid;
+  gap: var(--espace-1);
+}
+
+.records li > span:nth-child(2) {
+  font-size: 5rem;
+}
+
+.total {
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+}
+
+.sansRecord {
+  color: var(--texte-doux);
+}
+
+.suite {
+  display: flex;
+  gap: var(--espace-3);
+}
