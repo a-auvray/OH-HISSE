@@ -89,12 +89,3 @@
     stroke-dashoffset: 0;
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .disque,
-  .vague,
-  .anneau,
-  :global(.motif-hote:is(:hover, :focus-visible)) .trajectoire {
-    animation: none;
-  }
-}

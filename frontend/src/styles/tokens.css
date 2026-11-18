@@ -85,10 +85,3 @@
   --accent-clair: var(--objectifs-clair);
   --police-espace: 'Space Grotesk Variable', var(--police-texte);
 }
-
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    --duree-rapide: 0ms;
-    --duree: 0ms;
-  }
-}
