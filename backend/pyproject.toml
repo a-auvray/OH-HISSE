@@ -11,6 +11,7 @@ dependencies = [
     "pydantic-settings>=2.16.3",
     "pyjwt>=2.15.1",
     "sqlmodel>=0.0.50",
+    "tzdata>=2026.6",
     "uvicorn[standard]>=0.54.0",
 ]
 
@@ -42,7 +43,10 @@ select = [
     "S",        # sécurité (bandit)
     "RUF",
 ]
-ignore = ["RUF001", "RUF002", "RUF003"]  # caractères ambigus : faux positifs sur le français
+ignore = [
+    "RUF001", "RUF002", "RUF003",  # caractères ambigus : faux positifs sur le français
+    "N818",  # exceptions nommées en français, sans suffixe « Error »
+]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101", "S105", "S106"]  # assert et mots de passe de test
