@@ -108,4 +108,42 @@ statut: brouillon
 - Elle dépend aussi du **bloc** : en bloc volume, un RPE trop haut signale une séance trop dure ; en bloc force, un RPE 10 sur un single est normal, et un RPE bas valide la montée en charge.
 - RPE au-dessus de la cible, échec ou ressenti rouge → maintien ou baisse de charge (ex. −2,5 kg), voire deload localisé.
 - Sommeil insuffisant ou récupération incomplète → séance allégée, ou tentative de max reportée.
-- ❓ D'où vient la structure de base d'une séance (exercices, format 5×5…) ? Un programme type défini pour chaque bloc, dont l'algorithme n'ajuste que les charges ?
+- ~~❓ D'où vient la structure de base d'une séance ?~~ → du fichier JSON du bloc (ci-dessous).
+
+### Règles validées (18/11/2026)
+
+**Exercices de base :** tractions, dips, muscle-up. D'autres exercices peuvent être ajoutés librement.
+
+**Format d'un bloc** (fichier JSON importé) : les séances s'enchaînent sans jour fixe, la suite se répète `cycles` fois, et `"series": [3, 5]` est une plage dans laquelle l'algorithme choisit.
+
+```json
+{
+  "nom": "Force — cap 55 kg",
+  "type": "force",
+  "cycles": 6,
+  "seances": [
+    { "nom": "A — Tirage lourd",
+      "exercices": [
+        { "exercice": "traction", "series": [3, 5], "reps": 3, "rpe_cible": 8 },
+        { "exercice": "dips",     "series": 4,      "reps": 5, "rpe_cible": 7.5 }
+      ] }
+  ]
+}
+```
+
+**Charge proposée** — même table RPE que le 1RM :
+- charge totale = 1RM estimé récent × %(reps, RPE cible) ; lest = charge totale − poids du corps, **arrondi à 1,25 kg**, jamais négatif
+- garde-fous : ±5 % au plus d'une séance à l'autre ; deux séances de suite en échec → deload localisé (−10 %)
+- séries : bas de la plage si la dernière séance était trop dure (ou en échec), haut si elle était trop facile, milieu sinon
+- chaque proposition affiche sa justification (ex. « −3,75 kg : RPE 9,5 la dernière fois »)
+
+**Cibles de RPE par défaut** (quand le bloc n'en donne pas) :
+
+| Format | Force / spécifique | Volume | Deload |
+|---|---|---|---|
+| Single | 9 | 8 | 6 |
+| 2–3 reps | 8,5 | 8 | 6 |
+| 4–6 reps (5×5) | 8 | 7,5 | 6 |
+| 7 reps et plus | 7,5 | 7 | 6 |
+
+En deload, un tiers de séries en moins. Nuit < 6 h → cible −1 ; nuit < 4 h → pas de tentative de max (RPE plafonné à 8). Toutes ces valeurs vivent dans `backend/app/moteurs/regles/autoregulation.toml`.

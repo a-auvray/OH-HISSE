@@ -41,6 +41,9 @@ statut: brouillon
 | Qualité outillée : uv, Ruff, mypy, ESLint, Prettier, Vitest, CI GitHub Actions | Chaque pull request est vérifiée automatiquement |
 | Suivi Super Productivity abandonné, journal conservé | Je ne code plus moi-même ; le journal garde la trace des choix |
 | Animations toujours actives, même si le système demande de les réduire | Elles font partie de l'identité de l'appli |
+| Exercices de base : tractions, dips, muscle-up (pas de squat) | Mes trois mouvements ; les autres restent ajoutables |
+| Lest arrondi à 1,25 kg | Mon plus petit écart de charge disponible |
+| Auto-régulation par la table RPE (1RM récent × % cible), ±5 % max, deload localisé après 2 échecs | Une seule formule pour le 1RM et la charge proposée (cf. [[03 - Streetlifting#Règles validées (18/11/2026)|règles]]) |
 
 ## Questions ouvertes
 
@@ -52,7 +55,7 @@ statut: brouillon
 
 ### Streetlifting
 - [x] Poids du corps : pesée hebdomadaire séparée (lundi matin), moyenne mobile 2-3 semaines pour le 1RM
-- [ ] Cibles de RPE par format et par bloc : quelles valeurs de départ ?
+- [x] Cibles de RPE par format et par bloc → [[03 - Streetlifting#Règles validées (18/11/2026)|tableau validé]]
 
 ### Marine
 - [ ] Seuils des niveaux de danger vert / rouge / noir
