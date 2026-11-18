@@ -3,10 +3,15 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from importlib.metadata import version
+from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session
+from starlette.responses import Response
+from starlette.types import Scope
 
 from app.core.base_de_donnees import moteur
 from app.core.config import parametres
@@ -48,7 +53,39 @@ def creer_application() -> FastAPI:
     application.include_router(objectifs.routeur, prefix="/api")
     application.include_router(marine.routeur, prefix="/api")
     application.include_router(vie_courante.routeur, prefix="/api")
+    if (config.dossier_interface / "index.html").is_file():
+        servir_interface(application, config.dossier_interface)
     return application
+
+
+class FichiersAEmpreinte(StaticFiles):
+    """Fichiers dont le nom change à chaque construction : le navigateur les garde un an."""
+
+    async def get_response(self, path: str, scope: Scope) -> Response:
+        reponse = await super().get_response(path, scope)
+        if reponse.status_code == 200:
+            reponse.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        return reponse
+
+
+def servir_interface(application: FastAPI, dossier: Path) -> None:
+    """Sert l'interface React depuis la même origine que l'API (un seul service en ligne).
+
+    Les fichiers de `assets/` portent une empreinte dans leur nom : mis en cache pour de bon.
+    Toute autre adresse hors de `/api` renvoie `index.html`, et React Router prend le relais.
+    """
+    dossier = dossier.resolve()
+    application.mount("/assets", FichiersAEmpreinte(directory=dossier / "assets"), name="assets")
+    sans_cache = {"Cache-Control": "no-cache"}
+
+    @application.get("/{chemin:path}", include_in_schema=False)
+    def interface(chemin: str) -> FileResponse:
+        if chemin == "api" or chemin.startswith("api/"):
+            raise HTTPException(status_code=404)
+        fichier = (dossier / chemin).resolve()
+        if chemin and fichier.is_file() and fichier.is_relative_to(dossier):
+            return FileResponse(fichier, headers=sans_cache)
+        return FileResponse(dossier / "index.html", headers=sans_cache)
 
 
 app = creer_application()

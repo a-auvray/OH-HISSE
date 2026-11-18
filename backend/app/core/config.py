@@ -4,7 +4,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 RACINE_DEPOT = Path(__file__).resolve().parents[3]
@@ -31,7 +31,20 @@ class Parametres(BaseSettings):
     duree_jeton_minutes: int = 60 * 24 * 7
 
     # Origines autorisées à appeler l'API (le frontend Vite en local).
+    # En production, l'interface est servie par la même origine : rien à autoriser.
     origines_cors: list[str] = ["http://localhost:5173"]
+
+    # Interface construite (`npm run build`) : servie par FastAPI si le dossier existe.
+    dossier_interface: Path = RACINE_DEPOT / "frontend" / "dist"
+
+    @field_validator("url_base_de_donnees")
+    @classmethod
+    def _pilote_postgresql(cls, url: str) -> str:
+        # Neon, Render… donnent une URL « postgresql:// » ; SQLAlchemy y mettrait psycopg2.
+        for prefixe in ("postgres://", "postgresql://"):
+            if url.startswith(prefixe):
+                return "postgresql+psycopg://" + url.removeprefix(prefixe)
+        return url
 
     @property
     def en_production(self) -> bool:
