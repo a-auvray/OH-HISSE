@@ -7,4 +7,4 @@ Python : v3.14.5
 
 Node.js : v24.19.0
 
-vite : v11.17.0
+npm : v11.17.0
