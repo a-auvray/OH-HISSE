@@ -18,13 +18,20 @@ interface Indicateur {
   detail: string
 }
 
+const NIVEAUX = { vert: 'Vert', rouge: 'Rouge', noir: 'Noir' } as const
+
 /** Ce que le briefing affiche, à partir des espaces déjà construits. */
 async function chargerBriefing() {
-  const [seance, objectifs] = await Promise.all([
+  const [seance, objectifs, mer] = await Promise.all([
     api.GET('/api/streetlifting/seance-du-jour').then((r) => r.data ?? null),
     api.GET('/api/objectifs').then((r) => r.data ?? []),
+    // La mer peut être indisponible (Open-Meteo) : le briefing s'affiche quand même.
+    api
+      .GET('/api/marine/conditions')
+      .then((r) => r.data ?? null)
+      .catch(() => null),
   ])
-  return { seance, objectifs }
+  return { seance, objectifs, mer }
 }
 
 function salutation(heure: number): string {
@@ -41,6 +48,7 @@ export function TableauDeBord({ entree }: { entree: boolean }) {
   const [briefing] = useDonnees(chargerBriefing, [])
   const donnees = briefing.etat === 'pret' ? briefing.valeur : null
   const seance = donnees?.seance
+  const mer = donnees?.mer
   const objectif =
     donnees?.objectifs.find((o) => o.principal && o.statut === 'en_cours') ??
     donnees?.objectifs.find((o) => o.statut === 'en_cours')
@@ -67,8 +75,12 @@ export function TableauDeBord({ entree }: { entree: boolean }) {
       espace: 'marine',
       libelle: 'En mer',
       chemin: '/marine',
-      valeur: null,
-      detail: 'Conditions et niveau de danger en direct',
+      valeur: mer?.danger
+        ? `${NIVEAUX[mer.danger.niveau]}${mer.maintenant.eau_c != null ? ` · eau ${Math.round(mer.maintenant.eau_c)} °C` : ''}`
+        : null,
+      detail: mer?.danger
+        ? (mer.danger.raisons[0]?.texte ?? `Conditions favorables à ${mer.spot.nom}`)
+        : 'Conditions et niveau de danger en direct',
     },
     {
       espace: 'objectifs',

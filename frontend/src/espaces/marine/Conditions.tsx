@@ -4,6 +4,7 @@ import type { Conditions as DonneesConditions } from '../../api/types'
 import { nombre } from '../../commun/format'
 import { useLargeur } from '../../commun/useLargeur'
 import styles from './Conditions.module.css'
+import { BadgeDanger, Pastille } from './BadgeDanger'
 import { CourbeMaree } from './CourbeMaree'
 import { Fleche, IconeMeteo } from './Icones'
 import { beaufort, duree, heure, jourCourt, lireCodeMeteo, pointCardinal } from './lecture'
@@ -32,6 +33,9 @@ export function Conditions({ conditions }: { conditions: DonneesConditions }) {
 
   return (
     <div className={styles.conditions}>
+      <motion.div {...apparaitre(0)}>
+        <BadgeDanger danger={conditions.danger} grand />
+      </motion.div>
       <section className={styles.heros}>
         <motion.div className={styles.eau} {...apparaitre(0)}>
           <p className={styles.etiquette}>Eau</p>
@@ -144,6 +148,7 @@ export function Conditions({ conditions }: { conditions: DonneesConditions }) {
               <li key={h.instant} data-nouveau-jour={nouveauJour || undefined}>
                 <span className={styles.jour}>{nouveauJour ? jourCourt(h.instant) : ''}</span>
                 <span className={styles.heure}>{heure(h.instant).slice(0, 2)} h</span>
+                <Pastille niveau={h.danger} taille={8} />
                 <IconeMeteo code={h.code_meteo} taille={24} />
                 <span className={styles.air}>{arrondi(h.air_c)}°</span>
                 <span className={styles.ventHeure}>
