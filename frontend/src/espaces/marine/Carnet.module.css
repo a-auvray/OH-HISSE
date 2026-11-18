@@ -1,0 +1,324 @@
+.carnet {
+  display: grid;
+  gap: var(--espace-6);
+  max-width: 980px;
+}
+
+.entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espace-8);
+}
+
+.intro {
+  max-width: 60ch;
+  color: var(--texte-doux);
+}
+
+/* --- Boutons --- */
+
+.principal,
+.discret,
+.danger {
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition:
+    transform var(--duree-rapide) var(--courbe-sortie),
+    background var(--duree-rapide);
+}
+
+.principal {
+  border: 0;
+  color: #041320;
+  background: linear-gradient(135deg, var(--marine-clair), var(--marine));
+  box-shadow: 0 12px 30px -12px var(--marine);
+}
+
+.principal:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.discret {
+  border: 1px solid rgb(176 216 255 / 0.2);
+  background: transparent;
+  color: var(--texte-doux);
+}
+
+.discret:hover {
+  color: var(--texte);
+  border-color: var(--marine-clair);
+}
+
+.danger {
+  border: 1px solid var(--danger);
+  background: rgb(229 72 77 / 0.12);
+  color: #ffb3b5;
+}
+
+/* --- Frise des sorties --- */
+
+.frise {
+  list-style: none;
+  padding: 0 0 0 28px;
+  margin: 0;
+  display: grid;
+  gap: var(--espace-4);
+  border-left: 2px solid rgb(176 216 255 / 0.18);
+}
+
+.sortie {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--espace-4);
+  align-items: start;
+  padding: var(--espace-4) var(--espace-6);
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgb(120 190 255 / 0.07), rgb(10 40 70 / 0.25));
+  border: 1px solid rgb(176 216 255 / 0.12);
+  backdrop-filter: blur(10px);
+}
+
+/* Le point de la frise. */
+.sortie::before {
+  content: '';
+  position: absolute;
+  left: -36px;
+  top: 26px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--marine-clair);
+  box-shadow:
+    0 0 0 4px #061a2e,
+    0 0 14px var(--marine);
+}
+
+.icone {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  color: var(--marine-clair);
+  background: rgb(47 143 224 / 0.15);
+}
+
+.sortie[data-type='plongee'] .icone {
+  color: #9fe3ff;
+  background: rgb(0 120 160 / 0.25);
+}
+
+.corps {
+  display: grid;
+  gap: var(--espace-1);
+}
+
+.quand {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texte-faible);
+}
+
+.corps h3 {
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+
+.corps h3 span {
+  font-family: var(--police-texte);
+  font-style: normal;
+  font-size: 1rem;
+  color: var(--texte-doux);
+}
+
+.mesures {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espace-2);
+}
+
+.mesures li {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: var(--marine-clair);
+  background: rgb(176 216 255 / 0.08);
+}
+
+.releve {
+  font-size: 0.75rem;
+  color: var(--texte-faible);
+}
+
+.note {
+  font-style: italic;
+  color: var(--texte-doux);
+}
+
+.cote {
+  display: grid;
+  justify-items: end;
+  gap: var(--espace-2);
+}
+
+.ressenti {
+  --teinte: var(--succes);
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #041320;
+  background: var(--teinte);
+}
+
+[data-couleur='orange'] {
+  --teinte: var(--alerte);
+}
+[data-couleur='rouge'] {
+  --teinte: var(--danger);
+}
+
+/* --- Formulaire --- */
+
+.formulaire {
+  display: grid;
+  gap: var(--espace-4);
+  padding: var(--espace-6);
+  border-radius: 24px;
+  background: linear-gradient(160deg, rgb(120 190 255 / 0.1), rgb(10 40 70 / 0.35));
+  border: 1px solid rgb(176 216 255 / 0.2);
+  backdrop-filter: blur(14px);
+}
+
+.modes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--espace-3);
+}
+
+.modes button {
+  display: grid;
+  justify-items: center;
+  gap: var(--espace-2);
+  padding: var(--espace-4);
+  border-radius: 18px;
+  border: 1px solid rgb(176 216 255 / 0.15);
+  background: rgb(0 0 0 / 0.2);
+  color: var(--texte-doux);
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-size: 1.2rem;
+  transition:
+    background var(--duree),
+    color var(--duree),
+    border-color var(--duree);
+}
+
+.modes button[aria-checked='true'] {
+  color: #041320;
+  background: var(--marine-clair);
+  border-color: var(--marine-clair);
+}
+
+.grille {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--espace-3);
+}
+
+.formulaire label {
+  display: grid;
+  gap: var(--espace-1);
+  font-size: 0.8rem;
+  color: var(--texte-doux);
+}
+
+.formulaire input,
+.formulaire select,
+.formulaire textarea {
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--texte);
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid rgb(176 216 255 / 0.18);
+  background: rgb(0 0 0 / 0.3);
+  color-scheme: dark;
+}
+
+.formulaire input:focus,
+.formulaire select:focus,
+.formulaire textarea:focus {
+  outline: none;
+  border-color: var(--marine-clair);
+  box-shadow: 0 0 0 3px rgb(47 143 224 / 0.3);
+}
+
+.large {
+  grid-column: 1 / -1;
+}
+
+.ressentis {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+}
+
+.ressentis legend {
+  margin-bottom: var(--espace-2);
+  font-size: 0.8rem;
+  color: var(--texte-doux);
+}
+
+.ressentis button {
+  --teinte: var(--succes);
+  padding: 6px 0;
+  border-radius: 8px;
+  border: 1px solid color-mix(in oklab, var(--teinte) 40%, transparent);
+  background: color-mix(in oklab, var(--teinte) 8%, transparent);
+  color: var(--texte-doux);
+  font-family: var(--police-chiffres);
+}
+
+.ressentis button[aria-pressed='true'] {
+  background: var(--teinte);
+  color: #041320;
+  font-weight: 700;
+}
+
+.conditions summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--marine-clair);
+  margin-bottom: var(--espace-3);
+}
+
+.actions {
+  display: flex;
+  gap: var(--espace-3);
+}
+
+.erreur {
+  white-space: pre-line;
+  color: #ffb3b5;
+}
+
+.vide {
+  color: var(--texte-doux);
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-size: 1.3rem;
+}

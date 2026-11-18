@@ -185,3 +185,98 @@ def test_open_meteo_injoignable(connecte: TestClient) -> None:
 
     assert reponse.status_code == 503
     assert "indisponibles" in reponse.json()["detail"]
+
+
+# --- Carnet de sortie -------------------------------------------------------------------------
+
+
+def sortie(**extra: Any) -> dict[str, Any]:
+    return {"type": "nage", "debut": "2026-11-20T14:00:00+01:00", "duree_min": 40, "ressenti": 8, **extra}
+
+
+def test_les_conditions_sont_relevees_a_l_heure_de_la_sortie(connecte: TestClient, sans_reseau: None) -> None:
+    spot = connecte.get("/api/marine/spots").json()[1]
+
+    lue = connecte.post("/api/marine/sorties", json=sortie(spot_id=spot["id"], distance_m=1200)).json()
+
+    assert lue["conditions_relevees"] is True
+    assert lue["spot"] == "Colleville-Montgomery"
+    assert lue["eau_c"] is not None and 8 < lue["eau_c"] < 16
+    assert lue["vent_kmh"] is not None
+    assert lue["hauteur_eau_m"] is not None and 2.5 < lue["hauteur_eau_m"] < 4.5  # peu après la BM de 13 h 25
+    assert lue["distance_m"] == 1200
+
+
+def test_une_valeur_saisie_n_est_jamais_ecrasee(connecte: TestClient, sans_reseau: None) -> None:
+    lue = connecte.post("/api/marine/sorties", json=sortie(eau_c=9.5)).json()
+
+    assert lue["eau_c"] == 9.5
+    assert lue["air_c"] is not None  # le reste est complété
+
+
+def test_sans_open_meteo_la_sortie_s_enregistre_quand_meme(connecte: TestClient) -> None:
+    class EnPanne(OpenMeteo):
+        def __init__(self) -> None:
+            super().__init__(httpx.Client(transport=httpx.MockTransport(lambda r: httpx.Response(503))))
+
+    application.dependency_overrides[open_meteo] = EnPanne
+    try:
+        reponse = connecte.post("/api/marine/sorties", json=sortie(type="baignade"))
+    finally:
+        application.dependency_overrides.pop(open_meteo, None)
+
+    assert reponse.status_code == 201
+    assert reponse.json()["conditions_relevees"] is False
+    assert reponse.json()["eau_c"] is None
+
+
+@pytest.mark.parametrize(
+    "modification",
+    [
+        {"type": "baignade", "distance_m": 500},  # distance : propre à la nage
+        {"type": "nage", "profondeur_max_m": 12},  # profondeur : propre à la plongée
+        {"type": "surf"},
+        {"duree_min": 0},
+        {"debut": "2026-11-20T14:00:00"},  # sans fuseau
+        {"eau_c": 60},
+    ],
+)
+def test_sorties_invalides(connecte: TestClient, sans_reseau: None, modification: dict[str, Any]) -> None:
+    assert connecte.post("/api/marine/sorties", json=sortie(**modification)).status_code == 422
+
+
+def test_plongee_avec_ses_champs(connecte: TestClient, sans_reseau: None) -> None:
+    corps = sortie(type="plongee", profondeur_max_m=8, visibilite_m=3, materiel="Combinaison 7 mm, palmes")
+
+    lue = connecte.post("/api/marine/sorties", json=corps).json()
+
+    assert (lue["profondeur_max_m"], lue["visibilite_m"]) == (8, 3)
+
+
+def test_carnet_du_plus_recent_au_plus_ancien(connecte: TestClient, sans_reseau: None) -> None:
+    connecte.post("/api/marine/sorties", json=sortie(debut="2026-11-19T10:00:00+01:00"))
+    connecte.post("/api/marine/sorties", json=sortie(debut="2026-11-21T16:00:00+01:00"))
+
+    debuts = [s["debut"] for s in connecte.get("/api/marine/sorties").json()]
+
+    assert debuts == ["2026-11-21T15:00:00Z", "2026-11-19T09:00:00Z"]
+
+
+def test_modifier_et_supprimer_une_sortie(connecte: TestClient, sans_reseau: None) -> None:
+    identifiant = connecte.post("/api/marine/sorties", json=sortie()).json()["id"]
+
+    modifiee = connecte.put(f"/api/marine/sorties/{identifiant}", json=sortie(duree_min=55)).json()
+    assert modifiee["duree_min"] == 55
+
+    assert connecte.delete(f"/api/marine/sorties/{identifiant}").status_code == 204
+    assert connecte.get("/api/marine/sorties").json() == []
+
+
+def test_le_carnet_des_autres_est_invisible(connecte: TestClient, sans_reseau: None) -> None:
+    identifiant = connecte.post("/api/marine/sorties", json=sortie()).json()["id"]
+    connecte.cookies.clear()
+    connecte.post("/api/auth/demo")
+
+    assert connecte.get("/api/marine/sorties").json() == []
+    assert connecte.put(f"/api/marine/sorties/{identifiant}", json=sortie()).status_code == 404
+    assert connecte.delete(f"/api/marine/sorties/{identifiant}").status_code == 404

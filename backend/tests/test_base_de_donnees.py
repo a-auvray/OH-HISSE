@@ -29,3 +29,19 @@ def test_les_dates_relues_sont_en_utc(session: Session) -> None:
     relu = session.get(Utilisateur, utilisateur.id)
     assert relu is not None
     assert en_utc(relu.cree_le).utcoffset() is not None
+
+
+def test_une_heure_de_paris_est_stockee_en_utc_et_relue_juste(session: Session) -> None:
+    import datetime as dt
+    from zoneinfo import ZoneInfo
+
+    seize_heures_paris = dt.datetime(2026, 11, 21, 16, tzinfo=ZoneInfo("Europe/Paris"))
+    compte = Utilisateur(email="moi@exemple.fr", nom_affiche="Moi", expire_le=seize_heures_paris)
+    session.add(compte)
+    session.commit()
+    session.expire_all()
+
+    relu = session.get(Utilisateur, compte.id)
+    assert relu is not None and relu.expire_le is not None
+    assert relu.expire_le == seize_heures_paris  # même instant
+    assert relu.expire_le.utcoffset() == dt.timedelta(0)  # exprimé en UTC
