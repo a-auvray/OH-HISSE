@@ -12,6 +12,7 @@
 - 
 
 ### Ce qui a bloqué / Solutions trouvées
+- 
 
 ---
 
