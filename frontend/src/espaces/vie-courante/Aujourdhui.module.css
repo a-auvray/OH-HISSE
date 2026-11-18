@@ -1,0 +1,194 @@
+.grille {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--espace-4);
+}
+
+/* Cartes douces : coins très arrondis, verre vert pâle, aucune arête dure. */
+.carte {
+  display: grid;
+  align-content: start;
+  gap: var(--espace-4);
+  padding: var(--espace-8);
+  border-radius: 32px;
+  background: linear-gradient(170deg, rgb(192 232 192 / 0.07), rgb(10 30 18 / 0.35));
+  border: 1px solid rgb(192 232 192 / 0.1);
+  backdrop-filter: blur(14px);
+}
+
+.large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.etiquette {
+  font-family: var(--police-texte);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--vie-courante-clair) 65%, transparent);
+}
+
+.recuperation {
+  display: flex;
+  align-items: center;
+  gap: var(--espace-12);
+  padding: var(--espace-6) 0;
+}
+
+.geant {
+  font-family: var(--police-espace);
+  font-weight: 300;
+  font-size: 3.4rem;
+  line-height: 1;
+  color: var(--vie-courante-clair);
+}
+
+.moyen {
+  font-family: var(--police-espace);
+  font-weight: 400;
+  font-size: 2.4rem;
+  line-height: 1;
+  color: var(--vie-courante-clair);
+}
+
+.petit {
+  font-size: 0.82rem;
+  color: var(--texte-doux);
+}
+
+.explication {
+  display: grid;
+  gap: var(--espace-4);
+}
+
+.phrase {
+  font-family: var(--police-espace);
+  font-size: 1.15rem;
+  line-height: 1.45;
+  color: var(--texte);
+}
+
+.raisons {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 0.88rem;
+  color: var(--texte-doux);
+}
+
+.raisons li::before {
+  content: '·';
+  margin-right: 8px;
+  color: var(--vie-courante);
+  font-weight: 700;
+}
+
+.lien {
+  font-size: 0.88rem;
+  color: var(--vie-courante-clair);
+}
+
+.ecart {
+  display: flex;
+  align-items: center;
+  gap: var(--espace-6);
+}
+
+.verdict {
+  font-family: var(--police-espace);
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  margin-bottom: var(--espace-2);
+}
+
+.bouton {
+  justify-self: start;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid rgb(192 232 192 / 0.3);
+  background: transparent;
+  font-family: var(--police-espace);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--vie-courante-clair);
+  transition:
+    background var(--duree),
+    border-color var(--duree);
+}
+
+.bouton:hover:not(:disabled) {
+  background: rgb(63 174 94 / 0.15);
+  border-color: var(--vie-courante);
+}
+
+.saisie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espace-3);
+}
+
+.saisie label {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  color: var(--texte-doux);
+}
+
+.saisie input {
+  width: 92px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  border: 1px solid rgb(192 232 192 / 0.2);
+  background: rgb(0 0 0 / 0.25);
+  font-family: var(--police-espace);
+  font-size: 1.4rem;
+  color: var(--texte);
+  text-align: right;
+}
+
+.saisie input:focus {
+  outline: none;
+  border-color: var(--vie-courante);
+  box-shadow: 0 0 0 3px rgb(63 174 94 / 0.25);
+}
+
+/* Qualité du sommeil : cinq lunes qui s'allument. */
+.lunes {
+  display: flex;
+  gap: 2px;
+}
+
+.lunes button {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 1.15rem;
+  color: rgb(192 232 192 / 0.25);
+  transition:
+    color var(--duree),
+    text-shadow var(--duree);
+}
+
+.lunes button[data-allume] {
+  color: var(--vie-courante-clair);
+  text-shadow: 0 0 10px var(--vie-courante);
+}
+
+.erreur {
+  white-space: pre-line;
+  color: #ffb3b5;
+  font-size: 0.88rem;
+}
+
+.attente {
+  font-family: var(--police-espace);
+  font-size: 1.4rem;
+  color: var(--texte-doux);
+}

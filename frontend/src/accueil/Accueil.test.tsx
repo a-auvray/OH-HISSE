@@ -41,9 +41,15 @@ describe('Accueil', () => {
 })
 
 describe('Briefing du jour', () => {
-  it('affiche la séance du jour, la mer et l’objectif principal', async () => {
+  it('affiche les quatre espaces : séance, récupération, mer, objectif', async () => {
     vi.spyOn(globalThis, 'fetch').mockImplementation(async (requete) => {
       const url = requete instanceof Request ? requete.url : String(requete)
+      if (url.includes('vie-courante/etat')) {
+        return Response.json({
+          recuperation: { recupere: false, restant_h: 30.4 },
+          cheat_meal: { verdict: 'petit' },
+        })
+      }
       if (url.includes('marine/conditions')) {
         return Response.json({
           spot: { nom: 'Colleville-Montgomery' },
@@ -78,5 +84,7 @@ describe('Briefing du jour', () => {
     expect(screen.getByText('55 kg aux tractions · 77 %')).toBeInTheDocument()
     expect(screen.getByText('Rouge · eau 12 °C')).toBeInTheDocument()
     expect(screen.getByText('Vent moyen de 32 km/h')).toBeInTheDocument()
+    expect(screen.getByText('Encore 30 h')).toBeInTheDocument()
+    expect(screen.getByText('Écart : un petit, oui')).toBeInTheDocument()
   })
 })

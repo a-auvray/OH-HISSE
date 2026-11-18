@@ -1,0 +1,104 @@
+.briefings {
+  display: grid;
+  gap: var(--espace-6);
+}
+
+.choix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espace-3);
+  align-items: center;
+}
+
+.choix button,
+.choix select {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgb(192 232 192 / 0.2);
+  background: transparent;
+  font-family: var(--police-espace);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--texte-doux);
+  color-scheme: dark;
+}
+
+.choix button[aria-pressed='true'] {
+  color: #06140c;
+  background: var(--vie-courante-clair);
+  border-color: var(--vie-courante-clair);
+}
+
+.choix select {
+  background: #0c1d14;
+}
+
+.semaine {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.vue {
+  display: grid;
+  gap: var(--espace-6);
+}
+
+.sousTitre {
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--texte-faible);
+}
+
+.titre {
+  font-family: var(--police-espace);
+  font-weight: 300;
+  font-size: 3rem;
+  color: var(--vie-courante-clair);
+}
+
+.sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--espace-4);
+}
+
+/* Chaque section prend la couleur de son espace : on sait d'où vient l'information. */
+.section {
+  display: grid;
+  align-content: start;
+  gap: var(--espace-2);
+  padding: var(--espace-6);
+  border-radius: 28px;
+  background: linear-gradient(170deg, color-mix(in oklab, var(--accent) 12%, transparent), rgb(0 0 0 / 0.25));
+  border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+}
+
+.nomSection {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-clair);
+}
+
+.valeur {
+  font-family: var(--police-espace);
+  font-size: 2rem;
+  line-height: 1.1;
+  color: var(--texte);
+}
+
+.section ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  font-family: var(--police-texte);
+  font-size: 0.9rem;
+  color: var(--texte-doux);
+}
+
+.erreur {
+  color: #ffb3b5;
+}

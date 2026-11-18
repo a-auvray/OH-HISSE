@@ -19,10 +19,11 @@ interface Indicateur {
 }
 
 const NIVEAUX = { vert: 'Vert', rouge: 'Rouge', noir: 'Noir' } as const
+const ECARTS = { oui: 'ce soir, t’as le droit', petit: 'un petit, oui', non: 'pas cette fois' } as const
 
 /** Ce que le briefing affiche, à partir des espaces déjà construits. */
 async function chargerBriefing() {
-  const [seance, objectifs, mer] = await Promise.all([
+  const [seance, objectifs, mer, vie] = await Promise.all([
     api.GET('/api/streetlifting/seance-du-jour').then((r) => r.data ?? null),
     api.GET('/api/objectifs').then((r) => r.data ?? []),
     // La mer peut être indisponible (Open-Meteo) : le briefing s'affiche quand même.
@@ -30,8 +31,9 @@ async function chargerBriefing() {
       .GET('/api/marine/conditions')
       .then((r) => r.data ?? null)
       .catch(() => null),
+    api.GET('/api/vie-courante/etat').then((r) => r.data ?? null),
   ])
-  return { seance, objectifs, mer }
+  return { seance, objectifs, mer, vie }
 }
 
 function salutation(heure: number): string {
@@ -49,11 +51,12 @@ export function TableauDeBord({ entree }: { entree: boolean }) {
   const donnees = briefing.etat === 'pret' ? briefing.valeur : null
   const seance = donnees?.seance
   const mer = donnees?.mer
+  const vie = donnees?.vie
   const objectif =
     donnees?.objectifs.find((o) => o.principal && o.statut === 'en_cours') ??
     donnees?.objectifs.find((o) => o.statut === 'en_cours')
 
-  // Les quatre indicateurs du briefing du jour (note 07) ; Marine et Vie courante arrivent en phases 3 et 4.
+  // Les quatre indicateurs du briefing du jour (note 07), un par espace.
   const indicateurs: Indicateur[] = [
     {
       espace: 'streetlifting',
@@ -68,8 +71,14 @@ export function TableauDeBord({ entree }: { entree: boolean }) {
       espace: 'vie-courante',
       libelle: 'Récupération',
       chemin: '/vie-courante',
-      valeur: null,
-      detail: 'Estimée à partir des séances et du sommeil',
+      valeur: vie
+        ? vie.recuperation.recupere
+          ? 'Récupéré'
+          : `Encore ${Math.round(vie.recuperation.restant_h)} h`
+        : null,
+      detail: vie
+        ? `Écart : ${ECARTS[vie.cheat_meal.verdict]}`
+        : 'Estimée à partir des séances et du sommeil',
     },
     {
       espace: 'marine',
