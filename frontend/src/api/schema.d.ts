@@ -160,6 +160,118 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/streetlifting/blocs': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Lister Blocs */
+    get: operations['lister_blocs_api_streetlifting_blocs_get']
+    put?: never
+    /**
+     * Importer Bloc
+     * @description Importe le contenu d'un fichier JSON de bloc (format de la note 03 du CDC).
+     */
+    post: operations['importer_bloc_api_streetlifting_blocs_post']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/streetlifting/blocs/{bloc_id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Supprimer Bloc
+     * @description Supprime le bloc ; ses séances réalisées sont conservées (détachées du bloc).
+     */
+    delete: operations['supprimer_bloc_api_streetlifting_blocs__bloc_id__delete']
+    options?: never
+    head?: never
+    /** Modifier Bloc */
+    patch: operations['modifier_bloc_api_streetlifting_blocs__bloc_id__patch']
+    trace?: never
+  }
+  '/api/streetlifting/seance-du-jour': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Seance Du Jour */
+    get: operations['seance_du_jour_api_streetlifting_seance_du_jour_get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/objectifs': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Lister */
+    get: operations['lister_api_objectifs_get']
+    put?: never
+    /** Creer */
+    post: operations['creer_api_objectifs_post']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/objectifs/{objectif_id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /** Modifier */
+    put: operations['modifier_api_objectifs__objectif_id__put']
+    post?: never
+    /** Supprimer */
+    delete: operations['supprimer_api_objectifs__objectif_id__delete']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/objectifs/{objectif_id}/statut': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    /** Changer Statut */
+    patch: operations['changer_statut_api_objectifs__objectif_id__statut_patch']
+    trace?: never
+  }
   '/api/vie-courante/pesees': {
     parameters: {
       query?: never
@@ -216,6 +328,100 @@ export interface paths {
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
+    /** AvancementBloc */
+    AvancementBloc: {
+      /** Id */
+      id: number
+      /** Nom */
+      nom: string
+      /**
+       * Type
+       * @enum {string}
+       */
+      type: 'force' | 'volume' | 'deload' | 'specifique'
+      /** Numero */
+      numero: number
+      /** Total */
+      total: number
+      /** Rang Modele */
+      rang_modele: number
+    }
+    /** BlocAssocie */
+    BlocAssocie: {
+      /** Id */
+      id: number
+      /** Nom */
+      nom: string
+    }
+    /**
+     * BlocImporte
+     * @description Contenu du fichier JSON d'un bloc.
+     */
+    BlocImporte: {
+      /** Nom */
+      nom: string
+      /**
+       * Type
+       * @enum {string}
+       */
+      type: 'force' | 'volume' | 'deload' | 'specifique'
+      /** Cycles */
+      cycles: number
+      /** Seances */
+      seances: components['schemas']['SeanceDuProgramme'][]
+      /**
+       * Debut
+       * @description Par défaut : aujourd'hui
+       */
+      debut?: string | null
+      /** Objectif Id */
+      objectif_id?: number | null
+    }
+    /** BlocLu */
+    BlocLu: {
+      /** Id */
+      id: number
+      /** Nom */
+      nom: string
+      /**
+       * Type
+       * @enum {string}
+       */
+      type: 'force' | 'volume' | 'deload' | 'specifique'
+      /** Cycles */
+      cycles: number
+      /** Seances */
+      seances: components['schemas']['SeanceDuProgramme'][]
+      /**
+       * Debut
+       * Format: date
+       */
+      debut: string
+      /** Fin */
+      fin: string | null
+      /** Objectif Id */
+      objectif_id: number | null
+      /** Seances Realisees */
+      seances_realisees: number
+      /** Seances Total */
+      seances_total: number
+      /** Actif */
+      actif: boolean
+    }
+    /** BlocModifie */
+    BlocModifie: {
+      /** Nom */
+      nom?: string | null
+      /** Objectif Id */
+      objectif_id?: number | null
+      /** Fin */
+      fin?: string | null
+      /**
+       * Detacher Objectif
+       * @default false
+       */
+      detacher_objectif: boolean
+    }
     /** EtatSante */
     EtatSante: {
       /**
@@ -225,6 +431,23 @@ export interface components {
       statut: 'ok'
       /** Version */
       version: string
+    }
+    /** ExerciceDuProgramme */
+    ExerciceDuProgramme: {
+      /**
+       * Exercice
+       * @description Identifiant de l'exercice : traction, dips, muscle-up…
+       */
+      exercice: string
+      /** Series */
+      series: number | [number, number]
+      /**
+       * Reps
+       * @description De 1 à 12 : la limite de la table RPE
+       */
+      reps: number
+      /** Rpe Cible */
+      rpe_cible?: number | null
     }
     /** ExerciceLu */
     ExerciceLu: {
@@ -246,6 +469,84 @@ export interface components {
       email: string
       /** Mot De Passe */
       mot_de_passe: string
+    }
+    /** ObjectifEcrit */
+    ObjectifEcrit: {
+      /** Titre */
+      titre: string
+      /**
+       * Type
+       * @default max
+       * @enum {string}
+       */
+      type: 'max' | 'competition'
+      /** Exercice Id */
+      exercice_id: number
+      /**
+       * Valeur Cible Kg
+       * @description Cible en lest
+       */
+      valeur_cible_kg: number
+      /**
+       * Date Cible
+       * Format: date
+       */
+      date_cible: string
+      /**
+       * Principal
+       * @default false
+       */
+      principal: boolean
+    }
+    /** ObjectifLu */
+    ObjectifLu: {
+      /** Titre */
+      titre: string
+      /**
+       * Type
+       * @default max
+       * @enum {string}
+       */
+      type: 'max' | 'competition'
+      /** Exercice Id */
+      exercice_id: number
+      /**
+       * Valeur Cible Kg
+       * @description Cible en lest
+       */
+      valeur_cible_kg: number
+      /**
+       * Date Cible
+       * Format: date
+       */
+      date_cible: string
+      /**
+       * Principal
+       * @default false
+       */
+      principal: boolean
+      /** Id */
+      id: number
+      /**
+       * Statut
+       * @enum {string}
+       */
+      statut: 'en_cours' | 'atteint' | 'abandonne'
+      /** Exercice */
+      exercice: string
+      /** Jours Restants */
+      jours_restants: number
+      progression: components['schemas']['Progression'] | null
+      /** Blocs */
+      blocs: components['schemas']['BlocAssocie'][]
+    }
+    /** ObjectifStatut */
+    ObjectifStatut: {
+      /**
+       * Statut
+       * @enum {string}
+       */
+      statut: 'en_cours' | 'atteint' | 'abandonne'
     }
     /** PeseeEcrite */
     PeseeEcrite: {
@@ -284,6 +585,13 @@ export interface components {
        */
       derniere_pesee: string
     }
+    /** PoidsUtilise */
+    PoidsUtilise: {
+      /** Kg */
+      kg: number
+      /** A Jour */
+      a_jour: boolean
+    }
     /**
      * PointEvolution
      * @description Une séance vue par un exercice, pour les graphiques d'évolution.
@@ -311,6 +619,37 @@ export interface components {
       /** Poids Du Corps Kg */
       poids_du_corps_kg: number | null
     }
+    /** Progression */
+    Progression: {
+      /** E1Rm Lest Kg */
+      e1rm_lest_kg: number
+      /**
+       * Le
+       * Format: date
+       */
+      le: string
+      /** Pourcentage */
+      pourcentage: number
+      /** Cible Atteinte */
+      cible_atteinte: boolean
+    }
+    /** Proposition */
+    Proposition: {
+      /** Exercice Id */
+      exercice_id: number
+      /** Exercice */
+      exercice: string
+      /** Series */
+      series: number
+      /** Reps */
+      reps: number
+      /** Rpe Cible */
+      rpe_cible: number
+      /** Lest Kg */
+      lest_kg: number | null
+      /** Justifications */
+      justifications: string[]
+    }
     /**
      * Record
      * @description 1RM estimé d'un exercice sur une séance.
@@ -322,6 +661,24 @@ export interface components {
       e1rm_lest_kg: number
       /** E1Rm Total Kg */
       e1rm_total_kg: number
+    }
+    /** SeanceDuJour */
+    SeanceDuJour: {
+      bloc: components['schemas']['AvancementBloc'] | null
+      /** Nom */
+      nom: string | null
+      poids: components['schemas']['PoidsUtilise'] | null
+      /** Propositions */
+      propositions: components['schemas']['Proposition'][]
+      /** Message */
+      message?: string | null
+    }
+    /** SeanceDuProgramme */
+    SeanceDuProgramme: {
+      /** Nom */
+      nom: string
+      /** Exercices */
+      exercices: components['schemas']['ExerciceDuProgramme'][]
     }
     /** SeanceEcrite */
     SeanceEcrite: {
@@ -879,6 +1236,380 @@ export interface operations {
           [name: string]: unknown
         }
         content?: never
+      }
+    }
+  }
+  lister_blocs_api_streetlifting_blocs_get: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['BlocLu'][]
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  importer_bloc_api_streetlifting_blocs_post: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['BlocImporte']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['BlocLu']
+        }
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  supprimer_bloc_api_streetlifting_blocs__bloc_id__delete: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        bloc_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  modifier_bloc_api_streetlifting_blocs__bloc_id__patch: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        bloc_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['BlocModifie']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['BlocLu']
+        }
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  seance_du_jour_api_streetlifting_seance_du_jour_get: {
+    parameters: {
+      query?: {
+        jour?: string | null
+      }
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SeanceDuJour']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  lister_api_objectifs_get: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ObjectifLu'][]
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  creer_api_objectifs_post: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ObjectifEcrit']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ObjectifLu']
+        }
+      }
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  modifier_api_objectifs__objectif_id__put: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        objectif_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ObjectifEcrit']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ObjectifLu']
+        }
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  supprimer_api_objectifs__objectif_id__delete: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        objectif_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  changer_statut_api_objectifs__objectif_id__statut_patch: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        objectif_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ObjectifStatut']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ObjectifLu']
+        }
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
       }
     }
   }
