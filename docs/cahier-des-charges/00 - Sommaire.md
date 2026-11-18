@@ -42,7 +42,7 @@ statut: brouillon
 ---
 
 ## Où j'en suis
-**Phase actuelle :** 4 — Vie courante + croisements *(phase 3 terminée le 18/11/2026, `v0.3.0`)*
+**Phase actuelle :** 5 — Accueil, démo et mise en ligne *(phase 4 terminée le 18/11/2026, `v0.4.0`)*
 
 - [ ] Relire chaque note, garder ou supprimer les 💡
 - [x] Trancher les questions prioritaires de [[13 - Décisions et questions ouvertes|la note 13]]

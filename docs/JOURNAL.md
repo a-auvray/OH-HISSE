@@ -111,3 +111,25 @@
 - `carnet.ts` et `Carnet.tsx` se seraient télescopés sous Windows → `formulaireSortie.ts`.
 - MapLibre 6 n'a plus d'export par défaut → imports nommés ; carte chargée à la demande (~1 Mo).
 - L'écart IGN69 / zéro hydrographique à Ouistreham n'est pas trouvable en ligne → à lire dans les Références Altimétriques Maritimes du SHOM avec Litto3D.
+
+---
+
+## 18/11/2026 — Phase 4 : Vie courante et croisements (`v0.4.0`)
+
+**Branches :** `feature/vie-courante-moteurs`, `feature/croisements`, `feature/briefings`, `feature/vie-courante-interface`
+
+### Ce qui a été fait
+- Moteurs purs de récupération, de cheat meal, de sommeil et de briefing ; règles validées dans `regles/vie_courante.toml`.
+- Croisements : sommeil et récupération → séance du jour ; récupération → assistant de sortie ; tous les espaces → briefings.
+- Espace Vie courante (jauges en anneau, saisie rapide, 30 nuits, briefings) ; les quatre indicateurs de l'accueil sont branchés.
+
+### Choix techniques
+- **Rien n'est stocké** : récupération, verdict et briefings sont recalculés à chaque demande (note 09), ils ne peuvent pas être périmés.
+- **Rejouer les événements dans l'ordre** : chaque séance ou sortie déplace la fin de récupération ; la mer peut l'allonger (nage longue ou froide) ou l'avancer (baignade de récupération active).
+- **La forme du jour** passe par le même objet que le sommeil dans le moteur d'auto-régulation : chaque ajustement reste justifié dans la séance.
+- **Briefings** : le service rassemble des faits simples, le moteur les met en phrases ; la progression d'un objectif est passée dans un service partagé.
+
+### Ce qui a bloqué / Solutions trouvées
+- `str.capitalize()` passait « °C » en « °c » → fonction `majuscule` qui ne touche que la première lettre.
+- Un arrondi à la limite (12,45 t) dans un test → donnée de test sans ambiguïté.
+- La session de l'aperçu était le compte personnel → vérification de l'interface en lecture seule, sans écrire dans ses données.
