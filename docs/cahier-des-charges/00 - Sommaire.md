@@ -42,7 +42,7 @@ statut: brouillon
 ---
 
 ## Où j'en suis
-**Phase actuelle :** 2 — Streetlifting + Objectifs *(phase 1 terminée le 18/11/2026, `v0.1.0`)*
+**Phase actuelle :** 3 — Marine *(phase 2 terminée le 18/11/2026, `v0.2.0`)*
 
 - [ ] Relire chaque note, garder ou supprimer les 💡
 - [x] Trancher les questions prioritaires de [[13 - Décisions et questions ouvertes|la note 13]]

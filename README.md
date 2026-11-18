@@ -19,8 +19,8 @@ Ce n'est pas quatre applis juxtaposées : chaque donnée saisie sert ailleurs. L
 |---|---|---|
 | 0 — Cadrage | Cahier des charges, API externes, décisions | ✅ |
 | 1 — Fondations | Backend, frontend, base, authentification, navigation | ✅ `v0.1.0` |
-| 2 — Streetlifting + Objectifs | Séances, 1RM, blocs, auto-régulation | ⏳ |
-| 3 — Marine | Météo marine, marées, danger, carte | — |
+| 2 — Streetlifting + Objectifs | Séances, 1RM, blocs, auto-régulation | ✅ `v0.2.0` |
+| 3 — Marine | Météo marine, marées, danger, carte | ⏳ |
 | 4 — Vie courante + croisements | Sommeil, récupération, cheat meal, briefings | — |
 | 5 — Accueil, démo, mise en ligne | Données de démo, finitions, production | — |
 
@@ -30,7 +30,7 @@ Le détail est dans le [cahier des charges](docs/cahier-des-charges/00%20-%20Som
 
 | Couche | Choix |
 |---|---|
-| Frontend | React 19, TypeScript 7 (strict), Vite 8, Motion, CSS Modules |
+| Frontend | React 19, TypeScript 7 (strict), Vite 8, Motion, visx, CSS Modules |
 | Backend | Python 3.14, FastAPI, SQLModel, Alembic |
 | Base | SQLite en local, PostgreSQL en production |
 | Données externes | Open-Meteo (météo et marine, sans clé), IGN Géoplateforme |
@@ -58,6 +58,8 @@ cd frontend
 npm install
 npm run dev
 ```
+
+Un exemple de bloc prêt à importer : [`docs/exemples/bloc-force.json`](docs/exemples/bloc-force.json).
 
 Le mode démo ne demande aucun compte : chaque visiteur reçoit son propre bac à sable de données fictives, effacé au bout de 24 h.
 

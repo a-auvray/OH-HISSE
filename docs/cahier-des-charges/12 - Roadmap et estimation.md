@@ -42,14 +42,15 @@ P4 --> P5["Phase 5<br/>Accueil, démo<br/>et mise en ligne"]:::cadrage
 - [x] Tag `v0.1.0`
 
 ## Phase 2 — Streetlifting + Objectifs *(75–105 h)*
-- [ ] Saisie d'une séance
-- [ ] Historique via calendrier
-- [ ] Blocs d'entraînement
-- [ ] Objectifs
-- [ ] Calcul du 1RM estimé
-- [ ] Graphiques d'évolution
-- [ ] Moteur d'auto-régulation + génération de séance
-- [ ] Identité visuelle de l'espace
+- [x] Saisie d'une séance
+- [x] Historique via calendrier
+- [x] Blocs d'entraînement (import JSON)
+- [x] Objectifs
+- [x] Calcul du 1RM estimé (formule RPE, poids du corps + lest)
+- [x] Graphiques d'évolution
+- [x] Moteur d'auto-régulation + génération de séance
+- [x] Identité visuelle de l'espace
+- [x] Tag `v0.2.0`
 
 > [!tip] Pourquoi commencer par là
 > C'est l'espace que j'utiliserai tous les jours : dès qu'il fonctionne, j'accumule de vraies données, indispensables pour tester les croisements plus tard.

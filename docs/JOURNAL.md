@@ -61,3 +61,28 @@
 - PyJWT signalait une clé HMAC trop courte → 32 caractères minimum imposés dans la configuration.
 - Une PR empilée sur une autre a été fermée par GitHub quand sa branche de base a été supprimée → désormais, une branche part toujours de `main`.
 - Le navigateur de test signale « réduire les animations » : l'appli coupe alors les transitions, par accessibilité. Elles ont été vérifiées en les forçant temporairement.
+
+---
+
+## 18/11/2026 — Phase 2 : Streetlifting et Objectifs (`v0.2.0`)
+
+**Branches :** `feature/streetlifting-moteurs`, `feature/streetlifting-seances`, `feature/blocs-objectifs-seance-du-jour`, `feature/streetlifting-interface-seance`, `feature/streetlifting-calendrier-analyse`, `feature/blocs-objectifs-interface`
+
+### Ce qui a été fait
+- Moteurs purs : table RPE, 1RM sur poids du corps + lest, poids en moyenne mobile, auto-régulation.
+- Modèle de données de la note 09 et API complète : séances, séries, pesées, blocs JSON, objectifs, séance du jour, évolution.
+- Interface : séance du jour, saisie (prévu / réalisé), calendrier par blocs, graphiques visx, page des blocs, espace Objectifs avec jauge, briefing de l'accueil.
+
+### Choix techniques
+- **Une seule formule** pour le 1RM et la charge proposée : la table RPE. La séance suivante découle du 1RM estimé récent × %(reps, RPE cible).
+- **Garde-fous par format** : le ±5 % et le deload se comparent à la dernière séance du même nombre de reps.
+- **Accès** : une ligne d'un autre utilisateur répond 404, comme une ligne inexistante. Testé pour un autre compte et pour la démo.
+- **Prévu et réalisé sur la même série** : pas de table supplémentaire, et le calendrier affiche les deux.
+- **Chargement à la demande** des espaces lourds (visx) : le paquet principal reste sous 500 Ko.
+
+### Ce qui a bloqué / Solutions trouvées
+- En test manuel, des triples lourds bridaient la charge d'une série de 8 → garde-fous comparés au même format (2 tests ajoutés).
+- Le rechargement de l'API restait bloqué par les connexions gardées par le proxy Vite → `--timeout-graceful-shutdown 1`.
+- `calendrier.ts` et `Calendrier.tsx` se télescopaient sous Windows (casse ignorée) → la logique est renommée `chronologie.ts`.
+- `ParentSize` (visx) attendait un premier signal de ResizeObserver → hook `useLargeur` qui mesure dès le montage.
+- Le tuple `[min, max]` de l'API devenait un tableau côté client → le backend émet une liste de deux nombres.
