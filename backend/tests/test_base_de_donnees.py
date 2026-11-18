@@ -5,8 +5,10 @@ from sqlmodel import Session
 
 from app.core.base_de_donnees import en_utc
 from app.models import Utilisateur
+from tests.conftest import SOUS_POSTGRESQL
 
 
+@pytest.mark.skipif(SOUS_POSTGRESQL, reason="PostgreSQL applique toujours les clés étrangères")
 def test_les_cles_etrangeres_sont_actives_sous_sqlite(session: Session) -> None:
     assert session.exec(text("PRAGMA foreign_keys")).one()[0] == 1  # type: ignore[call-overload]
 

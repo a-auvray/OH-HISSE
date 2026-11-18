@@ -38,6 +38,49 @@ jobs:
           uv run alembic upgrade head
           uv run alembic check
 
+  postgresql:
+    name: Backend sur PostgreSQL (migrations, tests)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: oh_hisse
+          POSTGRES_PASSWORD: oh_hisse
+          POSTGRES_DB: oh_hisse
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U oh_hisse"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      PGPASSWORD: oh_hisse
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: uv sync --locked
+      - name: Migrations (aller, retour, aller) et cohérence avec les modèles
+        env:
+          # Écrite comme Neon la donne : la conversion vers psycopg est vérifiée au passage.
+          OH_HISSE_URL_BASE_DE_DONNEES: postgresql://oh_hisse:oh_hisse@localhost:5432/oh_hisse
+        run: |
+          uv run alembic upgrade head
+          uv run alembic downgrade base
+          uv run alembic upgrade head
+          uv run alembic check
+      - name: Tests sur PostgreSQL
+        env:
+          OH_HISSE_URL_TESTS: postgresql+psycopg://oh_hisse:oh_hisse@localhost:5432/oh_hisse_tests
+        run: |
+          psql -h localhost -U oh_hisse -d oh_hisse -c "CREATE DATABASE oh_hisse_tests"
+          uv run pytest
+
   frontend:
     name: Frontend (format, lint, types, tests, build)
     runs-on: ubuntu-latest
