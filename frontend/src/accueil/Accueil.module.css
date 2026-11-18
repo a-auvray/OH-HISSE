@@ -1,0 +1,39 @@
+.accueil {
+  min-height: 100vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--espace-8);
+}
+
+.titre {
+  font-size: 4rem;
+  letter-spacing: -0.03em;
+}
+
+.espaces {
+  display: flex;
+  gap: var(--espace-4);
+}
+
+.espace {
+  padding: var(--espace-3) var(--espace-6);
+  border: 1px solid var(--trait);
+  border-radius: var(--rayon);
+  text-decoration: none;
+  color: var(--accent);
+  transition:
+    border-color var(--duree-rapide),
+    background var(--duree-rapide);
+}
+
+.espace:hover {
+  border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+}
+
+.api {
+  color: var(--texte-faible);
+  font-family: var(--police-chiffres);
+  font-size: 0.85rem;
+}

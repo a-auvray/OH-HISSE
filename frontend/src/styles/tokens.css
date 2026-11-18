@@ -1,0 +1,87 @@
+/*
+ * Jetons de design d'Oh Hisse !
+ *
+ * Une base sombre commune, puis une identité par espace : il suffit de poser
+ * `data-espace="…"` sur un conteneur pour que tout ce qu'il contient prenne
+ * les couleurs de l'espace. Les teintes reprennent celles des diagrammes du
+ * cahier des charges, ajustées pour un fond sombre.
+ */
+
+:root {
+  /* Base : encre de nuit */
+  --fond: #0b0d10;
+  --fond-eleve: #14171c;
+  --fond-carte: #1a1e24;
+  --trait: #2a2f37;
+  --texte: #e9ecef;
+  --texte-doux: #9aa3ad;
+  --texte-faible: #5f6873;
+
+  /* Couleurs des espaces (pleine teinte / teinte claire) */
+  --streetlifting: #e0782a;
+  --streetlifting-clair: #ffd8b0;
+  --marine: #2f8fe0;
+  --marine-clair: #b0d8ff;
+  --vie-courante: #3fae5e;
+  --vie-courante-clair: #c0e8c0;
+  --objectifs: #a54ec2;
+  --objectifs-clair: #e0b8e8;
+
+  /* États */
+  --succes: #3fae5e;
+  --alerte: #e8a23a;
+  --danger: #e5484d;
+  --noir-danger: #000000;
+
+  /* Accent courant : neutre hors des espaces */
+  --accent: #e9ecef;
+  --accent-clair: #ffffff;
+
+  /* Typographie */
+  --police-texte: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --police-titre: var(--police-texte);
+  --police-chiffres: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+  /* Rythme */
+  --rayon: 14px;
+  --rayon-petit: 8px;
+  --espace-1: 4px;
+  --espace-2: 8px;
+  --espace-3: 12px;
+  --espace-4: 16px;
+  --espace-6: 24px;
+  --espace-8: 32px;
+  --espace-12: 48px;
+
+  /* Mouvement */
+  --courbe-sortie: cubic-bezier(0.16, 1, 0.3, 1);
+  --duree-rapide: 160ms;
+  --duree: 320ms;
+}
+
+[data-espace='streetlifting'] {
+  --accent: var(--streetlifting);
+  --accent-clair: var(--streetlifting-clair);
+}
+
+[data-espace='marine'] {
+  --accent: var(--marine);
+  --accent-clair: var(--marine-clair);
+}
+
+[data-espace='vie-courante'] {
+  --accent: var(--vie-courante);
+  --accent-clair: var(--vie-courante-clair);
+}
+
+[data-espace='objectifs'] {
+  --accent: var(--objectifs);
+  --accent-clair: var(--objectifs-clair);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duree-rapide: 0ms;
+    --duree: 0ms;
+  }
+}
