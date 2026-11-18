@@ -18,6 +18,10 @@ const EspaceObjectifs = lazy(() =>
   import('../espaces/objectifs/EspaceObjectifs').then((m) => ({ default: m.EspaceObjectifs })),
 )
 
+const EspaceMarine = lazy(() =>
+  import('../espaces/marine/EspaceMarine').then((m) => ({ default: m.EspaceMarine })),
+)
+
 interface Trajet {
   chemin: string
   sens: Direction | null
@@ -57,7 +61,15 @@ export function Navigation() {
               </Suspense>
             }
           />
-          {ESPACES.filter((e) => e.id !== 'streetlifting' && e.id !== 'objectifs').map((e) => (
+          <Route
+            path="/marine/*"
+            element={
+              <Suspense fallback={null}>
+                <EspaceMarine />
+              </Suspense>
+            }
+          />
+          {ESPACES.filter((e) => e.id === 'vie-courante').map((e) => (
             <Route key={e.id} path={e.chemin} element={<CadreEspace id={e.id} />} />
           ))}
           <Route path="*" element={<Accueil />} />

@@ -15,6 +15,8 @@ export type ObjectifLu = Schemas['ObjectifLu']
 export type ObjectifEcrit = Schemas['ObjectifEcrit']
 export type PoidsActuel = Schemas['PoidsActuel']
 export type PeseeLue = Schemas['PeseeLue']
+export type Conditions = Schemas['Conditions']
+export type Spot = Schemas['SpotLu']
 
 /** Message lisible d'une erreur FastAPI : `detail` texte, ou liste d'erreurs de validation. */
 export function messageErreur(erreur: unknown, parDefaut = 'Une erreur est survenue.'): string {
