@@ -1,10 +1,35 @@
+# --- Secrets ---------------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# --- Python ----------------------------------------------------------------
 .venv/
 __pycache__/
-*.pyc
-.env
-*.dbnode_modules/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Base de données locale ------------------------------------------------
+*.db
+*.db-journal
+*.sqlite3
+
+# --- Node / frontend -------------------------------------------------------
+node_modules/
 dist/
-.vscode
-.DS_StoreThunmbs.db.
+*.tsbuildinfo
+.vite/
+
+# --- Éditeurs et systèmes --------------------------------------------------
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Obsidian (état local du coffre, propre à chaque machine) --------------
 docs/cahier-des-charges/.obsidian/workspace.json
 docs/cahier-des-charges/.obsidian/workspace-mobile.json
