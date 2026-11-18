@@ -107,4 +107,10 @@ Modèle : **GitHub Flow**, simple pour un développeur seul et répandu en entre
 - `README.md` : présentation, captures d'écran, stack
 
 ## Mise en ligne
-Plus tard (cf. [[12 - Roadmap et estimation|Roadmap]]) : hébergeur à choisir, HTTPS, CORS limité à l'URL du site, variables d'environnement de production.
+Décidé en phase 5 : **Render** (service web, offre gratuite, Francfort) + **Neon** (PostgreSQL, Francfort).
+- Un seul service : l'image Docker contient l'API et l'interface construite ; FastAPI sert les deux sur la même origine (cookie httpOnly sans réglage CORS, aucune origine tierce autorisée).
+- HTTPS fourni par Render ; cookie `Secure` en production ; documentation de l'API masquée.
+- Migrations jouées avant chaque démarrage ; déploiement automatique seulement si la CI de `main` est verte.
+- La CI rejoue migrations et tests sur PostgreSQL, et construit puis démarre l'image.
+- Variables de production : URL de la base (collée à la main), clé secrète (générée par Render).
+- Guide pas à pas : `docs/DEPLOIEMENT.md` du dépôt.

@@ -11,6 +11,8 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Mode démo pré-rempli : trois semaines d'entraînement dans un bloc de force, deux objectifs, sommeil, pesées, un écart et quatre sorties en mer, datés par rapport au jour de la visite.
 - Un seul service en ligne : FastAPI sert l'API et l'interface (image Docker, migrations au démarrage).
 - Pilote PostgreSQL (psycopg) ; l'URL fournie par l'hébergeur se colle telle quelle.
+- CI : migrations et tests rejoués sur PostgreSQL.
+- Blueprint Render (`render.yaml`) et guide de mise en ligne Render + Neon.
 
 ## [0.4.0] — 2026-11-18 — Vie courante et croisements
 

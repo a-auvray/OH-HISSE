@@ -63,6 +63,10 @@ Un exemple de bloc prêt à importer : [`docs/exemples/bloc-force.json`](docs/ex
 
 Le mode démo ne demande aucun compte : chaque visiteur reçoit son propre bac à sable de données fictives, effacé au bout de 24 h.
 
+## Mise en ligne
+
+Un seul service : l'image Docker ([`Dockerfile`](Dockerfile)) contient l'API et l'interface construite, servies sur la même adresse. Hébergement sur **Render**, base PostgreSQL chez **Neon**, décrits dans [`render.yaml`](render.yaml). Le pas à pas est dans [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md).
+
 ## Sécurité
 
 - Mots de passe hashés avec bcrypt, vérification à temps constant

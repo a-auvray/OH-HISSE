@@ -1,0 +1,19 @@
+# Blueprint Render : un seul service web (API + interface), construit depuis le Dockerfile.
+# La base est chez Neon (PostgreSQL) : son URL est demandée à la création du Blueprint.
+# Guide pas à pas : docs/DEPLOIEMENT.md
+services:
+  - type: web
+    name: oh-hisse
+    runtime: docker
+    plan: free
+    region: frankfurt # au plus près de Neon (Francfort) et de la Normandie
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/sante
+    autoDeployTrigger: checksPass # déployé seulement quand la CI de main est verte
+    envVars:
+      - key: OH_HISSE_URL_BASE_DE_DONNEES
+        sync: false # collée à la main : l'URL de connexion Neon
+      - key: OH_HISSE_CLE_SECRETE
+        generateValue: true # 256 bits aléatoires, générés par Render
+      - key: OH_HISSE_ORIGINES_CORS
+        value: "[]" # l'interface est servie par la même origine : aucune autre n'est autorisée

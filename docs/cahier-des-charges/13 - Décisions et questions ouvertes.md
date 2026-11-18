@@ -76,5 +76,5 @@ statut: brouillon
 - [x] Easter egg : seuil de tempête → vent moyen de force 10 (≥ 89 km/h)
 - [x] Easter egg : si le danger avait déconseillé la sortie → oui, mais en clin d'œil inquiet, jamais en réussite
 - [x] Librairie de graphiques → visx
-- [ ] Hébergement (au moment de la mise en ligne)
+- [x] Hébergement → Render (service web) + Neon (PostgreSQL), un seul service qui sert l'API et l'interface
 - [x] ~~Formation CSS avancée~~ → sans objet
