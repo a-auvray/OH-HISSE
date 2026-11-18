@@ -31,3 +31,34 @@ jobs:
         run: uv run mypy app tests
       - name: Tests
         run: uv run pytest --cov=app --cov-report=term-missing
+
+  frontend:
+    name: Frontend (format, lint, types, tests, build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: npm ci
+      - name: Types de l'API à jour avec le backend
+        run: |
+          mkdir -p node_modules/.tmp
+          npm run api:types
+          git diff --exit-code -- src/api/schema.d.ts || {
+            echo "::error::src/api/schema.d.ts est périmé : lancer « npm run api:types » et commiter."
+            exit 1
+          }
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
