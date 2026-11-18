@@ -13,6 +13,9 @@ Après le site vitrine des tableaux (premier projet complet, backend + frontend,
 
 Point de départ : une première appli de sport, dont j'avais codé une partie du backend avant de faire générer le reste par IA. Résultat : une appli pleine de bugs, dont je n'étais pas fier. Décision : **tout reprendre à zéro, tout coder moi-même**, et voir plus grand qu'un simple carnet d'entraînement.
 
+> [!note] Novembre 2026 — le projet a changé
+> Le développement est confié à Claude (Claude Code). Je garde la main sur les décisions : toute amélioration qui sort de ce cahier des charges m'est soumise avant d'être codée.
+
 ## Ce que fait l'application
 Une application web qui réunit quatre espaces :
 
@@ -34,14 +37,14 @@ Le cœur du projet, c'est le **croisement** : chaque espace nourrit les autres (
 
 ## Objectif portfolio
 - Repo public sur GitHub, présenté sur mon portfolio
-- Heures documentées (exports Super Productivity) + journal de développement dans le repo
+- Journal de développement dans le repo (une entrée par brique)
 - Montrer à des recruteurs ou des écoles un projet ambitieux, mené avec régularité en parallèle du reste
 
 ## Pour qui
 **Moi d'abord.** En V1, l'application est à mon usage personnel, avec un **mode démo** (données fictives) pour que les visiteurs puissent la tester sans voir mes vraies données. Une ouverture à d'autres utilisateurs reste possible plus tard (cf. [[02 - Périmètre|Périmètre]]).
 
 ## Règles du jeu
-1. **Je code tout moi-même.** L'apprentissage prime sur la vitesse.
+1. **Développement confié à Claude, sous ma direction.** Le cahier des charges fait foi ; tout écart est validé avant d'être codé.
 2. **Pas de deadline, pas de stress.** Sessions de 1 h à 6 h selon l'énergie du moment.
 3. **La V1 reste centrée.** Toute idée qui part loin va dans la liste V+.
 4. **Une fonctionnalité = une branche Git.** Jamais de travail direct sur `main`.

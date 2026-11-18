@@ -4,7 +4,7 @@ tags:
 statut: brouillon
 ---
 
-# Cahier des charges — Projet (nom à définir)
+# Cahier des charges — Oh Hisse !
 
 > [!abstract] Le projet en bref
 > Une application web personnelle qui réunit quatre espaces — **Streetlifting**, **Marine**, **Vie courante** et **Objectifs** — et qui croise leurs données pour me guider au quotidien : quelle séance faire aujourd'hui, quand aller à l'eau et avec quel équipement, si je suis récupéré, si j'ai mérité mon cheat meal.
@@ -42,12 +42,12 @@ statut: brouillon
 ---
 
 ## Où j'en suis
-**Phase actuelle :** 0 — Cadrage
+**Phase actuelle :** 1 — Fondations *(phase 0 terminée le 18/11/2026)*
 
 - [ ] Relire chaque note, garder ou supprimer les 💡
-- [ ] Trancher les questions prioritaires de [[13 - Décisions et questions ouvertes|la note 13]]
-- [ ] Trouver le nom du projet
-- [ ] Créer le repo GitHub et protéger `main`
+- [x] Trancher les questions prioritaires de [[13 - Décisions et questions ouvertes|la note 13]]
+- [x] Trouver le nom du projet → **Oh Hisse !**
+- [x] Créer le repo GitHub et protéger `main`
 
 > [!tip]- Mode d'emploi Obsidian (clic pour déplier)
 > - **Clic** sur un lien : ouvre la note · **Ctrl + clic** : l'ouvre dans un nouvel onglet
