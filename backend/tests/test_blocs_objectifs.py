@@ -197,6 +197,6 @@ def test_les_objectifs_des_autres_sont_invisibles(connecte: TestClient) -> None:
     connecte.cookies.clear()
     connecte.post("/api/auth/demo")
 
-    assert connecte.get("/api/objectifs").json() == []
+    assert identifiant not in {e["id"] for e in connecte.get("/api/objectifs").json()}
     assert connecte.delete(f"/api/objectifs/{identifiant}").status_code == 404
     assert connecte.post("/api/streetlifting/blocs", json=bloc(objectif_id=identifiant)).status_code == 404

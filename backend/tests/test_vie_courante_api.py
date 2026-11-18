@@ -71,7 +71,7 @@ def test_le_sommeil_et_les_ecarts_des_autres_sont_invisibles(connecte: TestClien
     connecte.cookies.clear()
     connecte.post("/api/auth/demo")
 
-    assert connecte.get("/api/vie-courante/nuits").json() == []
-    assert connecte.get("/api/vie-courante/cheat-meals").json() == []
+    assert nuit["id"] not in {e["id"] for e in connecte.get("/api/vie-courante/nuits").json()}
+    assert ecart["id"] not in {e["id"] for e in connecte.get("/api/vie-courante/cheat-meals").json()}
     assert connecte.delete(f"/api/vie-courante/nuits/{nuit['id']}").status_code == 404
     assert connecte.delete(f"/api/vie-courante/cheat-meals/{ecart['id']}").status_code == 404

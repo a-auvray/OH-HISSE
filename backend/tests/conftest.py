@@ -18,6 +18,16 @@ TRACTION, DIPS, MUSCLE_UP = 1, 2, 3
 MDP = "une-phrase-de-passe-solide"
 
 
+@pytest.fixture(autouse=True)
+def limiteurs_neufs() -> Iterator[None]:
+    """Chaque test part de limiteurs vides : sinon les bacs à sable démo s'accumulent d'un test à l'autre."""
+    from app.routers.auth import limiteur_connexion, limiteur_demo
+
+    limiteur_connexion.reinitialiser()
+    limiteur_demo.reinitialiser()
+    yield
+
+
 @pytest.fixture
 def moteur() -> Iterator[Engine]:
     # Connexion unique : sinon chaque connexion verrait sa propre base en mémoire, vide.
@@ -65,9 +75,6 @@ def creer_compte(moteur: Engine, email: str) -> int:
 @pytest.fixture
 def connecte(client: TestClient, moteur: Engine) -> TestClient:
     """Client connecté à un compte personnel tout neuf."""
-    from app.routers.auth import limiteur_connexion
-
-    limiteur_connexion.reinitialiser()
     creer_compte(moteur, "moi@oh-hisse.fr")
     reponse = client.post("/api/auth/connexion", json={"email": "moi@oh-hisse.fr", "mot_de_passe": MDP})
     assert reponse.status_code == 200

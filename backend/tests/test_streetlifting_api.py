@@ -154,12 +154,12 @@ def test_un_autre_compte_ne_voit_ni_ne_touche_mes_seances(connecte: TestClient, 
 
 
 def test_la_demo_ne_voit_pas_mes_donnees(connecte: TestClient) -> None:
-    connecte.post("/api/streetlifting/seances", json=seance())
+    identifiant = connecte.post("/api/streetlifting/seances", json=seance()).json()["id"]
 
     connecte.cookies.clear()
     connecte.post("/api/auth/demo")
 
-    assert connecte.get("/api/streetlifting/seances").json() == []
+    assert identifiant not in {e["id"] for e in connecte.get("/api/streetlifting/seances").json()}
 
 
 def test_sans_session_tout_est_ferme(client: TestClient) -> None:
