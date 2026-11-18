@@ -35,11 +35,11 @@ P4 --> P5["Phase 5<br/>Accueil, démo<br/>et mise en ligne"]:::cadrage
 - [ ] Moodboards de chaque espace *(faits avec chaque espace, au moment de son identité visuelle)*
 
 ## Phase 1 — Fondations *(20–30 h)*
-- [ ] Arborescence backend + frontend
-- [ ] Base de données et premières tables
-- [ ] Authentification : compte perso + compte démo
-- [ ] Coquille de navigation : accueil + quatre espaces vides, transitions
-- [ ] Tag `v0.1.0`
+- [x] Arborescence backend + frontend
+- [x] Base de données et premières tables (Alembic dès le départ)
+- [x] Authentification : compte perso + compte démo (bac à sable par visiteur)
+- [x] Coquille de navigation : accueil + quatre espaces vides, transitions
+- [x] Tag `v0.1.0`
 
 ## Phase 2 — Streetlifting + Objectifs *(75–105 h)*
 - [ ] Saisie d'une séance
