@@ -1,0 +1,68 @@
+[project]
+name = "oh-hisse-backend"
+version = "0.1.0"
+description = "API d'Oh Hisse ! — Streetlifting, Marine, Vie courante, Objectifs"
+requires-python = ">=3.14"
+dependencies = [
+    "alembic>=1.20.1",
+    "bcrypt>=5.0.0",
+    "fastapi>=0.164.0",
+    "httpx>=0.28.1",
+    "pydantic-settings>=2.16.3",
+    "pyjwt>=2.15.1",
+    "sqlmodel>=0.0.50",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx2>=2.16.2",
+    "mypy>=2.4.1",
+    "pytest>=9.2.0",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.17.5",
+]
+
+# --- Qualité -----------------------------------------------------------------
+
+[tool.ruff]
+line-length = 110
+target-version = "py314"
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle
+    "F",        # pyflakes
+    "I",        # tri des imports
+    "B",        # bugbear : pièges courants
+    "UP",       # syntaxe Python moderne
+    "SIM",      # simplifications
+    "N",        # conventions de nommage
+    "S",        # sécurité (bandit)
+    "RUF",
+]
+ignore = ["RUF001", "RUF002", "RUF003"]  # caractères ambigus : faux positifs sur le français
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106"]  # assert et mots de passe de test
+
+[tool.mypy]
+python_version = "3.14"
+strict = true
+plugins = ["pydantic.mypy"]
+exclude = ["alembic/"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+
+# --- Paquet ------------------------------------------------------------------
+# Le projet est installé en mode éditable : `importlib.metadata` lit alors sa version.
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "app"
+module-root = ""
