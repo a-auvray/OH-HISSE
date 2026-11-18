@@ -45,6 +45,7 @@ statut: brouillon
 | Durées en eau froide prudentes, ×2 avec combinaison, ÷2 en reprise | Seuil de choc thermique 15 °C (RNLI), règle 1-10-1 (Giesbrecht) |
 | Easter egg : force 10 (≥ 89 km/h), ton de clin d'œil inquiet, jamais une réussite | Ne pas encourager à sortir par tempête |
 | Distance jusqu'à l'eau : indication qualitative (mer haute / basse) en attendant Litto3D | Le relief IGN s'arrête au haut de plage : pas de fausse précision |
+| Récupération, cheat meal et sommeil : règles de la [[05 - Vie courante#Règles validées (18/11/2026)|note 05]] | Heuristiques explicables, ajustables dans un fichier de configuration |
 | Exercices de base : tractions, dips, muscle-up (pas de squat) | Mes trois mouvements ; les autres restent ajoutables |
 | Lest arrondi à 1,25 kg | Mon plus petit écart de charge disponible |
 | Auto-régulation par la table RPE (1RM récent × % cible), ±5 % max, deload localisé après 2 échecs | Une seule formule pour le 1RM et la charge proposée (cf. [[03 - Streetlifting#Règles validées (18/11/2026)|règles]]) |
@@ -67,8 +68,8 @@ statut: brouillon
 - [ ] Carte : ~~Leaflet ou Mapbox ?~~ MapLibre GL ✓ — reste : représenter le sable découvert selon la marée (pente par spot, ou Litto3D)
 
 ### Vie courante
-- [ ] Durées de récupération (≈ 96 h, ≈ 48 h…) : calibrées sur quelles références ?
-- [ ] Règles du verdict cheat meal
+- [x] Durées de récupération → 96 / 72 / 48 / 24 h selon le type de séance, ajustables (note 05)
+- [x] Règles du verdict cheat meal → points sur 48 h (note 05)
 
 ### Transversal
 - [x] Mode démo → bac à sable par visiteur, effacé après 24 h

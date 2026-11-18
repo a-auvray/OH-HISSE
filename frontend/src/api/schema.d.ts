@@ -414,6 +414,115 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/vie-courante/nuits': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Lister Nuits */
+    get: operations['lister_nuits_api_vie_courante_nuits_get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/vie-courante/nuits/{jour}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Enregistrer Nuit
+     * @description Saisie rapide de la nuit dont le réveil est `jour` ; une nouvelle saisie remplace l'ancienne.
+     */
+    put: operations['enregistrer_nuit_api_vie_courante_nuits__jour__put']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/vie-courante/nuits/{nuit_id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /** Supprimer Nuit */
+    delete: operations['supprimer_nuit_api_vie_courante_nuits__nuit_id__delete']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/vie-courante/cheat-meals': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Lister Cheat Meals */
+    get: operations['lister_cheat_meals_api_vie_courante_cheat_meals_get']
+    put?: never
+    /** Enregistrer Cheat Meal */
+    post: operations['enregistrer_cheat_meal_api_vie_courante_cheat_meals_post']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/vie-courante/cheat-meals/{ecart_id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /** Supprimer Cheat Meal */
+    delete: operations['supprimer_cheat_meal_api_vie_courante_cheat_meals__ecart_id__delete']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/vie-courante/etat': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Etat Du Jour
+     * @description Récupération, verdict cheat meal et sommeil, calculés à l'instant (jamais stockés).
+     */
+    get: operations['etat_du_jour_api_vie_courante_etat_get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
 }
 export type webhooks = Record<string, never>
 export interface components {
@@ -535,6 +644,28 @@ export interface components {
        */
       detacher_objectif: boolean
     }
+    /** CheatMealEcrit */
+    CheatMealEcrit: {
+      /**
+       * Date
+       * Format: date
+       */
+      date: string
+      /** Note */
+      note?: string | null
+    }
+    /** CheatMealLu */
+    CheatMealLu: {
+      /**
+       * Date
+       * Format: date
+       */
+      date: string
+      /** Note */
+      note?: string | null
+      /** Id */
+      id: number
+    }
     /** Conditions */
     Conditions: {
       spot: components['schemas']['SpotLu']
@@ -590,6 +721,21 @@ export interface components {
       maximum_min: number | null
       /** Texte */
       texte: string
+    }
+    /**
+     * EtatDuJour
+     * @description Les verdicts de Vie courante, à cet instant.
+     */
+    EtatDuJour: {
+      /**
+       * Instant
+       * Format: date-time
+       */
+      instant: string
+      recuperation: components['schemas']['Recuperation']
+      cheat_meal: components['schemas']['VerdictCheatMeal']
+      sommeil: components['schemas']['Sommeil']
+      poids: components['schemas']['PoidsActuel'] | null
     }
     /** EtatSante */
     EtatSante: {
@@ -735,6 +881,27 @@ export interface components {
       hauteur_m: number
       /** Coefficient */
       coefficient: number | null
+    }
+    /** NuitEcrite */
+    NuitEcrite: {
+      /** Heures */
+      heures: number
+      /** Qualite */
+      qualite?: number | null
+    }
+    /** NuitLue */
+    NuitLue: {
+      /** Heures */
+      heures: number
+      /** Qualite */
+      qualite?: number | null
+      /** Id */
+      id: number
+      /**
+       * Date
+       * Format: date
+       */
+      date: string
     }
     /** ObjectifEcrit */
     ObjectifEcrit: {
@@ -949,6 +1116,23 @@ export interface components {
       /** E1Rm Total Kg */
       e1rm_total_kg: number
     }
+    /** Recuperation */
+    Recuperation: {
+      /** Restant H */
+      restant_h: number
+      /** Total H */
+      total_h: number
+      /** Progression */
+      progression: number
+      /** Recupere */
+      recupere: boolean
+      /** Fin */
+      fin: string | null
+      /** Raisons */
+      raisons: string[]
+      /** Recup Active Conseillee */
+      recup_active_conseillee: boolean
+    }
     /** SeanceDuJour */
     SeanceDuJour: {
       bloc: components['schemas']['AvancementBloc'] | null
@@ -1094,6 +1278,15 @@ export interface components {
        */
       coucher: string
     }
+    /** Sommeil */
+    Sommeil: {
+      /** Derniere Nuit H */
+      derniere_nuit_h: number | null
+      /** Moyenne H */
+      moyenne_h: number | null
+      /** Nuits Comptees */
+      nuits_comptees: number
+    }
     /** SortieEcrite */
     SortieEcrite: {
       /** Eau C */
@@ -1220,6 +1413,20 @@ export interface components {
       input?: unknown
       /** Context */
       ctx?: Record<string, never>
+    }
+    /** VerdictCheatMeal */
+    VerdictCheatMeal: {
+      /**
+       * Verdict
+       * @enum {string}
+       */
+      verdict: 'oui' | 'petit' | 'non'
+      /** Points */
+      points: number
+      /** Phrase */
+      phrase: string
+      /** Details */
+      details: string[]
     }
   }
   responses: never
@@ -2444,6 +2651,249 @@ export interface operations {
           [name: string]: unknown
         }
         content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  lister_nuits_api_vie_courante_nuits_get: {
+    parameters: {
+      query?: {
+        jours?: number
+      }
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['NuitLue'][]
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  enregistrer_nuit_api_vie_courante_nuits__jour__put: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        jour: string
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['NuitEcrite']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['NuitLue']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  supprimer_nuit_api_vie_courante_nuits__nuit_id__delete: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        nuit_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  lister_cheat_meals_api_vie_courante_cheat_meals_get: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CheatMealLu'][]
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  enregistrer_cheat_meal_api_vie_courante_cheat_meals_post: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CheatMealEcrit']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CheatMealLu']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  supprimer_cheat_meal_api_vie_courante_cheat_meals__ecart_id__delete: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        ecart_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  etat_du_jour_api_vie_courante_etat_get: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['EtatDuJour']
+        }
       }
       /** @description Validation Error */
       422: {

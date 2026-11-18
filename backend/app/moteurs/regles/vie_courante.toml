@@ -1,0 +1,45 @@
+# Règles de Vie courante (validées le 18/11/2026).
+# Heuristiques à calibrer à l'usage (note 05 du CDC) : il n'existe pas de référence unique.
+
+[recuperation]
+# Une séance n'a qu'une date : on la place à cette heure-là.
+heure_seance = 18
+# Durée de récupération selon le type de séance (heures).
+max_h = 96        # tentative de max : single ou double à RPE 9 et plus
+force_h = 72      # 5 reps ou moins, RPE 8 à 9
+volume_h = 48     # 6 reps et plus
+legere_h = 24     # RPE moyen de 7 ou moins
+# Ce qui allonge la récupération.
+ressenti_rouge_max = 4      # ressenti de 4 ou moins
+ressenti_rouge_h = 24
+nuit_courte_max_h = 6.0     # nuit qui suit la séance
+nuit_courte_h = 12
+# La mer.
+sortie_dure_minutes = 30    # nage de plus de 30 min…
+sortie_dure_eau_c = 12.0    # … ou eau sous 12 °C : fatigue
+sortie_dure_h = 12
+recup_active_minutes = 20   # baignade de 20 min ou moins…
+recup_active_eau_c = 12.0   # … dans une eau à 12 °C ou plus : récupération active
+recup_active_h = 12
+# Effets sur la séance du jour et sur l'assistant de sortie.
+allegement_au_dela_h = 24   # RPE cible −0,5, séries en bas de la plage
+allegement_rpe = 0.5
+sans_max_au_dela_h = 48     # pas de tentative de max, RPE plafonné
+rpe_plafond = 8.0
+
+[cheat_meal]
+fenetre_h = 48
+seance_lourde_rpe = 8.5
+points_seance_lourde = 2
+points_seance = 1
+nage_minutes = 30
+points_nage = 1
+eau_froide_c = 12.0
+points_eau_froide = 1
+jours_depuis_dernier = 4
+points_dernier_recent = -2
+seuil_oui = 3     # « Ce soir, t'as le droit »
+seuil_petit = 2   # « Un petit écart, oui »
+
+[sommeil]
+moyenne_jours = 7

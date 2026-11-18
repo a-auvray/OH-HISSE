@@ -8,6 +8,18 @@ from app.models.marine import SortieMer, Spot
 from app.models.objectifs import Objectif
 from app.models.streetlifting import Bloc, Exercice, Seance, Serie
 from app.models.utilisateur import Utilisateur
-from app.models.vie_courante import Pesee
+from app.models.vie_courante import CheatMeal, Nuit, Pesee
 
-__all__ = ["Bloc", "Exercice", "Objectif", "Pesee", "Seance", "Serie", "SortieMer", "Spot", "Utilisateur"]
+__all__ = [
+    "Bloc",
+    "CheatMeal",
+    "Exercice",
+    "Nuit",
+    "Objectif",
+    "Pesee",
+    "Seance",
+    "Serie",
+    "SortieMer",
+    "Spot",
+    "Utilisateur",
+]
