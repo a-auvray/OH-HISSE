@@ -9,8 +9,10 @@ from app.core.acces import a_moi
 from app.core.authentification import UtilisateurDep
 from app.core.base_de_donnees import SessionDep
 from app.models import SortieMer, Spot
+from app.moteurs import recuperation
 from app.schemas.marine import Assistant, Conditions, Mode, SortieEcrite, SortieLue, SpotLu
 from app.services import marine as service
+from app.services import vie_courante
 from app.services.open_meteo import ConditionsIndisponibles, OpenMeteo, open_meteo
 
 routeur = APIRouter(prefix="/marine", tags=["marine"])
@@ -59,8 +61,16 @@ def assistant(
             status.HTTP_503_SERVICE_UNAVAILABLE,
             "L'assistant a besoin des conditions en mer : Open-Meteo ne répond pas.",
         ) from None
-    jours = service.jours_depuis_derniere_sortie(session, utilisateur, conditions_du_spot.maintenant.instant)
-    return service.assistant(conditions_du_spot, mode, duree_min, combinaison, jours)
+    instant = conditions_du_spot.maintenant.instant
+    jours = service.jours_depuis_derniere_sortie(session, utilisateur, instant)
+    reponse = service.assistant(conditions_du_spot, mode, duree_min, combinaison, jours)
+    etat = vie_courante.etat_recuperation(vie_courante.donnees(session, utilisateur, instant), instant)
+    if recuperation.consigne(etat).recup_active_conseillee:
+        reponse.recuperation_active = (
+            f"Ta récupération n'est pas finie ({etat.restant_h:.0f} h restantes) : une baignade de "
+            "20 minutes au plus, sans forcer, t'aidera à récupérer."
+        )
+    return reponse
 
 
 # --- Carnet de sortie -----------------------------------------------------------------------

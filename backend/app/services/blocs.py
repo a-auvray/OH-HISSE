@@ -6,18 +6,20 @@ from fastapi import HTTPException, status
 from sqlmodel import Session, col, func, select
 
 from app.models import Bloc, Seance, Utilisateur
-from app.moteurs import poids
+from app.moteurs import poids, recuperation, sommeil
 from app.moteurs.autoregulation import ExercicePrevu, Forme, charger_regles, index_prochaine_seance, proposer
 from app.schemas.blocs import (
     AvancementBloc,
     BlocImporte,
     BlocLu,
+    FormeDuJour,
     PoidsUtilise,
     Proposition,
     SeanceDuJour,
     SeanceDuProgramme,
 )
 from app.services import streetlifting as service
+from app.services import vie_courante
 
 
 def slugs_vers_ids(session: Session, utilisateur: Utilisateur) -> dict[str, tuple[int, str]]:
@@ -84,6 +86,30 @@ def bloc_actif(session: Session, utilisateur: Utilisateur, jour: dt.date) -> Blo
     )
 
 
+def forme_du_jour(session: Session, utilisateur: Utilisateur, jour: dt.date) -> tuple[Forme, FormeDuJour]:
+    """Sommeil de la nuit et consigne de récupération, pour ajuster la séance du jour."""
+    instant = vie_courante.maintenant()
+    if jour != instant.date():
+        instant = dt.datetime.combine(jour, dt.time(12), vie_courante.PARIS)
+    donnees = vie_courante.donnees(session, utilisateur, instant)
+    nuit = sommeil.tendance(donnees.nuits, jour).derniere_nuit
+    etat = vie_courante.etat_recuperation(donnees, instant)
+    c = recuperation.consigne(etat)
+    forme = Forme(
+        sommeil_h=nuit.heures if nuit else None,
+        rpe_baisse=c.rpe_baisse,
+        rpe_plafond=c.rpe_plafond,
+        series_au_minimum=c.series_au_minimum,
+        raison_recuperation=c.raison,
+    )
+    consignes = [c.raison] if c.raison else []
+    if nuit and nuit.heures < charger_regles().sommeil_court_h:
+        consignes.insert(0, f"Nuit de {nuit.heures:g} h : séance adaptée")
+    return forme, FormeDuJour(
+        sommeil_h=nuit.heures if nuit else None, recuperation_restant_h=etat.restant_h, consignes=consignes
+    )
+
+
 def seance_du_jour(session: Session, utilisateur: Utilisateur, jour: dt.date) -> SeanceDuJour:
     bloc = bloc_actif(session, utilisateur, jour)
     if bloc is None:
@@ -102,6 +128,7 @@ def seance_du_jour(session: Session, utilisateur: Utilisateur, jour: dt.date) ->
     pdc = poids.poids_a_la_date(service.pesees(session, utilisateur), jour)
     exercices = slugs_vers_ids(session, utilisateur)
     regles = charger_regles()
+    forme, forme_lue = forme_du_jour(session, utilisateur, jour)
 
     propositions = []
     for ligne in modele.exercices:
@@ -123,7 +150,7 @@ def seance_du_jour(session: Session, utilisateur: Utilisateur, jour: dt.date) ->
             )
             continue
         historique = service.performances(session, utilisateur, exercice_id, avant=jour)
-        resultat = proposer(prevu, bloc.type, historique, pdc.kg, Forme(), regles)  # type: ignore[arg-type]
+        resultat = proposer(prevu, bloc.type, historique, pdc.kg, forme, regles)  # type: ignore[arg-type]
         propositions.append(
             Proposition(
                 exercice_id=exercice_id,
@@ -148,4 +175,5 @@ def seance_du_jour(session: Session, utilisateur: Utilisateur, jour: dt.date) ->
         nom=modele.nom,
         poids=PoidsUtilise(kg=pdc.kg, a_jour=pdc.a_jour) if pdc else None,
         propositions=propositions,
+        forme=forme_lue,
     )

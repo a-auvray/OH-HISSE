@@ -160,3 +160,38 @@
   gap: var(--espace-3);
   margin-top: var(--espace-4);
 }
+
+/* Croisement avec Vie courante : sommeil et récupération ont modifié la séance. */
+.forme {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espace-4);
+  padding: var(--espace-3) var(--espace-6);
+  border-radius: 14px;
+  border: 1px solid color-mix(in oklab, var(--vie-courante) 50%, transparent);
+  background: color-mix(in oklab, var(--vie-courante) 9%, transparent);
+}
+
+.formeTitre {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--vie-courante-clair);
+}
+
+.forme ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espace-4);
+  font-size: 0.9rem;
+}
+
+.formeLien {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: var(--vie-courante-clair);
+}

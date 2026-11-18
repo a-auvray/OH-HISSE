@@ -337,3 +337,12 @@
   border: 1px solid currentColor;
   background: transparent;
 }
+
+/* Croisement avec Vie courante. */
+.recuperation {
+  padding: var(--espace-4) var(--espace-6);
+  border-radius: 16px;
+  color: #d4f5dd;
+  background: rgb(63 174 94 / 0.12);
+  border: 1px solid rgb(63 174 94 / 0.45);
+}
