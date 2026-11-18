@@ -73,3 +73,17 @@ class EtatDuJour(BaseModel):
     cheat_meal: VerdictCheatMeal
     sommeil: Sommeil
     poids: PoidsActuel | None
+
+
+class SectionLue(BaseModel):
+    espace: Literal["streetlifting", "marine", "vie-courante", "objectifs"]
+    titre: str
+    valeur: str | None
+    lignes: list[str]
+
+
+class BriefingLu(BaseModel):
+    type: Literal["jour", "semaine", "debut-bloc", "fin-bloc"]
+    titre: str
+    sous_titre: str
+    sections: list[SectionLue]

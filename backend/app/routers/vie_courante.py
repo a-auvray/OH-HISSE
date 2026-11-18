@@ -1,17 +1,21 @@
 """Routes de Vie courante : pesées, sommeil, cheat meals, état du jour."""
 
 import datetime as dt
+from typing import Annotated, Literal
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Query, status
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import col, select
 
 from app.core.acces import a_moi
 from app.core.authentification import UtilisateurDep
 from app.core.base_de_donnees import SessionDep
-from app.models import CheatMeal, Nuit, Pesee
+from app.models import Bloc, CheatMeal, Nuit, Pesee
 from app.moteurs import poids, recuperation
+from app.moteurs.briefing import Briefing
+from app.routers.marine import OpenMeteoDep
 from app.schemas.vie_courante import (
+    BriefingLu,
     CheatMealEcrit,
     CheatMealLu,
     EtatDuJour,
@@ -21,9 +25,11 @@ from app.schemas.vie_courante import (
     PeseeLue,
     PoidsActuel,
     Recuperation,
+    SectionLue,
     Sommeil,
     VerdictCheatMeal,
 )
+from app.services import briefings as service_briefings
 from app.services import streetlifting as service
 from app.services import vie_courante as service_vie
 
@@ -168,3 +174,39 @@ def etat_du_jour(utilisateur: UtilisateurDep, session: SessionDep) -> EtatDuJour
         ),
         poids=PoidsActuel(kg=pdc.kg, a_jour=pdc.a_jour, derniere_pesee=pdc.derniere_pesee) if pdc else None,
     )
+
+
+# --- Briefings ---------------------------------------------------------------------------------
+
+
+def _briefing_lu(b: Briefing) -> BriefingLu:
+    return BriefingLu(
+        type=b.type,
+        titre=b.titre,
+        sous_titre=b.sous_titre,
+        sections=[
+            SectionLue(espace=s.espace, titre=s.titre, valeur=s.valeur, lignes=list(s.lignes))
+            for s in b.sections
+        ],
+    )
+
+
+@routeur.get("/briefings/jour")
+def briefing_du_jour(utilisateur: UtilisateurDep, session: SessionDep, meteo: OpenMeteoDep) -> BriefingLu:
+    return _briefing_lu(service_briefings.quotidien(session, utilisateur, meteo))
+
+
+@routeur.get("/briefings/semaine")
+def briefing_de_la_semaine(
+    utilisateur: UtilisateurDep, session: SessionDep, decalage: Annotated[int, Query(ge=0, le=52)] = 0
+) -> BriefingLu:
+    """`decalage` : 0 pour la semaine en cours, 1 pour la précédente…"""
+    return _briefing_lu(service_briefings.hebdomadaire(session, utilisateur, decalage))
+
+
+@routeur.get("/briefings/bloc/{bloc_id}", responses={404: {}})
+def briefing_de_bloc(
+    bloc_id: int, utilisateur: UtilisateurDep, session: SessionDep, moment: Literal["debut", "fin"] = "fin"
+) -> BriefingLu:
+    bloc = a_moi(session, Bloc, bloc_id, utilisateur)
+    return _briefing_lu(service_briefings.du_bloc(session, utilisateur, bloc, moment))

@@ -523,6 +523,60 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/vie-courante/briefings/jour': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Briefing Du Jour */
+    get: operations['briefing_du_jour_api_vie_courante_briefings_jour_get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/vie-courante/briefings/semaine': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Briefing De La Semaine
+     * @description `decalage` : 0 pour la semaine en cours, 1 pour la précédente…
+     */
+    get: operations['briefing_de_la_semaine_api_vie_courante_briefings_semaine_get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/vie-courante/briefings/bloc/{bloc_id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Briefing De Bloc */
+    get: operations['briefing_de_bloc_api_vie_courante_briefings_bloc__bloc_id__get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
 }
 export type webhooks = Record<string, never>
 export interface components {
@@ -645,6 +699,20 @@ export interface components {
        * @default false
        */
       detacher_objectif: boolean
+    }
+    /** BriefingLu */
+    BriefingLu: {
+      /**
+       * Type
+       * @enum {string}
+       */
+      type: 'jour' | 'semaine' | 'debut-bloc' | 'fin-bloc'
+      /** Titre */
+      titre: string
+      /** Sous Titre */
+      sous_titre: string
+      /** Sections */
+      sections: components['schemas']['SectionLue'][]
     }
     /** CheatMealEcrit */
     CheatMealEcrit: {
@@ -1213,6 +1281,20 @@ export interface components {
       poids_a_jour: boolean
       /** Records */
       records: components['schemas']['Record'][]
+    }
+    /** SectionLue */
+    SectionLue: {
+      /**
+       * Espace
+       * @enum {string}
+       */
+      espace: 'streetlifting' | 'marine' | 'vie-courante' | 'objectifs'
+      /** Titre */
+      titre: string
+      /** Valeur */
+      valeur: string | null
+      /** Lignes */
+      lignes: string[]
     }
     /** SensLu */
     SensLu: {
@@ -2909,6 +2991,112 @@ export interface operations {
         content: {
           'application/json': components['schemas']['EtatDuJour']
         }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  briefing_du_jour_api_vie_courante_briefings_jour_get: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['BriefingLu']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  briefing_de_la_semaine_api_vie_courante_briefings_semaine_get: {
+    parameters: {
+      query?: {
+        decalage?: number
+      }
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['BriefingLu']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  briefing_de_bloc_api_vie_courante_briefings_bloc__bloc_id__get: {
+    parameters: {
+      query?: {
+        moment?: 'debut' | 'fin'
+      }
+      header?: never
+      path: {
+        bloc_id: number
+      }
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['BriefingLu']
+        }
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Validation Error */
       422: {
