@@ -1,0 +1,203 @@
+.cadre {
+  position: relative;
+  height: calc(100vh - 230px);
+  min-height: 520px;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgb(176 216 255 / 0.15);
+  box-shadow: 0 40px 100px -40px #000000;
+}
+
+.carte {
+  position: absolute;
+  inset: 0;
+}
+
+/* Le vent passe au-dessus de la carte, sans capter les clics. */
+.vent {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* --- Spots --- */
+
+[data-niveau='vert'] {
+  --niveau: #3fae5e;
+}
+[data-niveau='rouge'] {
+  --niveau: #e5484d;
+}
+[data-niveau='noir'] {
+  --niveau: #000000;
+}
+[data-niveau='inconnu'] {
+  --niveau: #9aa3ad;
+}
+
+.spot {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  background: var(--niveau);
+  cursor: pointer;
+  box-shadow: 0 0 0 0 color-mix(in oklab, var(--niveau) 70%, transparent);
+  animation: pulsation 2.4s ease-out infinite;
+}
+
+@keyframes pulsation {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--niveau) 70%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 18px transparent;
+  }
+}
+
+.popup :global(.maplibregl-popup-content) {
+  display: grid;
+  gap: 2px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-family: var(--police-texte);
+  font-size: 0.85rem;
+  color: var(--texte);
+  background: #0b2238;
+  border: 1px solid rgb(176 216 255 / 0.25);
+  box-shadow: 0 20px 50px -20px #000000;
+}
+
+.popup :global(.maplibregl-popup-content strong) {
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--marine-clair);
+}
+
+.popup :global(.maplibregl-popup-tip) {
+  border-top-color: #0b2238;
+  border-bottom-color: #0b2238;
+}
+
+/* --- Mer et courant --- */
+
+.temperature {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-size: 1.3rem;
+  color: #041320;
+  background: rgb(176 216 255 / 0.9);
+  box-shadow: 0 10px 30px -10px #000000;
+  pointer-events: none;
+}
+
+/* Flèche de courant : tourne vers où porte le courant, et file doucement. */
+.courant {
+  position: relative;
+  width: var(--longueur);
+  height: 2px;
+  rotate: calc(var(--cap) - 90deg);
+  background: linear-gradient(90deg, transparent, #9fe3ff);
+  opacity: 0.85;
+  animation: filer 2.2s ease-in-out infinite;
+}
+
+.courant::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: -4px;
+  border-left: 8px solid #9fe3ff;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+
+@keyframes filer {
+  0%,
+  100% {
+    translate: -4px 0;
+    opacity: 0.45;
+  }
+  50% {
+    translate: 4px 0;
+    opacity: 0.95;
+  }
+}
+
+/* --- Panneaux --- */
+
+.legende,
+.outils {
+  position: absolute;
+  display: grid;
+  gap: 4px;
+  padding: 12px 16px;
+  border-radius: 18px;
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+  background: rgb(4 19 32 / 0.78);
+  border: 1px solid rgb(176 216 255 / 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.legende {
+  top: 16px;
+  left: 16px;
+  max-width: 280px;
+}
+
+.legende strong {
+  color: var(--marine-clair);
+}
+
+.note {
+  font-size: 0.75rem;
+  color: var(--texte-faible);
+}
+
+.outils {
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: var(--espace-2);
+}
+
+.mesure {
+  font-family: var(--police-espace);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--texte);
+  margin-right: var(--espace-2);
+}
+
+.bouton,
+.principal {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bouton {
+  border: 1px solid rgb(176 216 255 / 0.25);
+  background: transparent;
+  color: var(--texte);
+}
+
+.bouton:hover:not(:disabled) {
+  border-color: var(--marine-clair);
+}
+
+.principal {
+  border: 0;
+  color: #041320;
+  background: var(--marine-clair);
+}
