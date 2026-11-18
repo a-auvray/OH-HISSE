@@ -28,7 +28,10 @@ def session(moteur: Engine) -> Iterator[Session]:
 
 
 @pytest.fixture
-def client(moteur: Engine) -> Iterator[TestClient]:
+def client(moteur: Engine, monkeypatch: pytest.MonkeyPatch) -> Iterator[TestClient]:
+    # Le ménage du démarrage (cycle de vie) doit lui aussi viser la base de test.
+    monkeypatch.setattr("app.main.moteur", moteur)
+
     def session_de_test() -> Iterator[Session]:
         with Session(moteur) as session:
             yield session

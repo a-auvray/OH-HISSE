@@ -1,15 +1,11 @@
-import { render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router'
+import { screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
+import { rendre } from '../test/rendu'
 import { Accueil } from './Accueil'
 
 function afficher() {
-  render(
-    <MemoryRouter>
-      <Accueil />
-    </MemoryRouter>,
-  )
+  rendre(<Accueil />)
 }
 
 describe('Accueil', () => {

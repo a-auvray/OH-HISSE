@@ -28,7 +28,7 @@ jobs:
       - name: Lint
         run: uv run ruff check .
       - name: Types
-        run: uv run mypy app tests
+        run: uv run mypy app tests scripts
       - name: Tests
         run: uv run pytest --cov=app --cov-report=term-missing
       - name: Migrations à jour avec les modèles

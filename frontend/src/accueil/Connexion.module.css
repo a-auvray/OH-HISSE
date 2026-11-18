@@ -1,0 +1,170 @@
+.ecran {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+.contenu {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: var(--espace-6);
+  padding: var(--espace-12) 0;
+}
+
+.marque {
+  font-family: var(--police-marque);
+  font-weight: 800;
+  font-size: clamp(4rem, 9vw, 7.5rem);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  display: flex;
+  overflow: hidden;
+  padding: 0.08em 0.04em;
+  background: linear-gradient(
+    100deg,
+    var(--streetlifting-clair) 0%,
+    #ffffff 35%,
+    var(--marine-clair) 70%,
+    var(--vie-courante-clair) 100%
+  );
+  background-clip: text;
+  color: transparent;
+}
+
+.marque span {
+  display: inline-block;
+  /* Chaque lettre hérite du dégradé du titre. */
+  background: inherit;
+  background-clip: text;
+}
+
+.devise {
+  color: var(--texte-doux);
+  font-size: 1.15rem;
+  letter-spacing: 0.01em;
+}
+
+.carte {
+  margin-top: var(--espace-6);
+  width: 400px;
+  padding: var(--espace-8);
+  border-radius: 22px;
+  background: color-mix(in oklab, var(--fond-eleve) 72%, transparent);
+  border: 1px solid color-mix(in oklab, #ffffff 9%, transparent);
+  box-shadow:
+    0 30px 80px -20px rgb(0 0 0 / 0.7),
+    inset 0 1px 0 rgb(255 255 255 / 0.06);
+  backdrop-filter: blur(24px) saturate(140%);
+}
+
+.formulaire {
+  display: grid;
+  gap: var(--espace-4);
+}
+
+.champ {
+  display: grid;
+  gap: var(--espace-2);
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+}
+
+.champ input {
+  font: inherit;
+  font-size: 1rem;
+  color: var(--texte);
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--trait);
+  background: rgb(0 0 0 / 0.35);
+  transition:
+    border-color var(--duree-rapide),
+    box-shadow var(--duree-rapide);
+}
+
+.champ input:focus {
+  outline: none;
+  border-color: color-mix(in oklab, var(--marine) 70%, white);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--marine) 25%, transparent);
+}
+
+.erreur {
+  color: #ff9a9d;
+  font-size: 0.9rem;
+}
+
+.principal {
+  margin-top: var(--espace-2);
+  padding: 13px;
+  border: 0;
+  border-radius: 10px;
+  font-weight: 700;
+  color: #0b0d10;
+  background: var(--texte);
+  transition:
+    transform var(--duree-rapide) var(--courbe-sortie),
+    background var(--duree-rapide);
+}
+
+.principal:hover:not(:disabled) {
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.separateur {
+  display: flex;
+  align-items: center;
+  gap: var(--espace-3);
+  margin: var(--espace-6) 0;
+  color: var(--texte-faible);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.separateur::before,
+.separateur::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--trait);
+}
+
+.demo {
+  width: 100%;
+  display: grid;
+  gap: 2px;
+  padding: 14px;
+  border-radius: 12px;
+  text-align: center;
+  background: transparent;
+  border: 1px solid transparent;
+  /* Bordure aux couleurs des quatre espaces. */
+  background:
+    linear-gradient(var(--fond-carte), var(--fond-carte)) padding-box,
+    linear-gradient(90deg, var(--streetlifting), var(--vie-courante), var(--marine), var(--objectifs))
+      border-box;
+  transition: transform var(--duree-rapide) var(--courbe-sortie);
+}
+
+.demo:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.demoTitre {
+  font-weight: 700;
+}
+
+.demoDetail {
+  font-size: 0.82rem;
+  color: var(--texte-doux);
+}
