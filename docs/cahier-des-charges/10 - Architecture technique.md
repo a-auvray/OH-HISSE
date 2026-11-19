@@ -49,7 +49,7 @@ Principe : **le navigateur n'appelle jamais une API externe directement.** Le ba
 | Vagues, houle, température de l'eau, courants | Open-Meteo Marine | ✅ Validé (une maille couvre la zone) |
 | Marées : hauteurs, PM / BM | Open-Meteo Marine, ramené au zéro hydrographique | ✅ ±0,22 m, ±36 min (jusqu'à 1 h 30 en mortes-eaux) |
 | Coefficient de marée | Calculé via le marnage à Brest | ✅ 0 à 3 points d'écart avec le SHOM |
-| Relief de la plage | IGN Géoplateforme (RGE ALTI) ; Litto3D pour l'estran | ⚠️ Estran à traiter en phase 3 |
+| Relief de la plage | Litto3D® (Shom), préparé une fois dans `app/donnees/estran.json` | ✅ estran complet, relevé 2016-2018 |
 | Fond de carte | MapLibre GL + OpenFreeMap | — |
 
 Détail des tests : [`docs/recherche/api-externes.md`](../recherche/api-externes.md).

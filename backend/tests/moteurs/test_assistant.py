@@ -62,3 +62,19 @@ def test_une_longue_sortie_doit_tenir_avant_le_coucher() -> None:
     creneaux = meilleurs_creneaux(heures(), JOURS, 120, J1)
 
     assert all(c.fin <= JOURS[0].coucher for c in creneaux)
+
+
+def test_la_marche_jusqu_a_l_eau_remplace_la_hauteur_quand_la_plage_est_relevee() -> None:
+    longues = [
+        HeurePrevue(h.instant, h.situation, h.air_c, hauteur_eau_m=2.0, distance_eau_m=420) for h in heures()
+    ]
+    courtes = [
+        HeurePrevue(h.instant, h.situation, h.air_c, hauteur_eau_m=7.5, distance_eau_m=10) for h in heures()
+    ]
+
+    loin = meilleurs_creneaux(longues, JOURS, 30, J1)[0]
+    pres = meilleurs_creneaux(courtes, JOURS, 30, J1)[0]
+
+    assert "≈ 420 m de marche jusqu'à l'eau" in loin.reserves
+    assert not any("Mer basse" in r for r in loin.reserves)
+    assert "L'eau au pied de la plage (≈ 10 m de sable)" in pres.atouts

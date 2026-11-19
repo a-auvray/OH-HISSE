@@ -10,9 +10,9 @@ from app.core.authentification import UtilisateurDep
 from app.core.base_de_donnees import SessionDep
 from app.models import SortieMer, Spot
 from app.moteurs import recuperation
-from app.schemas.marine import Assistant, Conditions, Mode, SortieEcrite, SortieLue, SpotLu
+from app.schemas.marine import Assistant, Conditions, Mode, SortieEcrite, SortieLue, SpotLu, TraitDeCote
+from app.services import estran, vie_courante
 from app.services import marine as service
-from app.services import vie_courante
 from app.services.open_meteo import ConditionsIndisponibles, OpenMeteo, open_meteo
 
 routeur = APIRouter(prefix="/marine", tags=["marine"])
@@ -40,6 +40,15 @@ def conditions(
             status.HTTP_503_SERVICE_UNAVAILABLE,
             "Les conditions en mer sont momentanément indisponibles (Open-Meteo ne répond pas).",
         ) from None
+
+
+@routeur.get("/trait-de-cote", responses={404: {}})
+def trait_de_cote(_: UtilisateurDep, hauteur_m: Annotated[float, Query(ge=-2, le=12)]) -> TraitDeCote:
+    """Bord de l'eau sur les plages de la zone pour cette hauteur de marée (relief Litto3D)."""
+    trait = estran.trait_de_cote(hauteur_m)
+    if trait is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Pas de relief de l'estran pour cette zone.")
+    return TraitDeCote(hauteur_m=trait.hauteur_m, lignes=trait.lignes, source=estran.SOURCE)
 
 
 @routeur.get("/assistant", responses={404: {}, 503: {}})

@@ -20,6 +20,16 @@ decalage_brest_h = 6.0
 # Fenêtre de recherche des extrema : ± 2 h autour d'un point de la série au pas de 15 min.
 demi_fenetre_pas = 8
 
+[estran]
+# Relief Litto3D (Shom - ROLNHDF, 2022), en IGN69 ; à Ouistreham, le zéro hydrographique est
+# à 4,08 m sous le zéro IGN69 (Références Altimétriques Maritimes du Shom, repère N.P.K3-2).
+zh_sous_ign69_m = 4.08
+# Une cuvette pleine plus étroite que ça n'est pas la mer (bâche à traverser).
+eau_continue_m = 30
+# Repères pour l'assistant : au-delà, la marche compte ; en deçà, l'eau est au pied de la plage.
+marche_longue_m = 250
+marche_courte_m = 60
+
 [cache]
 # Durées de validité (minutes) : on reste très loin des limites d'Open-Meteo.
 meteo_min = 30

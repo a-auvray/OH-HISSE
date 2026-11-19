@@ -44,7 +44,7 @@ statut: brouillon
 | Seuils de danger vert / rouge / noir, dont le vent de terre (cf. [[04 - Marine#Seuils validés (18/11/2026)|note 04]]) | Côte orientée au nord : un vent du sud pousse vers le large |
 | Durées en eau froide prudentes, ×2 avec combinaison, ÷2 en reprise | Seuil de choc thermique 15 °C (RNLI), règle 1-10-1 (Giesbrecht) |
 | Easter egg : force 10 (≥ 89 km/h), ton de clin d'œil inquiet, jamais une réussite | Ne pas encourager à sortir par tempête |
-| Distance jusqu'à l'eau : indication qualitative (mer haute / basse) en attendant Litto3D | Le relief IGN s'arrête au haut de plage : pas de fausse précision |
+| Distance jusqu'à l'eau : relief Litto3D (Shom), profils perpendiculaires au rivage, ZH = IGN69 − 4,08 m ; arrondie à 10 m | Le relief IGN s'arrête au haut de plage ; Litto3D couvre tout l'estran. Repères : marche longue ≥ 250 m, eau au pied ≤ 60 m |
 | Récupération, cheat meal et sommeil : règles de la [[05 - Vie courante#Règles validées (18/11/2026)|note 05]] | Heuristiques explicables, ajustables dans un fichier de configuration |
 | Exercices de base : tractions, dips, muscle-up (pas de squat) | Mes trois mouvements ; les autres restent ajoutables |
 | Lest arrondi à 1,25 kg | Mon plus petit écart de charge disponible |
@@ -65,7 +65,7 @@ statut: brouillon
 ### Marine
 - [x] Seuils des niveaux de danger vert / rouge / noir → note 04
 - [x] Temps d'exposition en eau froide → RNLI (15 °C), Giesbrecht (1-10-1), Golden et Tipton ; table prudente en note 04
-- [ ] Carte : ~~Leaflet ou Mapbox ?~~ MapLibre GL ✓ — reste : représenter le sable découvert selon la marée (pente par spot, ou Litto3D)
+- [x] Carte : ~~Leaflet ou Mapbox ?~~ MapLibre GL ✓ — le bord de l'eau selon la marée est tracé depuis Litto3D
 
 ### Vie courante
 - [x] Durées de récupération → 96 / 72 / 48 / 24 h selon le type de séance, ajustables (note 05)

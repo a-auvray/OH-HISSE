@@ -13,6 +13,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Pilote PostgreSQL (psycopg) ; l'URL fournie par l'hébergeur se colle telle quelle.
 - CI : migrations et tests rejoués sur PostgreSQL.
 - Blueprint Render (`render.yaml`) et guide de mise en ligne Render + Neon.
+- Marine : distance à pied jusqu'à l'eau selon la marée, sur le relief Litto3D de l'estran ; le bord de l'eau est tracé sur la carte ; l'assistant parle en mètres de marche.
 
 ## [0.4.0] — 2026-11-18 — Vie courante et croisements
 

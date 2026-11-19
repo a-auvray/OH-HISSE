@@ -63,7 +63,7 @@ P4 --> P5["Phase 5<br/>Accueil, démo<br/>et mise en ligne"]:::cadrage
 - [x] Assistant de sortie + recommandations
 - [x] Niveau de danger
 - [x] Carte interactive intégrée (spots, eau, vent, courant, tracé de nage)
-- [ ] Trait de côte et distance jusqu'à l'eau selon la marée : relevés Litto3D à intégrer
+- [x] Trait de côte et distance jusqu'à l'eau selon la marée : relevés Litto3D intégrés en phase 5
 - [x] Identité visuelle de l'espace
 - [x] Tag `v0.3.0`
 

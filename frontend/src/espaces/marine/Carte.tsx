@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 
 import { api } from '../../api/client'
-import type { Conditions, Spot } from '../../api/types'
+import type { Conditions, Spot, TraitDeCote } from '../../api/types'
 import { nombre } from '../../commun/format'
 import styles from './Carte.module.css'
 import { distance, formaterDistance, longueur, type Point } from './geo'
@@ -50,6 +50,8 @@ export function Carte({ spots }: { spots: Spot[] }) {
   const voile = useRef<HTMLCanvasElement>(null)
   const carte = useRef<CarteMapLibre | null>(null)
   const [conditions, setConditions] = useState<ConditionsParSpot>({})
+  const [chargee, setChargee] = useState(false)
+  const [trait, setTrait] = useState<TraitDeCote | null>(null)
   const [enTrace, setEnTrace] = useState(false)
   const [trace, setTrace] = useState<Point[]>([])
   // Le gestionnaire de clic de la carte est créé une fois : il lit le mode via une ref.
@@ -100,6 +102,21 @@ export function Carte({ spots }: { spots: Spot[] }) {
       instance.setPaintProperty('water_name', 'text-color', PALETTE.texteEau)
       instance.setPaintProperty('water_name', 'text-halo-color', PALETTE.eau)
 
+      // Bord de l'eau à la hauteur de marée du moment (relief Litto3D).
+      instance.addSource('estran', { type: 'geojson', data: lignes([]) })
+      instance.addLayer({
+        id: 'estran-halo',
+        type: 'line',
+        source: 'estran',
+        paint: { 'line-color': '#9fd4ff', 'line-width': 9, 'line-opacity': 0.16, 'line-blur': 5 },
+      })
+      instance.addLayer({
+        id: 'estran',
+        type: 'line',
+        source: 'estran',
+        paint: { 'line-color': '#d8efff', 'line-width': 1.6, 'line-opacity': 0.85 },
+      })
+
       instance.addSource('trace', { type: 'geojson', data: ligne([]) })
       instance.addLayer({
         id: 'trace-halo',
@@ -125,6 +142,7 @@ export function Carte({ spots }: { spots: Spot[] }) {
           'circle-stroke-width': 2,
         },
       })
+      setChargee(true)
     })
 
     instance.on('click', (e: MapMouseEvent) => {
@@ -138,6 +156,25 @@ export function Carte({ spots }: { spots: Spot[] }) {
       carte.current = null
     }
   }, [])
+
+  // Trait de côte : celui de la hauteur d'eau actuelle.
+  const hauteur = Object.values(conditions)[0]?.maintenant.hauteur_eau_m ?? null
+  useEffect(() => {
+    if (hauteur === null) return
+    let actif = true
+    api.GET('/api/marine/trait-de-cote', { params: { query: { hauteur_m: hauteur } } }).then((r) => {
+      if (actif && r.data) setTrait(r.data)
+    })
+    return () => {
+      actif = false
+    }
+  }, [hauteur])
+
+  useEffect(() => {
+    if (!chargee) return
+    const source = carte.current?.getSource('estran') as GeoJSONSource | undefined
+    source?.setData(lignes(trait?.lignes ?? []))
+  }, [trait, chargee])
 
   // Le tracé suit l'état.
   useEffect(() => {
@@ -289,7 +326,11 @@ export function Carte({ spots }: { spots: Spot[] }) {
             {reference.maintenant.tendance &&
               ` · ${reference.maintenant.tendance === 'montante' ? 'monte' : reference.maintenant.tendance === 'descendante' ? 'descend' : 'étale'}`}
           </p>
-          <p className={styles.note}>Le trait de côte selon la marée arrivera avec les relevés Litto3D.</p>
+          {trait && (
+            <p className={styles.note}>
+              Trait clair : le bord de l’eau à {nombre(trait.hauteur_m)} m · relief Litto3D® (Shom)
+            </p>
+          )}
         </div>
       )}
 
@@ -333,6 +374,17 @@ export function Carte({ spots }: { spots: Spot[] }) {
   )
 }
 
+function lignes(traits: number[][][]): FeatureCollection {
+  return {
+    type: 'FeatureCollection',
+    features: traits.map((coordonnees) => ({
+      type: 'Feature' as const,
+      properties: {},
+      geometry: { type: 'LineString' as const, coordinates: coordonnees },
+    })),
+  }
+}
+
 function ligne(points: Point[]): FeatureCollection {
   return {
     type: 'FeatureCollection',
@@ -367,6 +419,9 @@ function ficheSpot(spot: Spot, c: Conditions | undefined): HTMLElement {
         ...c.danger.raisons.map((r) => r.texte),
         `Eau ${c.maintenant.eau_c != null ? nombre(Math.round(c.maintenant.eau_c * 10) / 10) : '—'} °C · air ${c.maintenant.air_c != null ? Math.round(c.maintenant.air_c) : '—'} °C`,
         `Vent ${c.maintenant.vent_kmh != null ? Math.round(c.maintenant.vent_kmh) : '—'} km/h · vagues ${c.maintenant.vagues_m != null ? nombre(c.maintenant.vagues_m) : '—'} m`,
+        ...(c.maintenant.distance_eau_m != null
+          ? [`≈ ${nombre(c.maintenant.distance_eau_m)} m de sable jusqu’à l’eau`]
+          : []),
       ]
     : ['Conditions en cours de lecture…']
   for (const texte of lignes) {
