@@ -7,6 +7,8 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased] (Non publié)
 
+## [0.5.0] — 2026-11-19 — Démo, production et estran
+
 ### Ajouté
 - Mode démo pré-rempli : trois semaines d'entraînement dans un bloc de force, deux objectifs, sommeil, pesées, un écart et quatre sorties en mer, datés par rapport au jour de la visite.
 - Un seul service en ligne : FastAPI sert l'API et l'interface (image Docker, migrations au démarrage).
@@ -14,6 +16,10 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - CI : migrations et tests rejoués sur PostgreSQL.
 - Blueprint Render (`render.yaml`) et guide de mise en ligne Render + Neon.
 - Marine : distance à pied jusqu'à l'eau selon la marée, sur le relief Litto3D de l'estran ; le bord de l'eau est tracé sur la carte ; l'assistant parle en mètres de marche.
+- Accueil : lien vers le briefing du jour complet.
+
+### Modifié
+- Versions du backend et du frontend alignées sur les tags (0.5.0) : `/api/sante` donne la vraie version.
 
 ## [0.4.0] — 2026-11-18 — Vie courante et croisements
 

@@ -119,9 +119,14 @@ export function TableauDeBord({ entree }: { entree: boolean }) {
         </h1>
       </header>
 
-      <h2 id="titre-briefing" className={styles.titreBriefing}>
-        Briefing du jour
-      </h2>
+      <div className={styles.enteteBriefing}>
+        <h2 id="titre-briefing" className={styles.titreBriefing}>
+          Briefing du jour
+        </h2>
+        <Link to="/vie-courante/briefings" className={styles.lireBriefing}>
+          Le lire en entier →
+        </Link>
+      </div>
       <ul className={styles.indicateurs}>
         {indicateurs.map((indicateur) => (
           <li key={indicateur.espace} data-espace={indicateur.espace}>
