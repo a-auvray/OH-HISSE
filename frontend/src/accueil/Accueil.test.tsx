@@ -31,6 +31,10 @@ describe('Accueil', () => {
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Antoine')
     expect(screen.getByRole('heading', { name: 'Briefing du jour' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Le lire en entier/ })).toHaveAttribute(
+      'href',
+      '/vie-courante/briefings',
+    )
   })
 
   it('ne propose pas « Se déconnecter » en démo (le bandeau s’en charge)', () => {

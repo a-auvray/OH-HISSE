@@ -133,3 +133,32 @@
 - `str.capitalize()` passait « °C » en « °c » → fonction `majuscule` qui ne touche que la première lettre.
 - Un arrondi à la limite (12,45 t) dans un test → donnée de test sans ambiguïté.
 - La session de l'aperçu était le compte personnel → vérification de l'interface en lecture seule, sans écrire dans ses données.
+
+---
+
+## 19/11/2026 — Phase 5 : démo, production et estran (`v0.5.0`)
+
+**Branches :** `feature/demo-donnees`, `feature/conteneur`, `feature/postgresql`, `feature/render`, `feature/estran`, `feature/cloture-phase5`
+
+### Ce qui a été fait
+- Mode démo pré-rempli : trois semaines de vie cohérente (bloc de force, séances, objectifs, sommeil, pesées, écart, sorties en mer), datées par rapport au jour de la visite.
+- Un seul service en ligne : FastAPI sert l'API et l'interface ; image Docker en deux étapes, migrations au démarrage.
+- PostgreSQL : pilote psycopg, migrations aller-retour et toute la suite de tests rejouées en CI sur PostgreSQL 17.
+- Blueprint Render et guide pas à pas Render + Neon (`docs/DEPLOIEMENT.md`).
+- Estran : relief Litto3D du Shom, distance à pied jusqu'à l'eau selon la marée, bord de l'eau tracé sur la carte.
+
+### Choix techniques
+- **Même origine pour l'API et l'interface** : le cookie httpOnly circule sans CORS, aucune origine tierce n'est autorisée.
+- **Déploiement seulement si la CI est verte** (`autoDeployTrigger: checksPass`) ; la CI construit et démarre aussi l'image.
+- **Litto3D préparé une fois** : 2,2 Go téléchargés, 274 ko gardés dans le dépôt (profils et traits de côte). L'outil de préparation déclare ses propres dépendances : l'appli n'embarque ni numpy ni scipy.
+- **ZH = IGN69 − 4,08 m** à Ouistreham, trouvé dans les Références Altimétriques Maritimes du Shom (couche WFS publique).
+- **Profils perpendiculaires au rivage** : la côte fait ≈ 25° entre Hermanville et Colleville ; marcher « vers le nord » allongeait la distance d'environ 10 %.
+- **Bord de l'eau = eau reliée au large** : les bâches et les contours à l'intérieur des terres ne sont pas la mer.
+
+### Ce qui a bloqué / Solutions trouvées
+- Les tests d'isolement supposaient une démo vide → ils vérifient maintenant que mes données n'y apparaissent pas.
+- Le limiteur de la démo débordait d'un test à l'autre → remis à zéro avant chaque test (`conftest.py`).
+- L'URL de Neon (`postgresql://`) aurait chargé psycopg2 → convertie pour psycopg.
+- Le téléchargement Litto3D calait → reprise automatique avec détection de blocage (`curl -C -`).
+- Le contour du masque « mer » suivait aussi le bord du relevé → lignes coupées là où elles longent une zone sans données.
+- Une cuvette mal détectée dans le moteur (le test d'eau continue s'arrêtait un point trop tôt) → trouvée par les tests, corrigée.

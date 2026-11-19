@@ -78,11 +78,13 @@ P4 --> P5["Phase 5<br/>Accueil, démo<br/>et mise en ligne"]:::cadrage
 - [x] Tag `v0.4.0`
 
 ## Phase 5 — Accueil, démo et mise en ligne *(15–25 h)*
-- [ ] Dashboard d'accueil complet + animation d'entrée
+- [x] Dashboard d'accueil complet + animation d'entrée
 - [x] Données fictives du mode démo
 - [ ] Passe de finition du design
-- [ ] Migration PostgreSQL + mise en ligne
+- [x] Migration PostgreSQL (vérifiée en CI) et image prête pour Render + Neon
+- [ ] Mise en ligne (comptes Render et Neon à créer, cf. `docs/DEPLOIEMENT.md`)
 - [ ] README portfolio, journal, heures
+- [x] Tag `v0.5.0` : prêt pour la mise en ligne
 - [ ] Tag `v1.0.0` 🎉
 
 ## Estimation
