@@ -58,7 +58,7 @@ python prototypes/marees/comparer_marees.py --debut 2026-11-18 --jours 5
 - **Stormglass** : l'offre gratuite est limitée à 10 requêtes par jour et demande un compte. C'est l'alternative si besoin.
 - **WorldTides** : payant au crédit.
 
-## Relief de la plage (pour la phase 3)
+## Relief de la plage (phases 3 et 5)
 Un profil IGN perpendiculaire à la plage de Colleville (longitude −0,2930) donne :
 - la dune vers +7 m (IGN69) ;
 - le haut de plage avec une pente d'environ **1,5 %** (de +1,2 m à −0,4 m sur ≈ 110 m) ;
@@ -68,7 +68,20 @@ Pistes, par ordre de simplicité :
 1. **Pente par spot**, l'idée du CDC : une pente calibrée une fois pour toutes, qui donne la distance jusqu'à l'eau à partir de la hauteur de marée. C'est suffisant pour l'assistant de sortie.
 2. **Litto3D® Normandie** (SHOM / IGN, licence ouverte) : un modèle terre-mer continu qui inclut l'estran. Ce sont des fichiers à télécharger une fois et à découper sur la zone. C'est la bonne source pour dessiner le sable découvert sur la carte.
 
-⚠️ Il reste à vérifier l'écart entre le zéro IGN69 et le zéro hydrographique à Ouistreham (document « Références altimétriques maritimes » du SHOM), indispensable pour croiser relief et marée.
+### Retenu (19/11/2026) : Litto3D
+- **Données** : « Partie maritime Litto3D® Normandie et Hauts-de-France 2016-2018 » (Shom, licence ouverte, à citer « Shom - ROLNHDF, 2022 »). Prépaquets `0455_6920` (Hermanville) et `0460_6920` (Colleville, Riva-Bella) du service de téléchargement du Shom : 2,2 Go en tout, dont on ne garde que le MNT 1 m (36 dalles de 1 km², en IGN69). Lidar topo-bathymétrique : l'estran est couvert jusque sous les plus basses mers.
+- **Écart IGN69 / zéro hydrographique** : à Ouistreham, **ZH = IGN69 − 4,08 m** (Références Altimétriques Maritimes du Shom, couche WFS publique, repère IGN N.P.K3-2 ; niveau moyen 4,80 m ZH, PHMA 8,32 m ZH).
+- **Préparation** (`backend/outils/preparer_estran.py`, lancée une fois) : mosaïque au pas de 2 m ramenée en ZH ; pour chaque plage, 7 profils perpendiculaires au rivage (cap 0° à Riva-Bella, 24° à Colleville, 29° à Hermanville) depuis le dernier point au-dessus de la PHMA ; trait de côte tous les 0,5 m, en ne gardant que l'eau reliée au large. Résultat : `app/donnees/estran.json`, 274 ko.
+- **Distances obtenues** (médiane des profils, au 10 m près) :
+
+| Hauteur d'eau (ZH) | Riva-Bella | Colleville | Hermanville |
+|---|---|---|---|
+| 7,75 m (PM de vives eaux) | 10 m | 10 m | 10 m |
+| 4,80 m (niveau moyen) | 110 m | 100 m | 60 m |
+| 2,80 m (BM de mortes eaux) | 230 m | 210 m | 210 m |
+| 1,15 m (BM de vives eaux) | 380 m | 360 m | 420 m |
+
+- **Limites** : le relevé date de 2016-2018 et les plages bougent ; les vagues et la surcote ne sont pas comptées. L'appli affiche donc une estimation arrondie (« ≈ 110 m »).
 
 ## Requêtes types
 

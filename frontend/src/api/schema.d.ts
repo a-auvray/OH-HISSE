@@ -306,6 +306,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/marine/trait-de-cote': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Trait De Cote
+     * @description Bord de l'eau sur les plages de la zone pour cette hauteur de marée (relief Litto3D).
+     */
+    get: operations['trait_de_cote_api_marine_trait_de_cote_get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/api/marine/assistant': {
     parameters: {
       query?: never
@@ -751,7 +771,7 @@ export interface components {
       perimees: boolean
       /**
        * Source
-       * @default Open-Meteo · marées estimées, recalées sur l'annuaire SHOM de Ouistreham
+       * @default Open-Meteo · marées estimées, recalées sur l'annuaire SHOM de Ouistreham · estran : Litto3D® (Shom - ROLNHDF, 2022)
        */
       source: string
     }
@@ -891,6 +911,8 @@ export interface components {
       courant_direction_deg: number | null
       /** Hauteur Eau M */
       hauteur_eau_m: number | null
+      /** Distance Eau M */
+      distance_eau_m?: number | null
       /**
        * Danger
        * @enum {string}
@@ -946,6 +968,8 @@ export interface components {
       hauteur_eau_m: number | null
       /** Tendance */
       tendance: ('montante' | 'descendante' | 'etale') | null
+      /** Distance Eau M */
+      distance_eau_m?: number | null
     }
     /** Maree */
     Maree: {
@@ -1486,6 +1510,18 @@ export interface components {
       latitude: number
       /** Longitude */
       longitude: number
+    }
+    /**
+     * TraitDeCote
+     * @description Bord de l'eau pour une hauteur de marée, tiré du relief Litto3D.
+     */
+    TraitDeCote: {
+      /** Hauteur M */
+      hauteur_m: number
+      /** Lignes */
+      lignes: number[][][]
+      /** Source */
+      source: string
     }
     /** UtilisateurPublic */
     UtilisateurPublic: {
@@ -2407,6 +2443,46 @@ export interface operations {
           [name: string]: unknown
         }
         content?: never
+      }
+    }
+  }
+  trait_de_cote_api_marine_trait_de_cote_get: {
+    parameters: {
+      query: {
+        hauteur_m: number
+      }
+      header?: never
+      path?: never
+      cookie?: {
+        oh_hisse_session?: string | null
+      }
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TraitDeCote']
+        }
+      }
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
       }
     }
   }

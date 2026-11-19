@@ -62,6 +62,13 @@ export function Conditions({ conditions }: { conditions: DonneesConditions }) {
                   {prochaine.coefficient ? ` · coef. ${prochaine.coefficient}` : ''}
                 </span>
               )}
+              {m.distance_eau_m !== null && m.distance_eau_m !== undefined && (
+                <span className={styles.prochaine}>
+                  {m.distance_eau_m === 0
+                    ? 'L’eau au pied de la digue'
+                    : `≈ ${nombre(m.distance_eau_m)} m de sable jusqu’à l’eau`}
+                </span>
+              )}
             </p>
           </div>
           <CourbeMaree

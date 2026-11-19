@@ -33,7 +33,7 @@ Le détail est dans le [cahier des charges](docs/cahier-des-charges/00%20-%20Som
 | Frontend | React 19, TypeScript 7 (strict), Vite 8, Motion, visx, MapLibre GL, CSS Modules |
 | Backend | Python 3.14, FastAPI, SQLModel, Alembic |
 | Base | SQLite en local, PostgreSQL en production |
-| Données externes | Open-Meteo (météo et marine, sans clé), OpenFreeMap (fond de carte) |
+| Données externes | Open-Meteo (météo et marine, sans clé), OpenFreeMap (fond de carte), Litto3D® du Shom (relief de l'estran, « Shom - ROLNHDF, 2022 ») |
 | Qualité | pytest, Vitest, Ruff, mypy strict, oxlint, Prettier, GitHub Actions |
 
 Toute la logique « intelligente » (auto-régulation, récupération, danger…) vit dans `backend/app/moteurs/`, sous forme de **fonctions pures et testées** : elles reçoivent des données et renvoient un résultat, sans toucher à la base ni au réseau.

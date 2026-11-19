@@ -46,6 +46,8 @@ class Instantane(BaseModel):
     courant_direction_deg: float | None
     hauteur_eau_m: float | None  # au-dessus du zéro hydrographique
     tendance: Literal["montante", "descendante", "etale"] | None
+    # Marche du haut de plage jusqu'à l'eau (relief Litto3D) ; None hors des plages relevées.
+    distance_eau_m: float | None = None
 
 
 class Heure(BaseModel):
@@ -62,6 +64,7 @@ class Heure(BaseModel):
     courant_kmh: float | None
     courant_direction_deg: float | None
     hauteur_eau_m: float | None
+    distance_eau_m: float | None = None
     danger: Niveau
 
 
@@ -87,7 +90,18 @@ class Conditions(BaseModel):
     danger: Danger
     # Vrai si Open-Meteo ne répond plus et que ces données viennent du cache.
     perimees: bool
-    source: str = "Open-Meteo · marées estimées, recalées sur l'annuaire SHOM de Ouistreham"
+    source: str = (
+        "Open-Meteo · marées estimées, recalées sur l'annuaire SHOM de Ouistreham · "
+        "estran : Litto3D® (Shom - ROLNHDF, 2022)"
+    )
+
+
+class TraitDeCote(BaseModel):
+    """Bord de l'eau pour une hauteur de marée, tiré du relief Litto3D."""
+
+    hauteur_m: float  # hauteur relevée la plus proche de celle demandée
+    lignes: list[list[list[float]]]  # lignes de points [longitude, latitude]
+    source: str
 
 
 TypeSortie = Literal["baignade", "nage", "plongee"]

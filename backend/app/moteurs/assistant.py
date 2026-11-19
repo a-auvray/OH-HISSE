@@ -10,6 +10,7 @@ import math
 from dataclasses import dataclass, field
 
 from app.moteurs.danger import GRAVITE, Evaluation, Niveau, Raison, Situation, evaluer
+from app.moteurs.estran import marche_courte, marche_longue
 
 
 @dataclass(frozen=True)
@@ -18,6 +19,7 @@ class HeurePrevue:
     situation: Situation
     air_c: float | None
     hauteur_eau_m: float | None
+    distance_eau_m: float | None = None  # marche jusqu'à l'eau, si la plage est relevée
 
 
 @dataclass(frozen=True)
@@ -36,6 +38,7 @@ class Creneau:
     reserves: tuple[str, ...] = field(default=())
 
 
+# Repères de hauteur, quand la plage n'a pas de relief relevé (hors Litto3D).
 MER_HAUTE_M = 5.5  # au-dessus du zéro des cartes : peu d'estran découvert
 MER_BASSE_M = 3.5
 ECART_MINIMAL = dt.timedelta(hours=3)
@@ -92,7 +95,13 @@ def meilleurs_creneaux(
         hauteur = depart.hauteur_eau_m
         if hauteur is not None:
             score += 8 * hauteur
-            if hauteur >= MER_HAUTE_M:
+            marche = depart.distance_eau_m
+            if marche is not None:
+                if marche_courte(marche):
+                    atouts.append(f"L'eau au pied de la plage (≈ {marche:.0f} m de sable)")
+                elif marche_longue(marche):
+                    reserves.append(f"≈ {marche:.0f} m de marche jusqu'à l'eau")
+            elif hauteur >= MER_HAUTE_M:
                 atouts.append(f"Mer haute ({_nombre(hauteur)} m) : peu de sable à traverser")
             elif hauteur <= MER_BASSE_M:
                 reserves.append(f"Mer basse ({_nombre(hauteur)} m) : longue marche jusqu'à l'eau")

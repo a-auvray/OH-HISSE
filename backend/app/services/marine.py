@@ -26,6 +26,7 @@ from app.schemas.marine import (
     Soleil,
     SpotLu,
 )
+from app.services import estran
 from app.services.open_meteo import ConditionsIndisponibles, OpenMeteo
 
 # Mes plages (décision du 18/11/2026), créées pour chaque utilisateur à sa première visite.
@@ -130,6 +131,7 @@ def assembler(
     i_marine = _index_heure(heures_marine, maintenant)
     actuel = meteo["current"]
 
+    hauteur_maintenant = marees.hauteur_a(serie_zone, maintenant, decalage)
     instantane = Instantane(
         instant=maintenant,
         air_c=actuel.get("temperature_2m"),
@@ -146,8 +148,9 @@ def assembler(
         vagues_direction_deg=_valeur(hmar, "wave_direction", i_marine),
         courant_kmh=_valeur(hmar, "ocean_current_velocity", i_marine),
         courant_direction_deg=_valeur(hmar, "ocean_current_direction", i_marine),
-        hauteur_eau_m=marees.hauteur_a(serie_zone, maintenant, decalage),
+        hauteur_eau_m=hauteur_maintenant,
         tendance=marees.tendance(serie_zone, maintenant),
+        distance_eau_m=estran.distance_a_l_eau(spot.latitude, spot.longitude, hauteur_maintenant),
     )
 
     debut = maintenant.replace(minute=0, second=0, microsecond=0)
@@ -157,6 +160,7 @@ def assembler(
         if not debut <= instant < fin:
             continue
         j = _index_heure(heures_marine, instant)
+        hauteur = marees.hauteur_a(serie_zone, instant, decalage)
         heures.append(
             Heure(
                 instant=instant,
@@ -171,7 +175,8 @@ def assembler(
                 vagues_m=_valeur(hmar, "wave_height", j),
                 courant_kmh=_valeur(hmar, "ocean_current_velocity", j),
                 courant_direction_deg=_valeur(hmar, "ocean_current_direction", j),
-                hauteur_eau_m=marees.hauteur_a(serie_zone, instant, decalage),
+                hauteur_eau_m=hauteur,
+                distance_eau_m=estran.distance_a_l_eau(spot.latitude, spot.longitude, hauteur),
                 danger="vert",
             )
         )
@@ -336,6 +341,7 @@ def assistant(
             situation=situation_heure(h, m.eau_c, de_nuit=False),
             air_c=h.air_c,
             hauteur_eau_m=h.hauteur_eau_m,
+            distance_eau_m=h.distance_eau_m,
         )
         for h in conditions_du_spot.heures
     ]
