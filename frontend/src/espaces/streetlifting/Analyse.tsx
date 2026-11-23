@@ -1,63 +1,29 @@
-import { useState } from 'react'
-
-import { api } from '../../api/client'
-import { messageErreur } from '../../api/types'
 import { dateCourte, nombre } from '../../commun/format'
-import { exiger, useDonnees } from '../../commun/useDonnees'
 import { useLargeur } from '../../commun/useLargeur'
 import styles from './Analyse.module.css'
-import { agreger, type Metrique, type Periode } from './chronologie'
 import { Courbe } from './Courbe'
+import { METRIQUES, PERIODES } from './metriques'
 import ui from './ui.module.css'
-
-const METRIQUES: { id: Metrique; libelle: string; unite: string }[] = [
-  { id: 'e1rm_lest_kg', libelle: '1RM estimé', unite: 'kg de lest' },
-  { id: 'tonnage_kg', libelle: 'Tonnage', unite: 'kg' },
-  { id: 'series', libelle: 'Séries', unite: 'séries' },
-  { id: 'reps', libelle: 'Répétitions', unite: 'reps' },
-  { id: 'rpe_moyen', libelle: 'RPE moyen', unite: 'RPE' },
-]
-
-const PERIODES: { id: Periode; libelle: string }[] = [
-  { id: 'seance', libelle: 'Séance' },
-  { id: 'semaine', libelle: 'Semaine' },
-  { id: 'mois', libelle: 'Mois' },
-]
+import { useAnalyse } from './useAnalyse'
 
 /** Graphiques d'évolution par exercice (note 03). */
 export function Analyse() {
-  const [exercices] = useDonnees(
-    async () => exiger(await api.GET('/api/streetlifting/exercices'), (e) => messageErreur(e)),
-    [],
-  )
-  const [choix, setChoix] = useState<number | null>(null)
-  const [metrique, setMetrique] = useState<Metrique>('e1rm_lest_kg')
-  const [periode, setPeriode] = useState<Periode>('seance')
+  const {
+    exercices,
+    exerciceId,
+    choisirExercice,
+    metrique,
+    choisirMetrique,
+    periode,
+    choisirPeriode,
+    evolution,
+    definition,
+    points,
+    premier,
+    dernier,
+    meilleur,
+  } = useAnalyse()
   const [cadre, largeur] = useLargeur<HTMLDivElement>()
-
-  const exerciceId = choix ?? (exercices.etat === 'pret' ? (exercices.valeur[0]?.id ?? null) : null)
-  const [evolution] = useDonnees(
-    async () =>
-      exerciceId === null
-        ? []
-        : exiger(
-            await api.GET('/api/streetlifting/evolution/{exercice_id}', {
-              params: { path: { exercice_id: exerciceId } },
-            }),
-            (e) => messageErreur(e),
-          ),
-    [exerciceId],
-  )
-
-  const definition = METRIQUES.find((m) => m.id === metrique)!
-  const points = evolution.etat === 'pret' ? agreger(evolution.valeur, metrique, periode) : []
-  const records = evolution.etat === 'pret' ? agreger(evolution.valeur, 'e1rm_lest_kg', 'seance') : []
-  const premier = records[0]
-  const dernier = records.at(-1)
-  const meilleur = records.reduce<(typeof records)[number] | undefined>(
-    (m, p) => (!m || p.valeur > m.valeur ? p : m),
-    undefined,
-  )
 
   return (
     <section className={styles.analyse}>
@@ -68,19 +34,19 @@ export function Analyse() {
             exercices.etat === 'pret' ? exercices.valeur.map((e) => ({ id: e.id, libelle: e.nom })) : []
           }
           valeur={exerciceId}
-          choisir={setChoix}
+          choisir={choisirExercice}
         />
         <Segments
           libelle="Métrique"
           options={METRIQUES.map((m) => ({ id: m.id, libelle: m.libelle }))}
           valeur={metrique}
-          choisir={setMetrique}
+          choisir={choisirMetrique}
         />
         <Segments
           libelle="Période"
           options={PERIODES.map((p) => ({ id: p.id, libelle: p.libelle }))}
           valeur={periode}
-          choisir={setPeriode}
+          choisir={choisirPeriode}
         />
       </div>
 

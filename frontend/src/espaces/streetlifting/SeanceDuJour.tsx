@@ -1,13 +1,11 @@
 import { motion } from 'motion/react'
 import { Link, useNavigate } from 'react-router'
 
-import { api } from '../../api/client'
-import { messageErreur, type SeanceDuJour as Seance } from '../../api/types'
 import { kg, nombre } from '../../commun/format'
-import { exiger, useDonnees } from '../../commun/useDonnees'
 import { PeseeRapide } from './PeseeRapide'
 import styles from './SeanceDuJour.module.css'
 import ui from './ui.module.css'
+import { useSeanceDuJour } from './useSeanceDuJour'
 
 const TYPES: Record<string, string> = {
   force: 'Force',
@@ -16,13 +14,9 @@ const TYPES: Record<string, string> = {
   specifique: 'Spécifique',
 }
 
-async function charger(): Promise<Seance> {
-  return exiger(await api.GET('/api/streetlifting/seance-du-jour'), (e) => messageErreur(e))
-}
-
 /** La séance calculée par l'auto-régulation, prête à être lancée. */
 export function SeanceDuJour() {
-  const [donnees, recharger] = useDonnees(charger, [])
+  const { donnees, recharger } = useSeanceDuJour()
   const naviguer = useNavigate()
 
   if (donnees.etat === 'chargement') return <p className={ui.etiquette}>Calcul de la séance…</p>

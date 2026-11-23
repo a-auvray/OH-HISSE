@@ -1,27 +1,23 @@
 import { Route, Routes } from 'react-router'
 
-import { Analyse } from '../../../espaces/streetlifting/Analyse'
 import { Blocs } from '../../../espaces/streetlifting/Blocs'
 import { Calendrier } from '../../../espaces/streetlifting/Calendrier'
 import { SaisieNeuve } from '../../../espaces/streetlifting/EspaceStreetlifting'
 import { ONGLETS } from '../../../espaces/streetlifting/onglets'
-import { SeanceDuJour } from '../../../espaces/streetlifting/SeanceDuJour'
 import { Coque } from '../Coque'
 import { Plaque } from '../Plaque'
+import { AnalysePapier } from '../streetlifting/Analyse'
+import { SeanceDuJourPapier } from '../streetlifting/SeanceDuJour'
 
-/** Streetlifting en Papier : la coque, et les pages du carnet recolorées par elle. */
+/**
+ * Streetlifting en Papier : la séance du jour et l'analyse sont refaites ;
+ * saisie, calendrier et blocs restent sur la plaque en attendant les leurs.
+ */
 export function EspaceStreetliftingPapier() {
   return (
     <Coque espace="streetlifting" titre="Streetlifting" onglets={ONGLETS}>
       <Routes>
-        <Route
-          index
-          element={
-            <Plaque>
-              <SeanceDuJour />
-            </Plaque>
-          }
-        />
+        <Route index element={<SeanceDuJourPapier />} />
         <Route
           path="saisie"
           element={
@@ -46,14 +42,7 @@ export function EspaceStreetliftingPapier() {
             </Plaque>
           }
         />
-        <Route
-          path="analyse"
-          element={
-            <Plaque>
-              <Analyse />
-            </Plaque>
-          }
-        />
+        <Route path="analyse" element={<AnalysePapier />} />
         <Route
           path="blocs"
           element={

@@ -238,3 +238,22 @@
 ### Ce qui a bloqué / Solutions trouvées
 - `coupe.ts` (géométrie) et `Coupe.tsx` (composant) ne différaient que par la casse : conflit sous Windows. Géométrie renommée `geometrieCoupe.ts`.
 - Étiquettes de marée superposées : décalées et limitées à environ un cycle.
+
+---
+
+## 23/11/2026 — Thème Papier : Streetlifting, séance du jour et analyse
+
+**Branche :** `feature/papier-streetlifting`
+
+### Ce qui a été fait
+- Séance du jour en « feuille de séance » : un exercice par ligne (rang en contour, nom en Anton, une case à cocher par série, charge en grand qui compte jusqu'à sa valeur), les raisons de l'auto-régulation en marge, l'avancement du bloc en crans qui montent.
+- Analyse en une seule grande planche (tracé qui se dessine, hachures, valeur exacte au survol) et un rail de miniatures, une par grandeur : on compare cinq courbes d'un coup d'œil et on met celle qu'on veut sur la planche, sans tableau de bord.
+- Les données sortent de l'affichage : `useSeanceDuJour`, `useAnalyse`, `metriques.ts`, partagés avec Classique.
+
+### Choix techniques
+- **Planche sans bibliothèque de graphiques** : tracé lisse et graduations ronds calculés à la main (`courbe.ts`), le thème reste à 19 ko de JS.
+- **Un seul graphique grand plutôt que cinq petits** : le rail de miniatures suffit à comparer.
+
+### Ce qui a bloqué / Solutions trouvées
+- jsdom n'a pas de `ResizeObserver` : un stub muet dans la préparation des tests (les composants qui lisent leur largeur n'affichent alors pas leur graphique, ce que les tests n'ont pas à voir).
+- Un axe ne montrait qu'une graduation : le pas de 2,5 est maintenant permis.
