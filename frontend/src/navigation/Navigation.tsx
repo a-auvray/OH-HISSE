@@ -1,36 +1,22 @@
 import { AnimatePresence } from 'motion/react'
-import { lazy, Suspense, useState } from 'react'
+import { Suspense, useState } from 'react'
 import { Route, Routes, useLocation } from 'react-router'
 
-import { Accueil } from '../accueil/Accueil'
-import type { Direction } from '../espaces/espaces'
+import { ESPACES, type Direction } from '../espaces/espaces'
+import { useTheme } from '../themes/contexte'
 import { racine, sensDuTrajet } from './directions'
-import { Scene } from './Scene'
-
-// Chargé à la demande : ses graphiques (visx) n'alourdissent pas l'accueil ni la connexion.
-const EspaceStreetlifting = lazy(() =>
-  import('../espaces/streetlifting/EspaceStreetlifting').then((m) => ({ default: m.EspaceStreetlifting })),
-)
-
-const EspaceObjectifs = lazy(() =>
-  import('../espaces/objectifs/EspaceObjectifs').then((m) => ({ default: m.EspaceObjectifs })),
-)
-
-const EspaceMarine = lazy(() =>
-  import('../espaces/marine/EspaceMarine').then((m) => ({ default: m.EspaceMarine })),
-)
-
-const EspaceVieCourante = lazy(() =>
-  import('../espaces/vie-courante/EspaceVieCourante').then((m) => ({ default: m.EspaceVieCourante })),
-)
 
 interface Trajet {
   chemin: string
   sens: Direction | null
 }
 
-/** Les cinq pages de la croix, et la glissade de l'une à l'autre. */
+/**
+ * Les cinq pages de la croix, et le passage de l'une à l'autre. Les routes sont
+ * communes à tous les thèmes ; l'accueil, les espaces et la transition viennent du thème.
+ */
 export function Navigation() {
+  const { theme } = useTheme()
   const position = useLocation()
   // Seul le changement d'espace fait glisser l'écran ; les sous-pages d'un espace gèrent les leurs.
   const espace = racine(position.pathname)
@@ -41,44 +27,30 @@ export function Navigation() {
     setTrajet({ chemin: espace, sens: sensDuTrajet(trajet.chemin, espace) })
   }
 
+  // Le thème est en cours de chargement : le fond de l'appli est déjà posé, rien à montrer de plus.
+  if (!theme) return null
+  const { Accueil, Espaces, Scene } = theme
+
   return (
     // `custom` est aussi transmis à la page qui sort : elle connaît ainsi le sens du trajet.
     <AnimatePresence initial={false} custom={trajet.sens}>
       <Scene key={espace} sens={trajet.sens}>
         <Routes location={position}>
           <Route path="/" element={<Accueil />} />
-          <Route
-            path="/streetlifting/*"
-            element={
-              <Suspense fallback={null}>
-                <EspaceStreetlifting />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/objectifs/*"
-            element={
-              <Suspense fallback={null}>
-                <EspaceObjectifs />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/marine/*"
-            element={
-              <Suspense fallback={null}>
-                <EspaceMarine />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/vie-courante/*"
-            element={
-              <Suspense fallback={null}>
-                <EspaceVieCourante />
-              </Suspense>
-            }
-          />
+          {ESPACES.map(({ id, chemin }) => {
+            const Espace = Espaces[id]
+            return (
+              <Route
+                key={id}
+                path={`${chemin}/*`}
+                element={
+                  <Suspense fallback={null}>
+                    <Espace />
+                  </Suspense>
+                }
+              />
+            )
+          })}
           <Route path="*" element={<Accueil />} />
         </Routes>
       </Scene>

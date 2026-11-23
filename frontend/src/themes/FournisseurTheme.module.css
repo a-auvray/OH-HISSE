@@ -1,0 +1,19 @@
+/* Voile qui couvre l'écran le temps qu'un nouveau thème se charge : pas de saut brutal. */
+.voile {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--fond);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+.voile[data-actif] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+:root[data-animations='immobile'] .voile {
+  transition: none;
+}
