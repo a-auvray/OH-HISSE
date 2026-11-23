@@ -92,10 +92,10 @@ L'accueil de Papier montre les mêmes données que celui de Classique, lues par
 `accueil/useBriefing` ; la phrase du jour (`accueil/phrase.ts`) est calculée à
 partir de ces données, jamais écrite à la main.
 
-Fait pour Papier : Marine, page Conditions (la plage en coupe). Ordre prévu pour la suite : Streetlifting
-(plusieurs graphiques possibles sans effet tableau de pilote), Vie courante et
-Objectifs (une identité chacun, différente de Streetlifting), puis la transition.
-Pour chaque page, les données et les actions sortent d'abord de l'affichage dans
+Fait pour Papier : Marine (page Conditions, la plage en coupe), Streetlifting (séance du
+jour, analyse en planche avec rail de miniatures) et Vie courante (« Aujourd'hui », calme et
+aérée). Ordre prévu pour la suite : Objectifs (une identité différente des autres), puis la
+transition. Pour chaque page, les données et les actions sortent d'abord de l'affichage dans
 un hook commun, puis le thème en montre une version à lui.
 
 **La coque et la plaque.** Chaque espace Papier est une coque commune (`papier/Coque`) :
