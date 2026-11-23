@@ -3,7 +3,7 @@ import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } fro
 import { ContexteTheme } from './contexte'
 import styles from './FournisseurTheme.module.css'
 import { ecrirePreferences, lirePreferences, type Preferences } from './preferences'
-import { metaTheme, THEME_PAR_DEFAUT, THEMES } from './registre'
+import { metaTheme, THEME_DE_SECOURS, THEME_PAR_DEFAUT, THEMES } from './registre'
 import type { MetaTheme, NiveauAnimation, Theme } from './types'
 
 interface Courant {
@@ -30,6 +30,8 @@ export function FournisseurTheme({ children, themes = THEMES, dureeVoile = 280 }
   const [idInitial] = useState(preferences.theme)
   const [courant, setCourant] = useState<Courant | null>(null)
   const courantRef = useRef<Courant | null>(null)
+  // Les réglages ne sont mémorisés qu'après un vrai choix : un simple passage ne fige pas le thème par défaut.
+  const modifies = useRef(false)
   const [enChangement, setEnChangement] = useState(false)
   const [erreur, setErreur] = useState<string | null>(null)
   // Un thème n'est téléchargé qu'une fois : on garde la promesse de chacun.
@@ -61,7 +63,7 @@ export function FournisseurTheme({ children, themes = THEMES, dureeVoile = 280 }
   useEffect(() => {
     let annule = false
     void (async () => {
-      for (const id of new Set([idInitial, THEME_PAR_DEFAUT])) {
+      for (const id of new Set([idInitial, THEME_PAR_DEFAUT, THEME_DE_SECOURS])) {
         try {
           const theme = await charger(id)
           if (!annule) poser({ id, theme })
@@ -86,6 +88,7 @@ export function FournisseurTheme({ children, themes = THEMES, dureeVoile = 280 }
       try {
         const [theme] = await Promise.all([charger(id), pause(dureeVoile)])
         poser({ id, theme })
+        modifies.current = true
         setPreferences((p) => ({ ...p, theme: id }))
       } catch {
         setErreur(`Le thème « ${meta.nom} » n’a pas pu être chargé. Le précédent reste en place.`)
@@ -104,6 +107,7 @@ export function FournisseurTheme({ children, themes = THEMES, dureeVoile = 280 }
   )
 
   const basculerFavori = useCallback((id: string) => {
+    modifies.current = true
     setPreferences((p) => ({
       ...p,
       favoris: p.favoris.includes(id) ? p.favoris.filter((f) => f !== id) : [...p.favoris, id],
@@ -111,11 +115,12 @@ export function FournisseurTheme({ children, themes = THEMES, dureeVoile = 280 }
   }, [])
 
   const reglerAnimation = useCallback((animation: NiveauAnimation) => {
+    modifies.current = true
     setPreferences((p) => ({ ...p, animation }))
   }, [])
 
   useEffect(() => {
-    ecrirePreferences(preferences)
+    if (modifies.current) ecrirePreferences(preferences)
   }, [preferences])
 
   // Les feuilles de style des thèmes se rattachent à ces deux attributs.

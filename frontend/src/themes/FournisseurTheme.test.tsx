@@ -48,6 +48,9 @@ function Sonde() {
 const etat = () => screen.getByTestId('etat').textContent
 
 describe('FournisseurTheme', () => {
+  const CLE = 'oh-hisse.themes.v2'
+  const partirDeClassique = () => localStorage.setItem(CLE, JSON.stringify({ theme: 'classique' }))
+
   beforeEach(() => {
     localStorage.clear()
     delete document.documentElement.dataset.theme
@@ -64,11 +67,40 @@ describe('FournisseurTheme', () => {
     expect(document.documentElement.dataset.theme).toBe('classique')
   })
 
+  it('démarre sur Papier sans rien mémoriser tant qu’on n’a rien choisi', async () => {
+    const a = fabrique('classique')
+    const b = fabrique('papier')
+    render(
+      <FournisseurTheme themes={[a.meta, b.meta]} dureeVoile={0}>
+        <Sonde />
+      </FournisseurTheme>,
+    )
+
+    await waitFor(() => expect(etat()).toBe('papier|charge|repos|-|cinema|'))
+    expect(a.meta.charger).not.toHaveBeenCalled()
+    expect(localStorage.getItem(CLE)).toBeNull()
+  })
+
+  it('retombe sur Classique si Papier ne se charge pas', async () => {
+    const a = fabrique('classique')
+    const b = fabrique('papier')
+    b.meta.charger = vi.fn(async () => {
+      throw new Error('réseau')
+    })
+    render(
+      <FournisseurTheme themes={[a.meta, b.meta]} dureeVoile={0}>
+        <Sonde />
+      </FournisseurTheme>,
+    )
+
+    await waitFor(() => expect(etat()).toBe('classique|charge|repos|-|cinema|'))
+  })
+
   it('reprend le thème mémorisé, et ignore un thème devenu inconnu', async () => {
     const a = fabrique('classique')
     const b = fabrique('papier')
     localStorage.setItem(
-      'oh-hisse.themes',
+      'oh-hisse.themes.v2',
       JSON.stringify({ theme: 'papier', favoris: ['papier', 'disparu'], animation: 'sobre' }),
     )
     render(
@@ -79,7 +111,7 @@ describe('FournisseurTheme', () => {
     await waitFor(() => expect(etat()).toBe('papier|charge|repos|-|sobre|papier'))
     expect(a.meta.charger).not.toHaveBeenCalled()
 
-    localStorage.setItem('oh-hisse.themes', JSON.stringify({ theme: 'disparu' }))
+    localStorage.setItem('oh-hisse.themes.v2', JSON.stringify({ theme: 'disparu' }))
   })
 
   it('retombe sur le thème par défaut si le thème mémorisé ne se charge pas', async () => {
@@ -88,7 +120,7 @@ describe('FournisseurTheme', () => {
     b.meta.charger = vi.fn(async () => {
       throw new Error('réseau')
     })
-    localStorage.setItem('oh-hisse.themes', JSON.stringify({ theme: 'papier' }))
+    localStorage.setItem('oh-hisse.themes.v2', JSON.stringify({ theme: 'papier' }))
     render(
       <FournisseurTheme themes={[a.meta, b.meta]} dureeVoile={0}>
         <Sonde />
@@ -98,6 +130,7 @@ describe('FournisseurTheme', () => {
   })
 
   it('change de thème, mémorise le choix et libère l’ancien', async () => {
+    partirDeClassique()
     const liberer = vi.fn()
     const a = fabrique('classique', liberer)
     const b = fabrique('papier')
@@ -117,10 +150,11 @@ describe('FournisseurTheme', () => {
     await waitFor(() => expect(etat()).toBe('papier|charge|repos|-|cinema|'))
     expect(document.documentElement.dataset.theme).toBe('papier')
     expect(liberer).toHaveBeenCalledTimes(1)
-    expect(JSON.parse(localStorage.getItem('oh-hisse.themes') ?? '{}')).toMatchObject({ theme: 'papier' })
+    expect(JSON.parse(localStorage.getItem('oh-hisse.themes.v2') ?? '{}')).toMatchObject({ theme: 'papier' })
   })
 
   it('garde le thème en place quand le nouveau ne se charge pas, puis réessaie', async () => {
+    partirDeClassique()
     const a = fabrique('classique')
     const b = fabrique('papier')
     let echec = true
@@ -148,6 +182,7 @@ describe('FournisseurTheme', () => {
   })
 
   it('télécharge un thème au survol sans l’activer', async () => {
+    partirDeClassique()
     const a = fabrique('classique')
     const b = fabrique('papier')
     render(
@@ -166,6 +201,7 @@ describe('FournisseurTheme', () => {
   })
 
   it('met les favoris en tête et règle le niveau d’animation', async () => {
+    partirDeClassique()
     const a = fabrique('classique')
     const b = fabrique('papier')
     render(
