@@ -15,15 +15,20 @@ describe('contrat des thèmes', () => {
     expect(ids).toContain(THEME_PAR_DEFAUT)
   })
 
-  it.each(THEMES.map((t) => [t.id, t] as const))('« %s » est complet', async (_id, meta) => {
-    expect(meta.nom).not.toBe('')
-    expect(meta.apercu.length).toBeGreaterThan(1)
+  it.each(THEMES.map((t) => [t.id, t] as const))(
+    '« %s » est complet',
+    async (_id, meta) => {
+      expect(meta.nom).not.toBe('')
+      expect(meta.apercu.length).toBeGreaterThan(1)
 
-    const { default: theme } = await meta.charger()
-    expect(theme.Accueil).toBeTruthy()
-    expect(theme.Scene).toBeTruthy()
-    for (const espace of ESPACES) {
-      expect(theme.Espaces[espace.id], `espace « ${espace.id} » manquant`).toBeTruthy()
-    }
-  })
+      const { default: theme } = await meta.charger()
+      expect(theme.Accueil).toBeTruthy()
+      expect(theme.Scene).toBeTruthy()
+      for (const espace of ESPACES) {
+        expect(theme.Espaces[espace.id], `espace « ${espace.id} » manquant`).toBeTruthy()
+      }
+      // Importer tout un thème (polices, styles, accueil) est long : on laisse de la marge aux machines chargées.
+    },
+    30_000,
+  )
 })

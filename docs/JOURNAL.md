@@ -340,3 +340,21 @@
 ### Correctif : lanceur copié sur le Bureau
 - Copié sur le Bureau, le lanceur ne trouvait plus `lancer.bat`. Il mémorise maintenant le dossier du projet à la construction (fichier généré, ignoré par Git) et le cherche à côté de lui, puis à cet endroit.
 - Le navigateur n'attend plus d'être ouvert avant le serveur, et la fenêtre reste ouverte en cas de problème (uv ou Node absents, port 8000 pris, erreur).
+
+---
+
+## 24/11/2026 — Une vraie application
+
+**Branche :** `feature/appli-bureau`
+
+### Ce qui a été fait
+- `Oh Hisse.exe` devient une application : plus de fenêtre noire ; le serveur démarre en arrière-plan, l'interface s'ouvre dans sa propre fenêtre (navigateur Chromium en mode application, avec un profil à part), et la fermer arrête le serveur. Les erreurs s'affichent dans une boîte de dialogue, le détail dans `journal-lancement.txt`.
+- Papier devient le thème par défaut (Classique reste le thème de secours). Les réglages ne sont mémorisés qu'après un vrai choix, et sous une nouvelle clé : l'ancienne avait figé Classique dès la première visite, d'où « ça démarre l'ancienne version ».
+- Port configurable (`OH_HISSE_PORT`).
+
+### Choix techniques
+- **Mode application d'un navigateur déjà installé** plutôt qu'Electron ou Tauri : aucun téléchargement de plusieurs dizaines de Mo, pas de moteur de plus à maintenir. Brave, Chrome, Edge et Opera sont reconnus.
+- **Profil dédié** (`%LOCALAPPDATA%\OhHisse\profil`) : la fenêtre est un processus à elle, que le lanceur peut attendre pour savoir quand arrêter le serveur.
+
+### Ce qui a bloqué / Solutions trouvées
+- Le lanceur n'arrivait jamais à voir le serveur : sa vérification passait par le proxy système et par `localhost` (IPv6 d'abord, alors que le serveur n'écoute qu'en IPv4). Elle interroge maintenant `127.0.0.1` sans proxy. Trouvé en suivant l'état du serveur, de la fenêtre et du lanceur seconde par seconde.

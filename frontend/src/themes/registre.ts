@@ -23,7 +23,9 @@ export const THEMES: readonly MetaTheme[] = [
   },
 ]
 
-export const THEME_PAR_DEFAUT = 'classique'
+/** Le thème des nouveaux visiteurs, et celui sur lequel on retombe si le choisi ne se charge pas. */
+export const THEME_PAR_DEFAUT = 'papier'
+export const THEME_DE_SECOURS = 'classique'
 
 export function metaTheme(id: string, themes: readonly MetaTheme[] = THEMES): MetaTheme | undefined {
   return themes.find((t) => t.id === id)

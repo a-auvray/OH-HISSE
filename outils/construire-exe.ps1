@@ -1,6 +1,7 @@
-# Construit « Oh Hisse.exe » à la racine du dépôt (lanceur de lancer.bat, avec son icône).
+# Construit « Oh Hisse.exe » à la racine du dépôt : l'application (fenêtre sans fenêtre noire), avec son icône.
 # Aucun téléchargement : le compilateur C# est fourni avec Windows.
 #   powershell -ExecutionPolicy Bypass -File outils\construire-exe.ps1
+param([string]$Sortie = '')
 $ErrorActionPreference = 'Stop'
 $racine = Split-Path -Parent $PSScriptRoot
 $csc = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
@@ -41,7 +42,7 @@ $memo = Join-Path $racine 'outils\lanceur\RacineDuProjet.generated.cs'
 $chemin = $racine.Replace('"', '""')
 Set-Content -Path $memo -Encoding UTF8 -Value ("static class RacineDuProjet { public const string Chemin = @`"" + $chemin + "`"; }")
 
-$sortie = Join-Path $racine 'Oh Hisse.exe'
-& $csc /nologo /target:exe /optimize+ /out:$sortie /win32icon:$ico (Join-Path $racine 'outils\lanceur\Lanceur.cs') $memo
+$sortie = if ($Sortie) { $Sortie } else { Join-Path $racine 'Oh Hisse.exe' }
+& $csc /nologo /target:winexe /optimize+ /r:System.Windows.Forms.dll /out:$sortie /win32icon:$ico (Join-Path $racine 'outils\lanceur\Lanceur.cs') $memo
 if ($LASTEXITCODE -ne 0) { throw 'La compilation a échoué.' }
 Write-Host "Construit : $sortie"

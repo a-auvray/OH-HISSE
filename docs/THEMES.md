@@ -108,3 +108,9 @@ un panneau sombre qui garde leurs couleurs d'origine ; une page quitte la plaque
 version Papier est faite.
 
 Le lookbook et ses prototypes sont dans `design-lookbook/` (hors dépôt).
+
+## Thème par défaut
+
+Papier est le thème par défaut ; Classique est le thème de secours, si celui qui est choisi ne se charge pas.
+Les réglages ne sont mémorisés qu'après un vrai choix (clé `oh-hisse.themes.v2`) : un simple passage ne fige pas
+le thème par défaut.

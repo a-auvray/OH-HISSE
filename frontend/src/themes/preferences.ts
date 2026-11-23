@@ -1,7 +1,8 @@
 import { metaTheme, THEME_PAR_DEFAUT } from './registre'
 import type { MetaTheme, NiveauAnimation } from './types'
 
-const CLE = 'oh-hisse.themes'
+// « v2 » : l'ancienne clé avait mémorisé le thème par défaut dès la première visite, ce qui figeait Classique.
+export const CLE_PREFERENCES = 'oh-hisse.themes.v2'
 
 export interface Preferences {
   theme: string
@@ -15,7 +16,7 @@ const NIVEAUX: readonly NiveauAnimation[] = ['cinema', 'sobre', 'immobile']
 export function lirePreferences(themes?: readonly MetaTheme[]): Preferences {
   const defaut: Preferences = { theme: THEME_PAR_DEFAUT, favoris: [], animation: 'cinema' }
   try {
-    const brut: unknown = JSON.parse(localStorage.getItem(CLE) ?? 'null')
+    const brut: unknown = JSON.parse(localStorage.getItem(CLE_PREFERENCES) ?? 'null')
     if (typeof brut !== 'object' || brut === null) return defaut
     const { theme, favoris, animation } = brut as Record<string, unknown>
     return {
@@ -32,7 +33,7 @@ export function lirePreferences(themes?: readonly MetaTheme[]): Preferences {
 
 export function ecrirePreferences(preferences: Preferences): void {
   try {
-    localStorage.setItem(CLE, JSON.stringify(preferences))
+    localStorage.setItem(CLE_PREFERENCES, JSON.stringify(preferences))
   } catch {
     // Stockage indisponible (navigation privée…) : le réglage vaut pour cette visite seulement.
   }

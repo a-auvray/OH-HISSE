@@ -1,9 +1,13 @@
 @echo off
-rem Lance Oh Hisse ! en local : interface + API sur http://localhost:8000
+rem Lance Oh Hisse ! en local : interface + API sur http://localhost:%OH_HISSE_PORT%
 rem Les donnees sont dans backend\oh-hisse.db ; une sauvegarde datee est faite a chaque demarrage (dossier sauvegardes).
 rem La fenetre reste ouverte en cas de probleme : le message est lisible.
+rem Avec /app (utilise par Oh Hisse.exe) : pas de navigateur ouvert ici, pas de pause ; le programme s'en charge.
 setlocal
 cd /d "%~dp0"
+set "APP=0"
+if not defined OH_HISSE_PORT set "OH_HISSE_PORT=8000"
+if /i "%~1"=="/app" set "APP=1"
 echo === Oh Hisse ! ===
 
 where uv >nul 2>nul
@@ -21,12 +25,12 @@ if errorlevel 1 (
   goto :fin
 )
 
-netstat -ano | findstr /R /C:":8000 .*LISTENING" >nul
+netstat -ano | findstr /R /C:":%OH_HISSE_PORT% .*LISTENING" >nul
 if not errorlevel 1 (
   echo.
-  echo [!] Le port 8000 est deja utilise : Oh Hisse ! tourne peut-etre deja
-  echo     ^(ouvre http://localhost:8000^) ou un autre programme l'occupe.
-  start "" http://localhost:8000
+  echo [!] Le port %OH_HISSE_PORT% est deja utilise : Oh Hisse ! tourne peut-etre deja
+  echo     ^(ouvre http://localhost:%OH_HISSE_PORT%^) ou un autre programme l'occupe.
+  if "%APP%"=="0" start "" http://localhost:%OH_HISSE_PORT%
   goto :fin
 )
 
@@ -66,14 +70,15 @@ if errorlevel 1 (
 call uv run python scripts/sauvegarder.py
 
 rem Le navigateur s'ouvre quand le serveur repond, pas avant.
-start "" /b powershell -NoProfile -Command "for($i=0;$i -lt 90;$i++){try{Invoke-WebRequest http://localhost:8000/api/docs -UseBasicParsing -TimeoutSec 1 | Out-Null;Start-Process http://localhost:8000;break}catch{Start-Sleep -Milliseconds 700}}"
+if "%APP%"=="0" start "" /b powershell -NoProfile -Command "for($i=0;$i -lt 90;$i++){try{Invoke-WebRequest http://localhost:%OH_HISSE_PORT%/api/docs -UseBasicParsing -TimeoutSec 1 | Out-Null;Start-Process http://localhost:%OH_HISSE_PORT%;break}catch{Start-Sleep -Milliseconds 700}}"
 
 echo.
-echo Oh Hisse ! demarre sur http://localhost:8000 ^(Ctrl+C pour arreter^)
-call uv run uvicorn app.main:app --port 8000 --timeout-graceful-shutdown 1
+echo Oh Hisse ! demarre sur http://localhost:%OH_HISSE_PORT% ^(Ctrl+C pour arreter^)
+call uv run uvicorn app.main:app --port %OH_HISSE_PORT% --timeout-graceful-shutdown 1
 popd
 
 :fin
+if "%APP%"=="1" exit /b 1
 echo.
 echo Appuie sur une touche pour fermer cette fenetre.
 pause >nul
