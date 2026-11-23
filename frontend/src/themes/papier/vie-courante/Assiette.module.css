@@ -1,0 +1,36 @@
+.assiette {
+  width: clamp(130px, 13vw, 190px);
+  height: auto;
+  overflow: visible;
+}
+
+.bord {
+  fill: none;
+  stroke: var(--encre);
+  stroke-width: 0.8;
+}
+
+.creux {
+  fill: none;
+  stroke: var(--trait);
+  stroke-width: 0.6;
+}
+
+.pleine {
+  fill: var(--vert);
+  stroke: var(--papier);
+  stroke-width: 1.2;
+}
+
+.vide {
+  fill: none;
+  stroke: var(--trait);
+  stroke-width: 0.8;
+  stroke-dasharray: 1.5 2;
+}
+
+.centre {
+  fill: var(--papier);
+  stroke: var(--encre);
+  stroke-width: 0.5;
+}

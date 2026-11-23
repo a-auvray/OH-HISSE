@@ -1,0 +1,53 @@
+.souffle {
+  position: relative;
+  width: clamp(220px, 24vw, 330px);
+  aspect-ratio: 1;
+}
+
+.souffle svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Trois anneaux qui respirent, décalés : on ne voit jamais le même moment deux fois. */
+.anneau {
+  fill: none;
+  stroke: color-mix(in srgb, var(--vert) 45%, transparent);
+  stroke-width: 1;
+  transform-origin: 100px 100px;
+  animation: respirer 7s ease-in-out infinite;
+}
+
+@keyframes respirer {
+  0%,
+  100% {
+    transform: scale(0.96);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+.piste {
+  fill: none;
+  stroke: var(--trait);
+  stroke-width: 6;
+}
+
+.arc {
+  fill: none;
+  stroke: var(--vert);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.centre {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
