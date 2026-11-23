@@ -219,3 +219,22 @@
 - **Plaque plutôt que réécriture des 25 feuilles de style** : recolorer toutes les pages d'un coup mélangeait des fonds sombres écrits en dur et des textes devenus noirs, donc illisibles. Chaque page quitte la plaque quand elle est refaite.
 - **Ton partagé par un petit magasin externe** (`useTon`) : le changer sur l'accueil le change dans les espaces, sans contexte à passer.
 - **Défilement dans le contenu** : l'en-tête et le dos du pli restent en place.
+
+---
+
+## 23/11/2026 — Thème Papier : Marine, les conditions
+
+**Branche :** `feature/papier-marine`
+
+### Ce qui a été fait
+- Page « Conditions » de Marine refaite pour Papier : la réponse d'abord (« Vas-y entre 13h30 et 15h30. », « Pas avant 9h. »), puis la plage en coupe dessinée à la gravure — sable en pointillé, eau en hachures qui monte et recule avec la marée, houle qui dérive selon la période — et un curseur pour voyager dans le temps.
+- Instruments au trait (thermomètre avec le seuil de choc thermique à 15 °C, vent, vagues, courant, ciel) et frise de 48 heures (hauteur : le vent, couleur : le danger), qui suivent l'heure choisie.
+- Le titre « answer-first » (`titreMarine`) et le meilleur créneau (`useCreneau`) sont communs aux thèmes.
+
+### Choix techniques
+- **Coupe schématique mais cohérente** : l'altitude du sable décroît toujours, ce qui permet de trouver la ligne de rivage par dichotomie pour n'importe quelle hauteur de marée.
+- **Niveau d'eau animé par ressort** vers la valeur choisie, au lieu de sauter.
+
+### Ce qui a bloqué / Solutions trouvées
+- `coupe.ts` (géométrie) et `Coupe.tsx` (composant) ne différaient que par la casse : conflit sous Windows. Géométrie renommée `geometrieCoupe.ts`.
+- Étiquettes de marée superposées : décalées et limitées à environ un cycle.

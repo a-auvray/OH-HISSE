@@ -92,7 +92,7 @@ L'accueil de Papier montre les mêmes données que celui de Classique, lues par
 `accueil/useBriefing` ; la phrase du jour (`accueil/phrase.ts`) est calculée à
 partir de ces données, jamais écrite à la main.
 
-Ordre prévu pour Papier : Marine (inspirée de L'Étale, plus poussée), Streetlifting
+Fait pour Papier : Marine, page Conditions (la plage en coupe). Ordre prévu pour la suite : Streetlifting
 (plusieurs graphiques possibles sans effet tableau de pilote), Vie courante et
 Objectifs (une identité chacun, différente de Streetlifting), puis la transition.
 Pour chaque page, les données et les actions sortent d'abord de l'affichage dans

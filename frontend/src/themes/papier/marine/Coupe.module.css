@@ -1,0 +1,72 @@
+.coupe {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.grain {
+  fill: color-mix(in srgb, var(--encre) 55%, transparent);
+}
+
+.hachure {
+  stroke: color-mix(in srgb, var(--bleu) 70%, transparent);
+  stroke-width: 1;
+}
+
+.traitSable {
+  stroke: var(--encre);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.aplat {
+  fill: color-mix(in srgb, var(--bleu) 14%, transparent);
+  transition: fill 1.2s ease;
+}
+
+.surface {
+  stroke: var(--bleu);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+
+.surfaceSecondaire {
+  stroke: color-mix(in srgb, var(--bleu) 55%, transparent);
+  stroke-width: 1.2;
+}
+
+/* La houle glisse d'une période à l'autre : la boucle est invisible. */
+.houle {
+  animation: derive 8s linear infinite;
+}
+
+@keyframes derive {
+  to {
+    transform: translateX(-120px);
+  }
+}
+
+.repere {
+  stroke: color-mix(in srgb, var(--encre) 40%, transparent);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+}
+
+.graduation {
+  stroke: color-mix(in srgb, var(--encre) 55%, transparent);
+  stroke-width: 1;
+}
+
+.rivage {
+  stroke: var(--encre);
+  stroke-width: 1.4;
+}
+
+.legende {
+  font:
+    400 12px 'Geist Mono Variable',
+    ui-monospace,
+    monospace;
+  fill: color-mix(in srgb, var(--encre) 72%, transparent);
+}
