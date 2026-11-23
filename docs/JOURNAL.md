@@ -375,3 +375,14 @@
 
 ### Ce qui a bloqué / Solutions trouvées
 - Mes nouveaux tests faisaient échouer deux tests d'autres fichiers : la fixture vidait le cache de configuration avant de restaurer l'environnement, ce qui gardait le mode actif pour la suite. L'environnement est restauré d'abord.
+
+---
+
+## 24/11/2026 — Icône et raccourci
+
+**Branche :** `feature/icone-raccourci`
+
+- Nouvelle icône, dessinée par le script de construction : fond nuit en dégradé, la croix des quatre espaces (vert en haut, orange à gauche, bleu à droite, violet en bas) autour d'un « ! » crème. Un seul fichier `.ico` à cinq tailles (256, 64, 48, 32, 16) pour rester net partout.
+- `outils/creer-raccourci.ps1` crée le raccourci « Oh Hisse » sur le Bureau avec cette icône.
+- Essai en conditions réelles par le raccourci : démarrage en 6 s, fenêtre « Oh Hisse ! », arrêt complet du serveur à la fermeture.
+- Corrigé au passage : les routes prenaient le jour du serveur (UTC) au lieu du jour de Paris, donc entre minuit et 1 h ou 2 h à Paris l'application et ses tests n'étaient pas d'accord sur la date. Tout passe par `vie_courante.aujourdhui()`.
