@@ -58,6 +58,8 @@ describe('Briefing du jour', () => {
         return Response.json({
           spot: { nom: 'Colleville-Montgomery' },
           maintenant: { eau_c: 12.3 },
+          heures: [],
+          marees: [],
           danger: { niveau: 'rouge', raisons: [{ niveau: 'rouge', texte: 'Vent moyen de 32 km/h' }] },
         })
       }
@@ -66,7 +68,10 @@ describe('Briefing du jour', () => {
           bloc: { id: 1, nom: 'Force', type: 'force', numero: 4, total: 18, rang_modele: 0 },
           nom: 'A — Tirage lourd',
           poids: { kg: 75, a_jour: true },
-          propositions: [{}, {}],
+          propositions: [
+            { exercice: 'Traction lestée', series: 4, reps: 3, rpe_cible: 8, lest_kg: null },
+            { exercice: 'Dips lestés', series: 4, reps: 5, rpe_cible: 8, lest_kg: 40 },
+          ],
         })
       }
       return Response.json([

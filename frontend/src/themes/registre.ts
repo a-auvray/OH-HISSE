@@ -13,6 +13,14 @@ export const THEMES: readonly MetaTheme[] = [
     apercu: ['#0b0d10', '#e0782a', '#2f8fe0', '#3fae5e', '#a54ec2'],
     charger: () => import('./classique'),
   },
+  {
+    id: 'papier',
+    nom: 'Papier',
+    description:
+      'Feuille crème aux bords repliés, encres d’imprimerie, un ton soir. Accueil seulement pour l’instant.',
+    apercu: ['#efe9dd', '#b4471a', '#0067a5', '#2f6e5a', '#6a4c9c'],
+    charger: () => import('./papier'),
+  },
 ]
 
 export const THEME_PAR_DEFAUT = 'classique'

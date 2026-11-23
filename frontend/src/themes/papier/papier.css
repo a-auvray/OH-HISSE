@@ -1,0 +1,34 @@
+/*
+ * Thème Papier : les couleurs sont déclarées comme de vraies couleurs pour
+ * qu'elles se fondent d'un ton à l'autre (jour ↔ soir) au lieu de sauter.
+ */
+@property --papier {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #efe9dd;
+}
+@property --encre {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #141414;
+}
+@property --sienne {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #b4471a;
+}
+@property --bleu {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #0067a5;
+}
+@property --vert {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #2f6e5a;
+}
+@property --violet {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #6a4c9c;
+}

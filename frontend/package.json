@@ -16,12 +16,16 @@
     "api:types": "cd ../backend && uv run python scripts/exporter_openapi.py > ../frontend/node_modules/.tmp/openapi.json && cd ../frontend && npx --yes openapi-typescript@7.13.0 node_modules/.tmp/openapi.json -o src/api/schema.d.ts && prettier --write src/api/schema.d.ts"
   },
   "dependencies": {
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
     "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
     "@fontsource-variable/manrope": "^5.3.0",
     "@fontsource-variable/quicksand": "^5.3.0",
     "@fontsource-variable/space-grotesk": "^5.3.0",
     "@fontsource-variable/unbounded": "^5.3.0",
     "@fontsource/anton": "^5.3.0",
+    "@fontsource/instrument-serif": "^5.3.0",
     "@visx/axis": "^4.0.0",
     "@visx/curve": "^4.0.0",
     "@visx/gradient": "^4.0.0",

@@ -5,6 +5,7 @@ import { nombre } from '../commun/format'
 import { useDonnees } from '../commun/useDonnees'
 import type { IdEspace } from '../espaces/espaces'
 import { useSession } from '../session/contexte'
+import { phraseDuJour } from './phrase'
 
 /** Un chiffre du briefing du jour, résumé pour un espace. */
 export interface Indicateur {
@@ -119,5 +120,6 @@ export function useBriefing() {
     seDeconnecter: () => void seDeconnecter(),
     donnees,
     indicateurs: indicateursDuBriefing(donnees),
+    phrase: phraseDuJour(donnees, maintenant),
   }
 }

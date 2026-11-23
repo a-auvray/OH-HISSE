@@ -38,6 +38,7 @@ themes/
   FournisseurTheme    charge le thème choisi, le remplace, mémorise les réglages
   Selecteur           le panneau discret
   classique/          le design d'origine, devenu un thème
+  papier/             feuille crème aux bords repliés, ton jour et ton soir (accueil seulement pour l'instant)
 ```
 
 - Seul le thème courant est téléchargé. Un autre thème commence à se
@@ -78,12 +79,23 @@ polices des espaces ne se chargent plus qu'avec leur thème).
 4. `contrat.test.ts` vérifie que rien ne manque ; `npm run budget` que le poids
    reste dans les limites.
 
-## À venir
+## Où en sont les thèmes
 
-- Les thèmes issus du lookbook, un par brique, en commençant par **Papier**
-  (accueil « Feuille d'imposition » plus lisible, avec mode sombre, Banc
-  d'essai, Tirage du jour, Tirage et Calque, Marine inspirée de L'Étale).
-- Ensuite **Matière** (accueil « Horloge physique » dont les côtés sont
-  redessinés, Ligne de charge, L'Étale, Rémanence, Drisses de Gabo, Travelling
-  sur la croix) et **Estampe**.
-- Le lookbook et ses prototypes sont dans `design-lookbook/` (hors dépôt).
+| Thème | Accueil | Espaces | Transition |
+|---|---|---|---|
+| Classique | fait | fait | fait |
+| Papier | fait (jour et soir) | ceux de Classique, en attendant | celle de Classique |
+| Matière | à faire | à faire | à faire |
+| Estampe | à faire | à faire | à faire |
+
+L'accueil de Papier montre les mêmes données que celui de Classique, lues par
+`accueil/useBriefing` ; la phrase du jour (`accueil/phrase.ts`) est calculée à
+partir de ces données, jamais écrite à la main.
+
+Ordre prévu pour Papier : Marine (inspirée de L'Étale, plus poussée), Streetlifting
+(plusieurs graphiques possibles sans effet tableau de pilote), Vie courante et
+Objectifs (une identité chacun, différente de Streetlifting), puis la transition.
+Pour chaque page, les données et les actions sortent d'abord de l'affichage dans
+un hook commun, puis le thème en montre une version à lui.
+
+Le lookbook et ses prototypes sont dans `design-lookbook/` (hors dépôt).
