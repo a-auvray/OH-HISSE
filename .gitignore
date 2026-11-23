@@ -36,3 +36,6 @@ docs/cahier-des-charges/.obsidian/workspace-mobile.json
 
 # --- Sauvegardes locales ----------------------------------------------------
 sauvegardes/
+
+# --- Lanceur Windows (construit par outils/construire-exe.ps1) --------------
+*.exe

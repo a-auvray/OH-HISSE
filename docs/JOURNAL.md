@@ -321,3 +321,18 @@
 ### Choix techniques
 - **Sauvegarde par l'API `backup` de SQLite** plutôt qu'une copie de fichier : la copie reste cohérente même pendant une écriture.
 - **Une seule adresse** (interface servie par FastAPI) : un seul processus à lancer, aucun proxy.
+
+---
+
+## 24/11/2026 — Un .exe pour lancer l'application
+
+**Branche :** `feature/lanceur-exe`
+
+### Ce qui a été fait
+- `Oh Hisse.exe` : un petit lanceur (C#, 8 ko) qui démarre `lancer.bat` depuis son propre dossier et en renvoie le code de sortie, avec une icône (carré encre, « OH » crème, point orange).
+- `outils/construire-exe.ps1` le reconstruit en une commande ; `outils/lanceur/Lanceur.cs` en est la source.
+
+### Choix techniques
+- **Compilateur fourni avec Windows** (csc.exe du .NET Framework) : rien à télécharger ni à installer, et le code du lanceur est lisible dans le dépôt.
+- **Un lanceur, pas une application empaquetée** : la logique reste dans `lancer.bat`, donc une seule chose à maintenir. Le .exe n'est pas versionné (`*.exe` ignoré) ; le script de construction l'est.
+- **Non signé** : Windows SmartScreen peut avertir au premier lancement (documenté).
