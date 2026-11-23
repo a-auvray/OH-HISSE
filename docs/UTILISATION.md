@@ -2,14 +2,26 @@
 
 ## Lancer
 
-Double-clique sur **`lancer.bat`** (à la racine du dépôt). Il :
+Double-clique sur **`Oh Hisse.exe`** (ou sur `lancer.bat`, c'est la même chose), à la racine du dépôt. Il :
 
 1. construit l'interface (une dizaine de secondes) ;
 2. applique les migrations de la base si besoin ;
 3. **sauvegarde ta base** dans `sauvegardes/` (une copie datée, les 30 dernières sont gardées) ;
 4. démarre l'application sur **http://localhost:8000** et ouvre le navigateur.
 
-`Ctrl+C` dans la fenêtre pour arrêter. Prérequis : [uv](https://docs.astral.sh/uv/) et Node.js 24.
+Le navigateur s'ouvre dès que le serveur répond. Si quelque chose ne va pas (un programme manquant, le port 8000
+déjà pris, une erreur), la fenêtre reste ouverte avec un message : copie-le pour comprendre. `Ctrl+C` dans la fenêtre
+pour arrêter. Prérequis : [uv](https://docs.astral.sh/uv/) et Node.js 24.
+
+`Oh Hisse.exe` n'est qu'un petit lanceur : il démarre `lancer.bat`, qu'il cherche à côté de lui puis dans
+le dossier du projet, mémorisé au moment où le programme a été construit. Tu peux donc le **copier sur le Bureau**.
+Si tu déplaces le dossier du projet, reconstruis-le (voir plus bas). Il n'est pas signé : au premier lancement,
+Windows peut afficher « Windows a protégé votre ordinateur » ; clique sur « Informations complémentaires » puis
+« Exécuter quand même ». L'exécutable n'est pas versionné ; pour le (re)construire :
+
+```powershell
+powershell -ExecutionPolicy Bypass -File outils\construire-exe.ps1
+```
 
 ## Où sont tes données
 
