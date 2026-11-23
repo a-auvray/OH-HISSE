@@ -30,6 +30,10 @@ class Parametres(BaseSettings):
     )
     duree_jeton_minutes: int = 60 * 24 * 7
 
+    # Usage personnel en local : pas d'écran de connexion, l'application s'ouvre directement sur le compte
+    # personnel. Refusé en production ; limité aux adresses localhost (voir app/main.py).
+    sans_connexion: bool = False
+
     # Origines autorisées à appeler l'API (le frontend Vite en local).
     # En production, l'interface est servie par la même origine : rien à autoriser.
     origines_cors: list[str] = ["http://localhost:5173"]
@@ -56,4 +60,6 @@ def parametres() -> Parametres:
     p = Parametres()
     if p.en_production and p.cle_secrete.startswith("dev-"):
         raise RuntimeError("OH_HISSE_CLE_SECRETE doit être définie en production.")
+    if p.en_production and p.sans_connexion:
+        raise RuntimeError("OH_HISSE_SANS_CONNEXION est interdit en production : tout le monde y entrerait.")
     return p

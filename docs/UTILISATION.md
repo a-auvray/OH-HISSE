@@ -29,6 +29,16 @@ Il n'est pas signé : au premier lancement, Windows peut afficher « Windows a p
 powershell -ExecutionPolicy Bypass -File outils\construire-exe.ps1
 ```
 
+## Pas d'écran de connexion
+
+En usage personnel, **il n'y a pas d'écran de connexion** : l'application s'ouvre directement sur ton compte (le premier
+compte non démo de la base). `lancer.bat` et `Oh Hisse.exe` activent ce mode avec la variable `OH_HISSE_SANS_CONNEXION=1`.
+Il est **interdit en production** (le serveur refuse de démarrer) et il ne répond qu'aux adresses `localhost` /
+`127.0.0.1`, pour qu'un autre site ne puisse pas s'en servir. Pour retrouver l'écran de connexion, retire la ligne
+`OH_HISSE_SANS_CONNEXION` de `lancer.bat`. Il faut quand même un compte : le premier se crée avec
+`uv run python scripts/creer_compte.py` (dossier `backend`). Le bouton « Se déconnecter » de l'accueil n'a plus
+d'intérêt dans ce mode : un rechargement rouvre ton compte.
+
 ## Où sont tes données
 
 Dans `backend/oh-hisse.db` (SQLite), un seul fichier qui reste d'un lancement à l'autre.
