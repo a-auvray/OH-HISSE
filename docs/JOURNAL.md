@@ -203,3 +203,19 @@
 ### Ce qui a bloqué / Solutions trouvées
 - Un test de l'accueil Classique manquait de `heures` et de `marees` dans ses données simulées, que la phrase du jour lit : complété pour coller à l'API réelle.
 - Un test du sélecteur a échoué une fois sur une machine chargée : délai des attentes asynchrones élargi.
+
+---
+
+## 23/11/2026 — Thème Papier : la coque des espaces
+
+**Branche :** `feature/papier-coque`
+
+### Ce qui a été fait
+- Coque commune des espaces Papier (feuille, en-tête et onglets, dos du pli vers l'accueil, ton jour/soir partagé avec l'accueil), avec une identité par espace : police, couleur et décor propres.
+- Streetlifting, Marine et Vie courante passent dans la coque. Leurs pages intérieures s'affichent sur une plaque d'imprimerie qui garde leurs couleurs d'origine, en attendant leurs versions Papier.
+- Les données de Marine (plages, conditions) sortent de l'affichage (`useMarine`), partagées par les deux thèmes.
+
+### Choix techniques
+- **Plaque plutôt que réécriture des 25 feuilles de style** : recolorer toutes les pages d'un coup mélangeait des fonds sombres écrits en dur et des textes devenus noirs, donc illisibles. Chaque page quitte la plaque quand elle est refaite.
+- **Ton partagé par un petit magasin externe** (`useTon`) : le changer sur l'accueil le change dans les espaces, sans contexte à passer.
+- **Défilement dans le contenu** : l'en-tête et le dos du pli restent en place.

@@ -4,14 +4,9 @@ import { BoutonRetour } from '../BoutonRetour'
 import { Motif } from '../Motifs'
 import { Aujourdhui } from './Aujourdhui'
 import { Briefings } from './Briefings'
+import { ONGLETS } from './onglets'
 import styles from './EspaceVieCourante.module.css'
 import { Sommeil } from './Sommeil'
-
-const ONGLETS = [
-  { chemin: '/vie-courante', libelle: 'Aujourd’hui', fin: true },
-  { chemin: '/vie-courante/sommeil', libelle: 'Sommeil', fin: false },
-  { chemin: '/vie-courante/briefings', libelle: 'Briefings', fin: false },
-] as const
 
 /** Espace Vie courante : calme, apaisé (note 11). Le carrefour où tout se croise. */
 export function EspaceVieCourante() {
