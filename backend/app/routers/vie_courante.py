@@ -66,7 +66,7 @@ def supprimer_pesee(pesee_id: int, utilisateur: UtilisateurDep, session: Session
 
 @routeur.get("/poids", responses={404: {}})
 def poids_actuel(utilisateur: UtilisateurDep, session: SessionDep) -> PoidsActuel:
-    resultat = poids.poids_a_la_date(service.pesees(session, utilisateur), dt.date.today())
+    resultat = poids.poids_a_la_date(service.pesees(session, utilisateur), service_vie.aujourdhui())
     if resultat is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Aucune pesée enregistrée.")
     return PoidsActuel(kg=resultat.kg, a_jour=resultat.a_jour, derniere_pesee=resultat.derniere_pesee)
@@ -77,7 +77,7 @@ def poids_actuel(utilisateur: UtilisateurDep, session: SessionDep) -> PoidsActue
 
 @routeur.get("/nuits")
 def lister_nuits(utilisateur: UtilisateurDep, session: SessionDep, jours: int = 30) -> list[NuitLue]:
-    depuis = dt.date.today() - dt.timedelta(days=jours)
+    depuis = service_vie.aujourdhui() - dt.timedelta(days=jours)
     lignes = session.exec(
         select(Nuit)
         .where(Nuit.utilisateur_id == utilisateur.id, Nuit.date >= depuis)

@@ -7,6 +7,7 @@ from sqlmodel import Session, col, select
 from app.models import Bloc, Exercice, Objectif, Utilisateur
 from app.schemas.objectifs import BlocAssocie, ObjectifLu, Progression
 from app.services import streetlifting as service
+from app.services import vie_courante
 
 # Le 1RM « actuel » : le meilleur estimé sur les quatre dernières semaines.
 FENETRE_PROGRESSION = dt.timedelta(weeks=4)
@@ -34,7 +35,7 @@ def progression(
 
 
 def lecture(session: Session, utilisateur: Utilisateur, objectif: Objectif) -> ObjectifLu:
-    jour = dt.date.today()
+    jour = vie_courante.aujourdhui()
     exercice = session.get(Exercice, objectif.exercice_id)
     blocs = session.exec(select(Bloc).where(Bloc.objectif_id == objectif.id).order_by(col(Bloc.debut))).all()
     assert objectif.id is not None and exercice is not None  # noqa: S101

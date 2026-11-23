@@ -20,6 +20,11 @@ def maintenant() -> dt.datetime:
     return dt.datetime.now(PARIS)
 
 
+def aujourdhui() -> dt.date:
+    """Le jour, à Paris : le serveur peut être en UTC, le jour ne change pas à la même heure."""
+    return maintenant().date()
+
+
 @dataclass(frozen=True)
 class Donnees:
     seances: list[SeanceResumee]
