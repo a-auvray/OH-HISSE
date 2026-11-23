@@ -34,7 +34,7 @@ export function Navigation() {
   return (
     // `custom` est aussi transmis à la page qui sort : elle connaît ainsi le sens du trajet.
     <AnimatePresence initial={false} custom={trajet.sens}>
-      <Scene key={espace} sens={trajet.sens}>
+      <Scene key={espace} sens={trajet.sens} espace={ESPACES.find((e) => e.chemin === espace)?.id ?? null}>
         <Routes location={position}>
           <Route path="/" element={<Accueil />} />
           {ESPACES.map(({ id, chemin }) => {

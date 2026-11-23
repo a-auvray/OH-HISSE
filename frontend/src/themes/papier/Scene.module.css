@@ -1,0 +1,27 @@
+.accueil,
+.espace {
+  position: fixed;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--fond);
+  backface-visibility: hidden;
+}
+
+/* L'espace recouvre l'accueil, que l'on soit en train d'entrer ou de sortir. */
+.accueil {
+  z-index: 1;
+}
+
+.espace {
+  z-index: 2;
+  will-change: transform;
+}
+
+.ombre {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: #000;
+  pointer-events: none;
+}
