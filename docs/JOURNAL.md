@@ -271,3 +271,18 @@
 ### Choix techniques
 - **Mêmes gestes dans les deux thèmes** : les fonctions `noterEcart`, `noterNuit` et `peser` sont communes, donc aucune fonctionnalité n'existe dans un seul thème.
 - **Mouvement = souffle** : trois anneaux décalés qui respirent sur 7 secondes, rien ne clignote.
+
+---
+
+## 23/11/2026 — Thème Papier : Objectifs
+
+**Branche :** `feature/papier-objectifs`
+
+### Ce qui a été fait
+- Espace Objectifs refait pour Papier : chaque objectif est une **drisse**, un fil vertical qu'on hisse. La pince monte (avec un ressort lent) à hauteur du pourcentage atteint, la cible flotte en haut, le fil est plein jusqu'à la pince et en pointillé au-dessus. Le principal est grand, avec sa fiche (mouvement, cible, échéance, 1RM estimé, blocs) ; les autres sont alignés à côté.
+- Identité propre : violet, capitales larges (Unbounded), chiffres en mono, règle graduée le long du bord de la page.
+- Données et gestes (créer, marquer atteint, abandonner, reprendre, mettre en avant, supprimer) sortent de l'affichage dans `espaces/objectifs/useObjectifs.ts`, partagés avec Classique.
+
+### Choix techniques
+- **Un fil par objectif, pas un graphique** : la tension vers la cible se lit sans légende, et c'est ce que le cahier des charges demandait (« la tension vers la cible »).
+- **Même formulaire, même validation** : `creerObjectif` est commun.

@@ -1,8 +1,9 @@
 /*
  * Thème « Papier » : une feuille crème dont les quatre bords sont des rabats,
- * avec un ton jour et un ton soir. L'accueil et la coque des espaces sont dessinés ;
- * les pages intérieures se recolorent avec la coque, et les vues principales
- * sont refaites une à une. Objectifs et la transition restent ceux de Classique.
+ * avec un ton jour et un ton soir. L'accueil, la coque des espaces et leurs vues
+ * principales sont dessinés ; quelques pages intérieures (saisie, calendrier,
+ * blocs, sommeil, briefings, assistant, carte, carnet) restent sur la plaque, et
+ * la transition est encore celle de Classique.
  */
 import '@fontsource-variable/bricolage-grotesque/standard.css'
 import '@fontsource-variable/geist'
@@ -15,6 +16,7 @@ import classique from '../classique'
 import type { Theme } from '../types'
 import { AccueilPapier } from './Accueil'
 import { EspaceMarinePapier } from './espaces/EspaceMarine'
+import { EspaceObjectifsPapier } from './espaces/EspaceObjectifs'
 import { EspaceStreetliftingPapier } from './espaces/EspaceStreetlifting'
 import { EspaceVieCourantePapier } from './espaces/EspaceVieCourante'
 
@@ -25,6 +27,7 @@ const theme: Theme = {
     streetlifting: EspaceStreetliftingPapier,
     'vie-courante': EspaceVieCourantePapier,
     marine: EspaceMarinePapier,
+    objectifs: EspaceObjectifsPapier,
   },
   Scene: classique.Scene,
 }
