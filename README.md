@@ -59,6 +59,8 @@ npm install
 npm run dev
 ```
 
+Pour l'usage de tous les jours, un double-clic sur `lancer.bat` suffit (voir [docs/UTILISATION.md](docs/UTILISATION.md)) : interface et API sur http://localhost:8000, sauvegarde automatique de la base à chaque démarrage.
+
 Un exemple de bloc prêt à importer : [`docs/exemples/bloc-force.json`](docs/exemples/bloc-force.json).
 
 Le mode démo ne demande aucun compte : chaque visiteur reçoit son propre bac à sable de données fictives, effacé au bout de 24 h.

@@ -33,3 +33,6 @@ Thumbs.db
 # --- Obsidian (état local du coffre, propre à chaque machine) --------------
 docs/cahier-des-charges/.obsidian/workspace.json
 docs/cahier-des-charges/.obsidian/workspace-mobile.json
+
+# --- Sauvegardes locales ----------------------------------------------------
+sauvegardes/
