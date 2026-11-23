@@ -2,71 +2,27 @@ import { AnimatePresence, motion } from 'motion/react'
 import { type FormEvent, useState } from 'react'
 import { Link } from 'react-router'
 
-import { api } from '../../api/client'
-import { type Exercice, messageErreur, type ObjectifEcrit, type ObjectifLu } from '../../api/types'
+import type { Exercice, ObjectifEcrit } from '../../api/types'
 import { dateCourte, dateLongue, nombre } from '../../commun/format'
-import { exiger, useDonnees } from '../../commun/useDonnees'
 import { BoutonRetour } from '../BoutonRetour'
 import styles from './EspaceObjectifs.module.css'
 import { Jauge } from './Jauge'
-
-const STATUTS = { en_cours: 'En cours', atteint: 'Atteint', abandonne: 'Abandonné' } as const
-
-function versEcriture(o: ObjectifLu, modif: Partial<ObjectifEcrit> = {}): ObjectifEcrit {
-  return {
-    titre: o.titre,
-    type: o.type,
-    exercice_id: o.exercice_id,
-    valeur_cible_kg: o.valeur_cible_kg,
-    date_cible: o.date_cible,
-    principal: o.principal,
-    ...modif,
-  }
-}
-
-function echeance(jours: number): string {
-  if (jours < 0) return `échéance passée de ${-jours} j`
-  if (jours === 0) return 'c’est aujourd’hui'
-  return `J−${jours}`
-}
+import { creerObjectif, echeance, STATUTS, useObjectifs } from './useObjectifs'
 
 /** Espace Objectifs : un cap qui structure les blocs (note 06). */
 export function EspaceObjectifs() {
-  const [objectifs, recharger] = useDonnees(
-    async () => exiger(await api.GET('/api/objectifs'), (e) => messageErreur(e)),
-    [],
-  )
-  const [exercices] = useDonnees(
-    async () => exiger(await api.GET('/api/streetlifting/exercices'), (e) => messageErreur(e)),
-    [],
-  )
+  const {
+    objectifs,
+    exercices,
+    liste,
+    principal,
+    autres,
+    recharger,
+    changerStatut,
+    mettreEnAvant,
+    supprimer,
+  } = useObjectifs()
   const [formulaireOuvert, setFormulaireOuvert] = useState(false)
-
-  const liste = objectifs.etat === 'pret' ? objectifs.valeur : []
-  const principal =
-    liste.find((o) => o.principal && o.statut === 'en_cours') ?? liste.find((o) => o.statut === 'en_cours')
-  const autres = liste.filter((o) => o !== principal)
-
-  async function changerStatut(o: ObjectifLu, statut: ObjectifLu['statut']) {
-    await api.PATCH('/api/objectifs/{objectif_id}/statut', {
-      params: { path: { objectif_id: o.id } },
-      body: { statut },
-    })
-    recharger()
-  }
-
-  async function mettreEnAvant(o: ObjectifLu) {
-    await api.PUT('/api/objectifs/{objectif_id}', {
-      params: { path: { objectif_id: o.id } },
-      body: versEcriture(o, { principal: true }),
-    })
-    recharger()
-  }
-
-  async function supprimer(o: ObjectifLu) {
-    await api.DELETE('/api/objectifs/{objectif_id}', { params: { path: { objectif_id: o.id } } })
-    recharger()
-  }
 
   return (
     <main className={styles.espace} data-espace="objectifs">
@@ -258,10 +214,8 @@ function FormulaireObjectif({ exercices, premier, apresCreation }: PropsFormulai
 
   async function creer(evenement: FormEvent) {
     evenement.preventDefault()
-    const { error } = await api.POST('/api/objectifs', {
-      body: { ...valeurs, valeur_cible_kg: Number(cible.replace(',', '.')) },
-    })
-    if (error) setErreur(messageErreur(error, 'Création impossible.'))
+    const message = await creerObjectif(valeurs, cible)
+    if (message) setErreur(message)
     else apresCreation()
   }
 
