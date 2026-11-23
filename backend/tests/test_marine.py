@@ -11,6 +11,7 @@ from fastapi.testclient import TestClient
 
 from app.main import app as application
 from app.schemas.marine import SpotLu
+from app.services import marine as service_marine
 from app.services.marine import assembler
 from app.services.open_meteo import ConditionsIndisponibles, OpenMeteo, Reponse, open_meteo
 
@@ -138,8 +139,10 @@ class OpenMeteoEnregistre(OpenMeteo):
 
 
 @pytest.fixture
-def sans_reseau() -> Iterator[None]:
+def sans_reseau(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
     application.dependency_overrides[open_meteo] = OpenMeteoEnregistre
+    # Les relevés enregistrés couvrent quelques jours : on fige l'horloge dans cette fenêtre.
+    monkeypatch.setattr(service_marine, "instant_present", lambda: MAINTENANT)
     yield
     application.dependency_overrides.pop(open_meteo, None)
 

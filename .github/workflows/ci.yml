@@ -111,6 +111,8 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+      - name: Budget de poids
+        run: npm run budget
 
   image:
     name: Image Docker (construction, démarrage)

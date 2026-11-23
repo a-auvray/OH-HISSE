@@ -162,3 +162,24 @@
 - Le téléchargement Litto3D calait → reprise automatique avec détection de blocage (`curl -C -`).
 - Le contour du masque « mer » suivait aussi le bord du relevé → lignes coupées là où elles longent une zone sans données.
 - Une cuvette mal détectée dans le moteur (le test d'eau continue s'arrêtait un point trop tôt) → trouvée par les tests, corrigée.
+
+---
+
+## 23/11/2026 — Thèmes : le socle
+
+**Branche :** `feature/themes-socle`
+
+### Ce qui a été fait
+- Refonte du design décidée à partir d'un lookbook de 13 directions (accueil, transitions, deux par espace), toutes jugées bonnes : plutôt que d'en choisir une, l'application aura plusieurs thèmes complets, changeables dans l'interface (`docs/THEMES.md`).
+- Socle : registre de thèmes, fournisseur qui charge seulement le thème choisi, sélecteur discret (thème, favoris, niveau d'animation Cinéma / Sobre / Immobile), voile pendant le changement.
+- Le design d'origine devient le thème « Classique », sans aucun changement visible.
+- Garde-fous : test de contrat (chaque thème fournit l'accueil, les quatre espaces et sa transition) et budget de poids vérifié en CI.
+
+### Choix techniques
+- **Thèmes globaux, transitions comprises** : mélanger les pièces de deux thèmes sonnerait faux.
+- **Thème = présentation seulement** : données, logique et routes restent communes, pour éviter les écarts et les bugs entre thèmes.
+- **Chargement à la demande, préchauffé au survol** : le paquet de départ passe de 137 à 125 ko gzip, les polices des espaces suivent leur thème.
+- **Réglages dans le navigateur** (`localStorage`) pour l'instant ; les mettre dans le profil viendra si besoin.
+
+### Ce qui a bloqué / Solutions trouvées
+- Les prototypes du lookbook plantaient dans une fenêtre de taille nulle (onglet en arrière-plan) : leur script attend maintenant une vraie taille. Ils restent un outil de choix, pas du code repris tel quel.

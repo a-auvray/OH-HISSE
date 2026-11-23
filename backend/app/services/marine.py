@@ -234,6 +234,11 @@ def assembler(
     )
 
 
+def instant_present() -> dt.datetime:
+    """L'instant présent, à l'heure de la zone (les tests le figent pour rejouer des relevés enregistrés)."""
+    return dt.datetime.now(_fuseau())
+
+
 def conditions(service: OpenMeteo, spot: Spot, maintenant: dt.datetime | None = None) -> Conditions:
     """Interroge Open-Meteo (via le cache) pour un spot."""
     zone = marees.regles_marine()["zone"]
@@ -247,7 +252,7 @@ def conditions(service: OpenMeteo, spot: Spot, maintenant: dt.datetime | None = 
         meteo.donnees,
         marine.donnees,
         brest.donnees,
-        maintenant or dt.datetime.now(_fuseau()),
+        maintenant or instant_present(),
         perimees=meteo.perimee or marine.perimee or brest.perimee,
     )
 
