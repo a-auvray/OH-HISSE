@@ -19,14 +19,17 @@ est dans `journal-lancement.txt`. Prérequis : [uv](https://docs.astral.sh/uv/) 
 Pour un lancement avec la fenêtre noire (voir ce qui se passe, arrêter avec `Ctrl+C`), utilise **`lancer.bat`** : il
 ouvre l'application dans ton navigateur habituel. Pour changer de port, définis la variable `OH_HISSE_PORT`.
 
-`Oh Hisse.exe` cherche `lancer.bat` à côté de lui, puis dans le dossier du projet, mémorisé au moment où le programme
-a été construit : tu peux donc le **copier sur le Bureau**. Si tu déplaces le dossier du projet, reconstruis-le.
-Il n'est pas signé : au premier lancement, Windows peut afficher « Windows a protégé votre ordinateur » ; clique sur
-« Informations complémentaires » puis « Exécuter quand même ». L'exécutable n'est pas versionné ; pour le (re)construire
-(ferme-le d'abord, Windows ne remplace pas un programme ouvert) :
+**Raccourci sur le Bureau** : `outils\creer-raccourci.ps1` crée « Oh Hisse » sur ton Bureau, avec l'icône (la croix
+des quatre espaces autour d'un « ! »). `Oh Hisse.exe` cherche `lancer.bat` à côté de lui, puis dans le dossier du projet,
+mémorisé au moment où le programme a été construit : un raccourci ou une copie fonctionnent donc de n'importe où. Si tu
+déplaces le dossier du projet, reconstruis-le. Il n'est pas signé : au premier lancement, Windows peut afficher
+« Windows a protégé votre ordinateur » ; clique sur « Informations complémentaires » puis « Exécuter quand même ».
+L'exécutable n'est pas versionné ; pour le (re)construire (ferme-le d'abord, Windows ne remplace pas un programme
+ouvert), puis recréer le raccourci :
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File outils\construire-exe.ps1
+powershell -ExecutionPolicy Bypass -File outils\creer-raccourci.ps1
 ```
 
 ## Pas d'écran de connexion
