@@ -386,3 +386,13 @@
 - `outils/creer-raccourci.ps1` crée le raccourci « Oh Hisse » sur le Bureau avec cette icône.
 - Essai en conditions réelles par le raccourci : démarrage en 6 s, fenêtre « Oh Hisse ! », arrêt complet du serveur à la fermeture.
 - Corrigé au passage : les routes prenaient le jour du serveur (UTC) au lieu du jour de Paris, donc entre minuit et 1 h ou 2 h à Paris l'application et ses tests n'étaient pas d'accord sur la date. Tout passe par `vie_courante.aujourdhui()`.
+
+---
+
+## 24/11/2026 — Accueil Papier plus lisible
+
+**Branche :** `feature/papier-accueil-lisible`
+
+- Le centre de l'accueil est posé un peu plus haut (surface plus claire, filet, ombre légère) et un filet sépare la croix des quatre espaces : les frontières se lisent mieux.
+- La phrase du jour dit enfin quelque chose d'utile : la séance du jour en gros (« Force · séance 9/12 »), son premier exercice dessous, puis la récupération et la mer en clair. Fini « la mer est fermée » : « Mer : danger rouge, vent 15 km/h. Pas de sortie conseillée. »
+- Le mode sombre existait déjà (un petit « Soir » presque invisible) : le bouton s'appelle « Mode sombre / Mode clair » et se voit.

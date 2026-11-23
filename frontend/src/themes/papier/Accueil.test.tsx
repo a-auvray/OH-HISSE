@@ -31,7 +31,7 @@ describe('Accueil du thème Papier', () => {
   it('salue, et garde une jauge de progression par bloc qui en a une', () => {
     rendre(<AccueilPapier />)
 
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Journée libre')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Pas de séance prévue')
     expect(screen.getByText(/Bonjour, Antoine|Bonsoir, Antoine/)).toBeInTheDocument()
     expect(screen.getByRole('progressbar', { name: 'Récupération' })).toBeInTheDocument()
     expect(screen.getByRole('progressbar', { name: 'Avancement du bloc' })).toBeInTheDocument()
@@ -41,10 +41,10 @@ describe('Accueil du thème Papier', () => {
     rendre(<AccueilPapier />)
     const user = userEvent.setup()
 
-    await user.click(screen.getByRole('button', { name: '◐ Soir' }))
+    await user.click(screen.getByRole('button', { name: '◐ Mode sombre' }))
 
     expect(screen.getByRole('main')).toHaveAttribute('data-ton', 'soir')
-    expect(screen.getByRole('button', { name: '◑ Jour' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: '◑ Mode clair' })).toHaveAttribute('aria-pressed', 'true')
     expect(localStorage.getItem('oh-hisse.papier.ton')).toBe('soir')
   })
 
