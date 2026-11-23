@@ -1,15 +1,15 @@
-import datetime as dt
 from collections.abc import Iterator
 
 import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app as application
+from app.services import vie_courante
 from app.services.open_meteo import open_meteo
 from tests.conftest import TRACTION
 from tests.test_marine import OpenMeteoEnregistre
 
-AUJOURDHUI = dt.date.today()
+AUJOURDHUI = vie_courante.maintenant().date()  # l'heure de Paris, comme le service (la CI tourne en UTC)
 
 
 @pytest.fixture

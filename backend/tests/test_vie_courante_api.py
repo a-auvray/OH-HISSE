@@ -3,9 +3,10 @@ from typing import Any
 
 from fastapi.testclient import TestClient
 
+from app.services import vie_courante
 from tests.conftest import TRACTION
 
-AUJOURDHUI = dt.date.today()
+AUJOURDHUI = vie_courante.maintenant().date()  # l'heure de Paris, comme le service (la CI tourne en UTC)
 HIER = AUJOURDHUI - dt.timedelta(days=1)
 
 
