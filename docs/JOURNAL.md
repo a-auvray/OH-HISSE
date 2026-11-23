@@ -305,3 +305,19 @@
 
 ### Ce qui a bloqué / Solutions trouvées
 - Après des changements de branche, Vite servait un ancien module (la page Marine montrait l'ancienne vue) : relance du serveur de développement, comme noté dans mes notes de projet.
+
+---
+
+## 24/11/2026 — Usage quotidien en local
+
+**Branche :** `feature/lancement-local`
+
+### Ce qui a été fait
+- `lancer.bat` : construit l'interface, migre la base, sauvegarde, démarre sur http://localhost:8000 et ouvre le navigateur.
+- Sauvegarde de la base SQLite (`app/core/sauvegarde.py`, `scripts/sauvegarder.py`) : copie datée cohérente même si l'application tourne, les 30 dernières gardées dans `sauvegardes/` (ignoré par Git). Sans effet sur PostgreSQL.
+- Mode d'emploi : `docs/UTILISATION.md`.
+- Parcours Streetlifting vérifié de bout en bout sur une base jetable : import d'un bloc, pesée, séance du jour, saisie, 1RM estimé, séance suivante avec charges calculées, évolution, suppression. Marine : conditions, assistant et carnet répondent avec les vraies données.
+
+### Choix techniques
+- **Sauvegarde par l'API `backup` de SQLite** plutôt qu'une copie de fichier : la copie reste cohérente même pendant une écriture.
+- **Une seule adresse** (interface servie par FastAPI) : un seul processus à lancer, aucun proxy.
