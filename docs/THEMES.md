@@ -38,7 +38,7 @@ themes/
   FournisseurTheme    charge le thème choisi, le remplace, mémorise les réglages
   Selecteur           le panneau discret
   classique/          le design d'origine, devenu un thème
-  papier/             feuille crème aux bords repliés, ton jour et ton soir (accueil seulement pour l'instant)
+  papier/             feuille crème aux bords repliés, ton jour et ton soir (accueil et coque des espaces ; les vues sont refaites une à une)
 ```
 
 - Seul le thème courant est téléchargé. Un autre thème commence à se
@@ -84,7 +84,7 @@ polices des espaces ne se chargent plus qu'avec leur thème).
 | Thème | Accueil | Espaces | Transition |
 |---|---|---|---|
 | Classique | fait | fait | fait |
-| Papier | fait (jour et soir) | ceux de Classique, en attendant | celle de Classique |
+| Papier | fait (jour et soir) | coque faite pour Streetlifting, Marine et Vie courante, pages intérieures sur plaque ; Objectifs : celui de Classique | celle de Classique |
 | Matière | à faire | à faire | à faire |
 | Estampe | à faire | à faire | à faire |
 
@@ -97,5 +97,13 @@ Ordre prévu pour Papier : Marine (inspirée de L'Étale, plus poussée), Street
 Objectifs (une identité chacun, différente de Streetlifting), puis la transition.
 Pour chaque page, les données et les actions sortent d'abord de l'affichage dans
 un hook commun, puis le thème en montre une version à lui.
+
+**La coque et la plaque.** Chaque espace Papier est une coque commune (`papier/Coque`) :
+la feuille, l'en-tête avec ses onglets, le dos du pli pour retourner à l'accueil, le ton
+jour ou soir, et un décor propre à l'espace (houle pour Marine, hachures pour
+Streetlifting, lumière qui respire pour Vie courante, règle graduée pour Objectifs). Les pages
+intérieures pas encore refaites s'affichent sur une *plaque d'imprimerie* (`papier/Plaque`),
+un panneau sombre qui garde leurs couleurs d'origine ; une page quitte la plaque quand sa
+version Papier est faite.
 
 Le lookbook et ses prototypes sont dans `design-lookbook/` (hors dépôt).

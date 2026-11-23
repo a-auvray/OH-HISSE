@@ -1,45 +1,22 @@
 import { motion } from 'motion/react'
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense } from 'react'
 import { NavLink, Route, Routes } from 'react-router'
 
-import { api } from '../../api/client'
-import { messageErreur } from '../../api/types'
-import { exiger, useDonnees } from '../../commun/useDonnees'
 import { BoutonRetour } from '../BoutonRetour'
 import { Motif } from '../Motifs'
 import { Assistant } from './Assistant'
 import { Carnet } from './Carnet'
 import { Conditions } from './Conditions'
+import { ONGLETS } from './onglets'
 import styles from './EspaceMarine.module.css'
+import { useMarine } from './useMarine'
 
 // La carte (MapLibre) est lourde : elle n'est chargée qu'à l'ouverture de son onglet.
-const Carte = lazy(() => import('./Carte').then((m) => ({ default: m.Carte })))
-
-const ONGLETS = [
-  { chemin: '/marine', libelle: 'Conditions', fin: true },
-  { chemin: '/marine/assistant', libelle: 'Assistant', fin: false },
-  { chemin: '/marine/carte', libelle: 'Carte', fin: false },
-  { chemin: '/marine/carnet', libelle: 'Carnet', fin: false },
-] as const
+export const Carte = lazy(() => import('./Carte').then((m) => ({ default: m.Carte })))
 
 /** Espace Marine : fluide, profond, mouvement de vagues (note 11). */
 export function EspaceMarine() {
-  const [spots] = useDonnees(
-    async () => exiger(await api.GET('/api/marine/spots'), (e) => messageErreur(e)),
-    [],
-  )
-  const [choix, setChoix] = useState<number | null>(null)
-  const spotId = choix ?? (spots.etat === 'pret' ? (spots.valeur[0]?.id ?? null) : null)
-
-  const [conditions, recharger] = useDonnees(
-    async () =>
-      spotId === null
-        ? null
-        : exiger(await api.GET('/api/marine/conditions', { params: { query: { spot_id: spotId } } }), (e) =>
-            messageErreur(e, 'Conditions indisponibles.'),
-          ),
-    [spotId],
-  )
+  const { spots, spotId, choisirSpot, conditions, recharger } = useMarine()
 
   return (
     <main className={styles.espace} data-espace="marine">
@@ -70,7 +47,7 @@ export function EspaceMarine() {
                 type="button"
                 role="radio"
                 aria-checked={s.id === spotId}
-                onClick={() => setChoix(s.id)}
+                onClick={() => choisirSpot(s.id)}
               >
                 {s.id === spotId && <motion.span layoutId="spot-choisi" className={styles.pastille} />}
                 <span>{s.nom}</span>

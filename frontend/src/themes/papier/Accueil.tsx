@@ -8,17 +8,7 @@ import type { Direction, IdEspace } from '../../espaces/espaces'
 import { useSession } from '../../session/contexte'
 import styles from './Accueil.module.css'
 import { CourbeDeMaree } from './CourbeDeMaree'
-
-type Ton = 'jour' | 'soir'
-const CLE_TON = 'oh-hisse.papier.ton'
-
-function tonMemorise(): Ton {
-  try {
-    return localStorage.getItem(CLE_TON) === 'soir' ? 'soir' : 'jour'
-  } catch {
-    return 'jour'
-  }
-}
+import { useTon } from './ton'
 
 /** L'entrée en scène ne se joue qu'une fois par connexion, comme pour les autres thèmes. */
 let entreeJoueePour: number | null = null
@@ -84,16 +74,7 @@ export function AccueilPapier() {
   }, [utilisateurId])
 
   const { maintenant, salutation, nom, donnees, phrase, peutSeDeconnecter, seDeconnecter } = useBriefing()
-  const [ton, setTon] = useState<Ton>(tonMemorise)
-  const changerTon = () => {
-    const suivant: Ton = ton === 'jour' ? 'soir' : 'jour'
-    setTon(suivant)
-    try {
-      localStorage.setItem(CLE_TON, suivant)
-    } catch {
-      // Sans stockage, le ton vaut pour cette visite seulement.
-    }
-  }
+  const [ton, changerTon] = useTon()
 
   const seance = donnees?.seance
   const vie = donnees?.vie
