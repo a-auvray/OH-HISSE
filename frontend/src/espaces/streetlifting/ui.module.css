@@ -6,12 +6,12 @@
   border-radius: 18px;
   /* Métal brossé : un dégradé très léger et un liseré clair en haut. */
   background:
-    linear-gradient(180deg, rgb(255 255 255 / 0.035), transparent 40%),
-    color-mix(in oklab, #1d1612 88%, transparent);
-  border: 1px solid color-mix(in oklab, var(--streetlifting) 18%, #2c2420);
+    linear-gradient(180deg, color-mix(in srgb, var(--texte) 4%, transparent), transparent 40%),
+    color-mix(in oklab, var(--surface) 88%, transparent);
+  border: 1px solid color-mix(in oklab, var(--streetlifting) 18%, var(--filet));
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.06),
-    0 20px 50px -30px rgb(0 0 0 / 0.9);
+    inset 0 1px 0 color-mix(in srgb, var(--texte) 6%, transparent),
+    var(--ombre-carte);
 }
 
 .etiquette {
@@ -42,8 +42,8 @@
   gap: var(--espace-2);
   padding: 10px 18px;
   border-radius: 10px;
-  border: 1px solid #3a2f28;
-  background: rgb(255 255 255 / 0.03);
+  border: 1px solid var(--filet);
+  background: color-mix(in srgb, var(--texte) 3%, transparent);
   color: var(--texte);
   font-weight: 700;
   font-size: 0.9rem;
@@ -67,17 +67,21 @@
   font-size: 1.25rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #1a0f07;
-  background: linear-gradient(180deg, #f39a50, var(--streetlifting));
+  color: var(--sur-accent);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 80%, #fff), var(--accent));
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.35),
+    inset 0 1px 0 color-mix(in srgb, var(--texte) 35%, transparent),
     0 14px 30px -14px color-mix(in oklab, var(--streetlifting) 80%, transparent);
   transition: transform var(--duree-rapide) var(--courbe-sortie);
 }
 
 .principal:hover:not(:disabled) {
   transform: translateY(-2px);
-  background: linear-gradient(180deg, #ffad66, #ea8536);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 65%, #fff),
+    color-mix(in srgb, var(--accent) 90%, #000)
+  );
 }
 
 .discret {
@@ -89,7 +93,7 @@
 
 .danger:hover:not(:disabled) {
   border-color: var(--danger);
-  color: #ff9a9d;
+  color: var(--danger-texte);
   background: color-mix(in oklab, var(--danger) 10%, transparent);
 }
 
@@ -103,8 +107,8 @@ button:disabled {
   color: var(--texte);
   padding: 9px 12px;
   border-radius: 8px;
-  border: 1px solid #3a2f28;
-  background: rgb(0 0 0 / 0.35);
+  border: 1px solid var(--filet);
+  background: var(--creux);
   transition:
     border-color var(--duree-rapide),
     box-shadow var(--duree-rapide);
@@ -120,7 +124,7 @@ button:disabled {
   white-space: pre-line;
   padding: var(--espace-3) var(--espace-4);
   border-radius: 10px;
-  color: #ffb3b5;
+  color: var(--danger-texte);
   background: color-mix(in oklab, var(--danger) 12%, transparent);
   border: 1px solid color-mix(in oklab, var(--danger) 40%, transparent);
 }

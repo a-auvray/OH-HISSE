@@ -11,7 +11,7 @@
 
 .piste {
   fill: none;
-  stroke: rgb(192 232 192 / 0.1);
+  stroke: color-mix(in srgb, var(--accent-clair) 10%, transparent);
 }
 
 .centre {

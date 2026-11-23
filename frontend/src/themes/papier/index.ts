@@ -1,9 +1,8 @@
 /*
  * Thème « Papier » : une feuille crème dont les quatre bords sont des rabats,
  * avec un ton jour et un ton soir. L'accueil, la coque des espaces et leurs vues
- * principales sont dessinés ; quelques pages intérieures (saisie, calendrier,
- * blocs, sommeil, briefings, assistant, carte, carnet) restent sur la plaque, et
- * la transition est propre au thème : un rabat qui se déplie.
+ * principales sont dessinés ; les pages intérieures prennent les couleurs du thème
+ * par les jetons de surface, et la transition est propre au thème : un rabat qui se déplie.
  */
 import '@fontsource/anton'
 import '@fontsource-variable/bricolage-grotesque/standard.css'

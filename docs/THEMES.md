@@ -84,7 +84,7 @@ polices des espaces ne se chargent plus qu'avec leur thème).
 | Thème | Accueil | Espaces | Transition |
 |---|---|---|---|
 | Classique | fait | fait | fait |
-| Papier | fait (jour et soir) | coque et vues principales faites pour les quatre ; quelques pages intérieures sur plaque | faite : un rabat qui se déplie |
+| Papier | fait (jour et soir) | coque et vues principales faites pour les quatre ; pages intérieures accordées par les jetons de surface | faite : un rabat qui se déplie |
 | Matière | à faire | à faire | à faire |
 | Estampe | à faire | à faire | à faire |
 
@@ -95,17 +95,21 @@ partir de ces données, jamais écrite à la main.
 Fait pour Papier : Marine (page Conditions, la plage en coupe), Streetlifting (séance du
 jour, analyse en planche avec rail de miniatures), Vie courante (« Aujourd'hui », calme et
 aérée) et Objectifs (des drisses qu'on hisse). La transition est un rabat qui se déplie autour du bord par lequel on entre dans
-l'espace. Reste : les pages intérieures encore sur la plaque (saisie, calendrier, blocs,
-sommeil, briefings, assistant, carte, carnet). Pour chaque page, les données et les actions sortent d'abord de l'affichage dans
+l'espace. Les pages intérieures (saisie, calendrier, blocs, sommeil, briefings, assistant,
+carte, carnet) gardent leur mise en page mais prennent les couleurs du thème (voir ci-dessous).
+Pour chaque page, les données et les actions sortent d'abord de l'affichage dans
 un hook commun, puis le thème en montre une version à lui.
 
-**La coque et la plaque.** Chaque espace Papier est une coque commune (`papier/Coque`) :
+**La coque et les jetons de surface.** Chaque espace Papier est une coque commune (`papier/Coque`) :
 la feuille, l'en-tête avec ses onglets, le dos du pli pour retourner à l'accueil, le ton
-jour ou soir, et un décor propre à l'espace (houle pour Marine, hachures pour
+jour ou sombre, et un décor propre à l'espace (houle pour Marine, hachures pour
 Streetlifting, lumière qui respire pour Vie courante, règle graduée pour Objectifs). Les pages
-intérieures pas encore refaites s'affichent sur une *plaque d'imprimerie* (`papier/Plaque`),
-un panneau sombre qui garde leurs couleurs d'origine ; une page quitte la plaque quand sa
-version Papier est faite.
+intérieures n'écrivent plus aucune couleur de surface en dur : elles utilisent les jetons de
+`styles/tokens.css` (`--surface`, `--surface-haute`, `--creux`, `--voile`, `--filet`,
+`--sur-accent`, `--ombre-carte`, `--succes-texte`, `--alerte-texte`, `--danger-texte`, plus
+`--accent` et `--accent-clair`), que chaque thème redéfinit. Un nouveau thème n'a donc qu'à
+donner ces valeurs pour que toutes les pages lui soient accordées ; il redessine ensuite
+celles qui méritent une mise en page à lui.
 
 Le lookbook et ses prototypes sont dans `design-lookbook/` (hors dépôt).
 

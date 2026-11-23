@@ -8,7 +8,6 @@ import { ONGLETS } from '../../../espaces/marine/onglets'
 import { useMarine } from '../../../espaces/marine/useMarine'
 import { Coque } from '../Coque'
 import { ConditionsPapier } from '../marine/Conditions'
-import { Plaque } from '../Plaque'
 import styles from './espaces.module.css'
 
 /** Marine en Papier : la coque, les mêmes données, et les pages recolorées par elle. */
@@ -56,34 +55,16 @@ export function EspaceMarinePapier() {
             ) : null
           }
         />
-        <Route
-          path="assistant"
-          element={
-            <Plaque>
-              <Assistant spotId={spotId} />
-            </Plaque>
-          }
-        />
+        <Route path="assistant" element={<Assistant spotId={spotId} />} />
         <Route
           path="carte"
           element={
             <Suspense fallback={<p className={styles.attente}>Chargement de la carte…</p>}>
-              {spots.etat === 'pret' && (
-                <Plaque>
-                  <Carte spots={spots.valeur} />
-                </Plaque>
-              )}
+              {spots.etat === 'pret' && <Carte spots={spots.valeur} />}
             </Suspense>
           }
         />
-        <Route
-          path="carnet"
-          element={
-            <Plaque>
-              <Carnet spots={spots.etat === 'pret' ? spots.valeur : []} />
-            </Plaque>
-          }
-        />
+        <Route path="carnet" element={<Carnet spots={spots.etat === 'pret' ? spots.valeur : []} />} />
       </Routes>
     </Coque>
   )

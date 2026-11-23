@@ -14,7 +14,7 @@
 .choix select {
   padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid rgb(192 232 192 / 0.2);
+  border: 1px solid color-mix(in srgb, var(--accent-clair) 20%, transparent);
   background: transparent;
   font-family: var(--police-espace);
   font-weight: 600;
@@ -24,13 +24,13 @@
 }
 
 .choix button[aria-pressed='true'] {
-  color: #06140c;
+  color: var(--sur-accent);
   background: var(--vie-courante-clair);
   border-color: var(--vie-courante-clair);
 }
 
 .choix select {
-  background: #0c1d14;
+  background: var(--surface);
 }
 
 .semaine {
@@ -70,7 +70,7 @@
   gap: var(--espace-2);
   padding: var(--espace-6);
   border-radius: 28px;
-  background: linear-gradient(170deg, color-mix(in oklab, var(--accent) 12%, transparent), rgb(0 0 0 / 0.25));
+  background: linear-gradient(170deg, color-mix(in oklab, var(--accent) 12%, transparent), var(--creux));
   border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
 }
 
@@ -100,5 +100,5 @@
 }
 
 .erreur {
-  color: #ffb3b5;
+  color: var(--danger-texte);
 }

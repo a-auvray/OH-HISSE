@@ -396,3 +396,19 @@
 - Le centre de l'accueil est posé un peu plus haut (surface plus claire, filet, ombre légère) et un filet sépare la croix des quatre espaces : les frontières se lisent mieux.
 - La phrase du jour dit enfin quelque chose d'utile : la séance du jour en gros (« Force · séance 9/12 »), son premier exercice dessous, puis la récupération et la mer en clair. Fini « la mer est fermée » : « Mer : danger rouge, vent 15 km/h. Pas de sortie conseillée. »
 - Le mode sombre existait déjà (un petit « Soir » presque invisible) : le bouton s'appelle « Mode sombre / Mode clair » et se voit.
+
+---
+
+## 24/11/2026 — Pages intérieures accordées au thème
+
+**Branche :** `feature/papier-pages-accordees`
+
+### Ce qui a été fait
+
+- Fini la « plaque » sombre : saisie, calendrier, blocs, sommeil, briefings, assistant, carte et carnet s'affichent maintenant aux couleurs de la feuille, en clair comme en sombre.
+- Les feuilles de style de ces pages n'écrivent plus aucune couleur de surface en dur : elles utilisent des jetons (`--surface`, `--creux`, `--filet`, `--sur-accent`…) que chaque thème redéfinit. Classique garde ses valeurs d'origine, Papier donne les siennes ; un futur thème n'a qu'à faire de même.
+
+### Ce qui a bloqué / Solutions trouvées
+
+- Le panneau « Récapitulatif » de la saisie débordait de sa carte et sous le dos du pli (les champs et les neuf boutons de ressenti avaient une largeur minimale plus grande que la colonne) : colonnes `minmax(0, 1fr)`.
+- La carte de Marine reste sombre : c'est son fond de carte.
