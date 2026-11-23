@@ -9,7 +9,9 @@ Double-clique sur **`Oh Hisse.exe`** (ou sur `lancer.bat`, c'est la même chose)
 3. **sauvegarde ta base** dans `sauvegardes/` (une copie datée, les 30 dernières sont gardées) ;
 4. démarre l'application sur **http://localhost:8000** et ouvre le navigateur.
 
-`Ctrl+C` dans la fenêtre pour arrêter. Prérequis : [uv](https://docs.astral.sh/uv/) et Node.js 24.
+Le navigateur s'ouvre dès que le serveur répond. Si quelque chose ne va pas (un programme manquant, le port 8000
+déjà pris, une erreur), la fenêtre reste ouverte avec un message : copie-le pour comprendre. `Ctrl+C` dans la fenêtre
+pour arrêter. Prérequis : [uv](https://docs.astral.sh/uv/) et Node.js 24.
 
 `Oh Hisse.exe` n'est qu'un petit lanceur : il démarre `lancer.bat` qui se trouve à côté de lui, il doit donc
 rester dans le dossier du projet. Pour l'avoir sur le Bureau, fais-en un **raccourci** (clic droit sur le fichier,
