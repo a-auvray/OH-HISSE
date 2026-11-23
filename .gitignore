@@ -39,3 +39,4 @@ sauvegardes/
 
 # --- Lanceur Windows (construit par outils/construire-exe.ps1) --------------
 *.exe
+outils/lanceur/*.generated.cs

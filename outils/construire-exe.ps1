@@ -36,7 +36,12 @@ $w.Write([byte]0); $w.Write([byte]0); $w.Write([byte]0); $w.Write([byte]0)
 $w.Write([UInt16]1); $w.Write([UInt16]32); $w.Write([UInt32]$octets.Length); $w.Write([UInt32]22)
 $w.Write($octets); $w.Close()
 
+# Le dossier du projet est mémorisé dans le programme : il fonctionne aussi copié ailleurs (le Bureau).
+$memo = Join-Path $racine 'outils\lanceur\RacineDuProjet.generated.cs'
+$chemin = $racine.Replace('"', '""')
+Set-Content -Path $memo -Encoding UTF8 -Value ("static class RacineDuProjet { public const string Chemin = @`"" + $chemin + "`"; }")
+
 $sortie = Join-Path $racine 'Oh Hisse.exe'
-& $csc /nologo /target:exe /optimize+ /out:$sortie /win32icon:$ico (Join-Path $racine 'outils\lanceur\Lanceur.cs')
+& $csc /nologo /target:exe /optimize+ /out:$sortie /win32icon:$ico (Join-Path $racine 'outils\lanceur\Lanceur.cs') $memo
 if ($LASTEXITCODE -ne 0) { throw 'La compilation a échoué.' }
 Write-Host "Construit : $sortie"

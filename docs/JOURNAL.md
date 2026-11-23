@@ -336,3 +336,7 @@
 - **Compilateur fourni avec Windows** (csc.exe du .NET Framework) : rien à télécharger ni à installer, et le code du lanceur est lisible dans le dépôt.
 - **Un lanceur, pas une application empaquetée** : la logique reste dans `lancer.bat`, donc une seule chose à maintenir. Le .exe n'est pas versionné (`*.exe` ignoré) ; le script de construction l'est.
 - **Non signé** : Windows SmartScreen peut avertir au premier lancement (documenté).
+
+### Correctif : lanceur copié sur le Bureau
+- Copié sur le Bureau, le lanceur ne trouvait plus `lancer.bat`. Il mémorise maintenant le dossier du projet à la construction (fichier généré, ignoré par Git) et le cherche à côté de lui, puis à cet endroit.
+- Le navigateur n'attend plus d'être ouvert avant le serveur, et la fenêtre reste ouverte en cas de problème (uv ou Node absents, port 8000 pris, erreur).
