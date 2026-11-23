@@ -44,7 +44,7 @@ describe('Coque du thème Papier', () => {
     rendreCoque('streetlifting')
     const user = userEvent.setup()
 
-    await user.click(screen.getByRole('button', { name: '◐ Soir' }))
+    await user.click(screen.getByRole('button', { name: '◐ Mode sombre' }))
 
     expect(screen.getByRole('main')).toHaveAttribute('data-ton', 'soir')
     expect(localStorage.getItem('oh-hisse.papier.ton')).toBe('soir')

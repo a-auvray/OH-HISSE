@@ -86,7 +86,7 @@ export function Coque({ espace, titre, onglets, entete, children }: Props) {
       <div className={styles.contenu}>{children}</div>
 
       <button type="button" className={styles.ton} onClick={changerTon} aria-pressed={ton === 'soir'}>
-        {ton === 'jour' ? '◐ Soir' : '◑ Jour'}
+        {ton === 'jour' ? '◐ Mode sombre' : '◑ Mode clair'}
       </button>
     </main>
   )

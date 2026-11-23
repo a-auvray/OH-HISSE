@@ -38,37 +38,39 @@ function donnees(surcharge: Record<string, unknown> = {}): DonneesBriefing {
 }
 
 describe('phraseDuJour', () => {
-  it('annonce la bascule de la mer et motive la une par elle', () => {
+  it('dit la séance du jour d’abord, puis annonce la bascule de la mer', () => {
     const p = phraseDuJour(donnees(), MAINTENANT)
 
-    expect(p.lignes).toEqual(['Force d’abord,', 'la mer avant 17h.'])
+    expect(p.lignes).toEqual(['Force · séance 3/4', 'Traction lestée 4×3 à +32,5 kg'])
     expect(p.pourquoi).toEqual({ espace: 'marine', texte: 'passage au rouge à 17h' })
     expect(p.resume).toBe(
-      'Séance 3 sur 4 du bloc Force : traction lestée 4×3 à +32,5 kg, RPE 8. En mer, prochaine pleine mer à 14h52, vent 26 km/h.',
+      'Bloc Force, cible RPE 8. Récupération complète. Mer verte jusqu’à 17h, vent 26 km/h, puis danger rouge. Prochaine pleine mer à 14h52.',
     )
   })
 
-  it('met le repos avant tout quand la récupération n’est pas finie', () => {
+  it('garde la séance en tête et signale la récupération qui n’est pas finie', () => {
     const vie = { recuperation: { recupere: false, restant_h: 5.6 }, cheat_meal: { verdict: 'non' } }
     const p = phraseDuJour(donnees({ vie, mer: mer({ heures: [h(14, 'vert')] }) }), MAINTENANT)
 
-    expect(p.lignes).toEqual(['Repos d’abord,', 'la mer est ouverte.'])
+    expect(p.lignes[0]).toBe('Force · séance 3/4')
     expect(p.pourquoi).toEqual({ espace: 'vie-courante', texte: 'encore 6 h de récupération' })
+    expect(p.resume).toContain('Récupération incomplète : encore 6 h.')
+    expect(p.resume).toContain('Mer verte toute la journée')
   })
 
-  it.each([
-    ['rouge', 'la mer est fermée.'],
-    ['noir', 'la mer est interdite.'],
-  ])('dit la mer %s tout de suite', (niveau, attendu) => {
+  it.each(['rouge', 'noir'])('dit clairement la mer %s, sans « fermée » ni « ouverte »', (niveau) => {
     const d = donnees({ mer: mer({ danger: { niveau, raisons: [] } }) })
 
-    expect(phraseDuJour(d, MAINTENANT).lignes[1]).toBe(attendu)
+    const p = phraseDuJour(d, MAINTENANT)
+
+    expect(p.resume).toContain(`Mer : danger ${niveau}, vent 26 km/h. Pas de sortie conseillée.`)
+    expect(p.pourquoi).toEqual({ espace: 'marine', texte: `danger ${niveau} en ce moment` })
   })
 
   it('reste dicible sans aucune donnée', () => {
     const p = phraseDuJour(null, MAINTENANT)
 
-    expect(p.lignes).toEqual(['Journée libre,', 'le reste suit.'])
+    expect(p.lignes).toEqual(['Pas de séance prévue,', 'journée libre.'])
     expect(p.pourquoi.espace).toBe('streetlifting')
     expect(p.resume).toBe('')
   })
@@ -76,6 +78,6 @@ describe('phraseDuJour', () => {
   it('ignore les heures déjà passées', () => {
     const d = donnees({ mer: mer({ heures: [h(9, 'rouge'), h(14, 'vert')] }) })
 
-    expect(phraseDuJour(d, MAINTENANT).lignes[1]).toBe('la mer est ouverte.')
+    expect(phraseDuJour(d, MAINTENANT).resume).toContain('Mer verte toute la journée')
   })
 })

@@ -7,6 +7,7 @@
   --encre: #141414;
   --doux: rgb(20 20 20 / 0.68);
   --trait: rgb(20 20 20 / 0.2);
+  --surface: color-mix(in srgb, #fff 42%, var(--papier));
   --sienne: #b4471a;
   --bleu: #0067a5;
   --vert: #2f6e5a;
@@ -45,6 +46,7 @@
   --encre: #efe9dd;
   --doux: rgb(239 233 221 / 0.72);
   --trait: rgb(239 233 221 / 0.24);
+  --surface: color-mix(in srgb, #fff 8%, var(--papier));
   --sienne: #f08a4b;
   --bleu: #5ab4f0;
   --vert: #8db7ae;
@@ -264,8 +266,24 @@
 .ton {
   position: absolute;
   bottom: 16px;
-  left: 14px;
-  max-width: calc(var(--bx) - 24px);
+  left: 12px;
+  max-width: calc(var(--bx) - 20px);
+  padding: 6px 9px;
+  border: 1px solid var(--trait);
+  border-radius: 14px;
+  color: var(--encre);
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.ton:hover,
+.ton:focus-visible {
+  border-color: var(--encre);
+  background: var(--surface);
 }
 
 /* ---------- Centre : un bloc par espace, en croix ---------- */
@@ -283,9 +301,11 @@
   padding: clamp(18px, 3vh, 34px) clamp(22px, 2.6vw, 44px);
 }
 
+/* Quatre bras autour d'un centre : un filet les sépare, le centre est posé un peu plus haut. */
 .vie {
   grid-area: vie;
   --accent: var(--vert);
+  padding-bottom: clamp(14px, 2.4vh, 26px);
 }
 .street {
   grid-area: street;
@@ -293,8 +313,17 @@
   --accent: var(--sienne);
 }
 .phrase {
+  --accent-une: var(--sienne);
   grid-area: phrase;
-  align-self: center;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  min-height: 0;
+  padding: clamp(16px, 2.4vh, 30px) clamp(20px, 2.2vw, 36px);
+  background: var(--surface);
+  border: 1px solid var(--trait);
+  box-shadow: 0 18px 36px -26px rgb(40 24 8 / 0.55);
 }
 .marine {
   grid-area: marine;
@@ -304,6 +333,18 @@
 .objectifs {
   grid-area: objectifs;
   --accent: var(--violet);
+  padding-top: clamp(14px, 2.4vh, 26px);
+}
+
+/* Les filets de la croix s'arrêtent au centre. */
+.vie {
+  border-bottom: 1px solid var(--trait);
+}
+.objectifs {
+  border-top: 1px solid var(--trait);
+}
+.feuille[data-ton='soir'] .phrase {
+  box-shadow: 0 18px 36px -26px rgb(0 0 0 / 0.8);
 }
 
 .rubrique {
@@ -443,7 +484,7 @@
 
 .titre {
   margin: 0;
-  font: 700 clamp(40px, calc(72 * var(--u)), 92px) / 0.98 var(--police-heros);
+  font: 700 clamp(40px, calc(58 * var(--u)), 76px) / 0.98 var(--police-heros);
   font-stretch: 85%;
   letter-spacing: -0.03em;
   text-wrap: balance;
@@ -457,6 +498,16 @@
 
 .ligne > span {
   display: inline-block;
+}
+
+/* La séance en grand, son premier exercice juste dessous. */
+.ligne + .ligne {
+  margin-top: 0.12em;
+  font-size: 0.56em;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  color: var(--accent-une);
 }
 
 .unePar {
@@ -473,7 +524,7 @@
 .resume {
   margin: clamp(10px, 1.6vh, 18px) 0 0;
   max-width: 34em;
-  font-size: clamp(17px, calc(21 * var(--u)), 22px);
+  font-size: clamp(14px, calc(17 * var(--u)), 19px);
   line-height: 1.4;
 }
 

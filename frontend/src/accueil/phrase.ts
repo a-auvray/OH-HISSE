@@ -2,11 +2,11 @@ import { lest, nombre } from '../commun/format'
 import type { DonneesBriefing } from './useBriefing'
 
 export interface PhraseDuJour {
-  /** Deux lignes : ce que dit le corps, puis ce que dit la mer. */
+  /** Deux lignes : la séance du jour, puis son premier exercice. */
   lignes: [string, string]
   /** À la une : l'espace qui motive la phrase, et pourquoi. */
   pourquoi: { espace: 'streetlifting' | 'marine' | 'vie-courante'; texte: string }
-  /** Une ou deux phrases qui précisent la séance et la mer. */
+  /** Ce qui entoure la séance : la récupération et la mer, en clair. */
   resume: string
 }
 
@@ -33,37 +33,44 @@ function basculeDeLaMer(donnees: DonneesBriefing, maintenant: Date) {
 
 /**
  * La phrase du jour, calculée à partir des mêmes données que le reste du
- * briefing : jamais écrite à la main, elle change avec la journée.
+ * briefing : jamais écrite à la main, elle change avec la journée. Elle dit
+ * d'abord ce qui est utile : la séance du jour et son premier exercice.
  */
 export function phraseDuJour(donnees: DonneesBriefing | null, maintenant: Date): PhraseDuJour {
   const seance = donnees?.seance
   const vie = donnees?.vie
   const mer = donnees?.mer
   const repos = vie ? !vie.recuperation.recupere : false
+  const premiere = seance?.propositions[0]
 
-  const corps = repos
-    ? 'Repos d’abord,'
-    : seance?.bloc
-      ? `${COMPLEMENT_BLOC[seance.bloc.type]} d’abord,`
-      : 'Journée libre,'
+  let lignes: PhraseDuJour['lignes'] = ['Pas de séance prévue,', 'journée libre.']
+  if (seance?.bloc) {
+    const charge = premiere?.lest_kg == null ? '' : ` à ${lest(premiere.lest_kg)}`
+    lignes = [
+      `${COMPLEMENT_BLOC[seance.bloc.type]} · séance ${seance.bloc.numero}/${seance.bloc.total}`,
+      premiere ? `${premiere.exercice} ${premiere.series}×${premiere.reps}${charge}` : (seance.nom ?? ''),
+    ]
+  }
 
   const bascule = donnees ? basculeDeLaMer(donnees, maintenant) : null
-  let miMer = 'le reste suit.'
   let pourquoiMer: string | null = null
+  let phraseMer: string | null = null
   if (mer) {
     const niveau = mer.danger.niveau
-    if (niveau === 'noir') {
-      miMer = 'la mer est interdite.'
-      pourquoiMer = 'danger noir en ce moment'
-    } else if (niveau === 'rouge') {
-      miMer = 'la mer est fermée.'
-      pourquoiMer = 'danger rouge en ce moment'
+    const vent = mer.maintenant.vent_kmh == null ? '' : `, vent ${Math.round(mer.maintenant.vent_kmh)} km/h`
+    if (niveau === 'noir' || niveau === 'rouge') {
+      pourquoiMer = `danger ${niveau} en ce moment`
+      phraseMer = `Mer : danger ${niveau}${vent}. Pas de sortie conseillée.`
     } else if (bascule) {
-      miMer = `la mer avant ${heure(bascule.instant)}.`
       pourquoiMer = `passage au ${bascule.danger === 'noir' ? 'noir' : 'rouge'} à ${heure(bascule.instant)}`
+      phraseMer = `Mer verte jusqu’à ${heure(bascule.instant)}${vent}, puis danger ${bascule.danger}.`
     } else {
-      miMer = 'la mer est ouverte.'
+      phraseMer = `Mer verte toute la journée${vent}.`
     }
+    const pleine = mer.marees
+      .map((m) => ({ ...m, instant: new Date(m.instant) }))
+      .find((m) => m.type === 'PM' && m.instant > maintenant)
+    if (pleine) phraseMer += ` Prochaine pleine mer à ${heureMinute(pleine.instant)}.`
   }
 
   const pourquoi: PhraseDuJour['pourquoi'] = pourquoiMer
@@ -76,20 +83,17 @@ export function phraseDuJour(donnees: DonneesBriefing | null, maintenant: Date):
       : { espace: 'streetlifting', texte: seance?.nom ? `séance « ${seance.nom} »` : 'pas de séance prévue' }
 
   const morceaux: string[] = []
-  const premiere = seance?.propositions[0]
   if (seance?.bloc && premiere) {
-    const charge = premiere.lest_kg == null ? '' : ` à ${lest(premiere.lest_kg)}`
+    morceaux.push(`Bloc ${seance.bloc.nom}, cible RPE ${nombre(premiere.rpe_cible)}.`)
+  }
+  if (vie) {
     morceaux.push(
-      `Séance ${seance.bloc.numero} sur ${seance.bloc.total} du bloc ${seance.bloc.nom} : ${premiere.exercice.toLowerCase()} ${premiere.series}×${premiere.reps}${charge}, RPE ${nombre(premiere.rpe_cible)}.`,
+      vie.recuperation.recupere
+        ? 'Récupération complète.'
+        : `Récupération incomplète : encore ${Math.round(vie.recuperation.restant_h)} h.`,
     )
   }
-  if (mer) {
-    const pleine = mer.marees
-      .map((m) => ({ ...m, instant: new Date(m.instant) }))
-      .find((m) => m.type === 'PM' && m.instant > maintenant)
-    const vent = mer.maintenant.vent_kmh == null ? '' : `, vent ${Math.round(mer.maintenant.vent_kmh)} km/h`
-    morceaux.push(`En mer${pleine ? `, prochaine pleine mer à ${heureMinute(pleine.instant)}` : ''}${vent}.`)
-  }
+  if (phraseMer) morceaux.push(phraseMer)
 
-  return { lignes: [corps, miMer], pourquoi, resume: morceaux.join(' ') }
+  return { lignes, pourquoi, resume: morceaux.join(' ') }
 }

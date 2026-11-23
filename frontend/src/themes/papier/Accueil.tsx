@@ -138,7 +138,7 @@ export function AccueilPapier() {
         onClick={changerTon}
         aria-pressed={ton === 'soir'}
       >
-        {ton === 'jour' ? '◐ Soir' : '◑ Jour'}
+        {ton === 'jour' ? '◐ Mode sombre' : '◑ Mode clair'}
       </button>
 
       <div className={styles.centre}>
