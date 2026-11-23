@@ -1,0 +1,96 @@
+.planche {
+  display: block;
+  overflow: visible;
+}
+
+.grille {
+  stroke: var(--trait);
+  stroke-width: 1;
+  stroke-dasharray: 1 4;
+}
+
+.graduation {
+  font:
+    400 11px 'Geist Mono Variable',
+    ui-monospace,
+    monospace;
+  fill: var(--texte-doux);
+}
+
+.hachure {
+  stroke: color-mix(in srgb, var(--sienne) 55%, transparent);
+  stroke-width: 1;
+}
+
+.aire {
+  opacity: 0;
+  animation: apparaitre 1s 0.9s ease forwards;
+}
+
+@keyframes apparaitre {
+  to {
+    opacity: 0.55;
+  }
+}
+
+/* Le tracé se dessine de gauche à droite. */
+.trait {
+  stroke: var(--sienne);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: tracer 1.4s var(--expo, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
+}
+
+@keyframes tracer {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.point {
+  fill: var(--papier);
+  stroke: var(--sienne);
+  stroke-width: 2;
+}
+
+.dernier {
+  fill: var(--sienne);
+  stroke: var(--papier);
+  stroke-width: 2;
+}
+
+.reperage line {
+  stroke: var(--encre);
+  stroke-width: 1;
+}
+
+.reperage circle {
+  fill: none;
+  stroke: var(--encre);
+  stroke-width: 1.5;
+}
+
+.valeur {
+  font:
+    700 15px 'Geist Mono Variable',
+    ui-monospace,
+    monospace;
+  fill: var(--encre);
+  paint-order: stroke;
+  stroke: var(--papier);
+  stroke-width: 4px;
+}
+
+.date {
+  font:
+    400 11px 'Geist Mono Variable',
+    ui-monospace,
+    monospace;
+  fill: var(--texte-doux);
+  paint-order: stroke;
+  stroke: var(--papier);
+  stroke-width: 4px;
+}

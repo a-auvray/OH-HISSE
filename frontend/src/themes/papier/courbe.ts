@@ -31,3 +31,15 @@ export function echelle(valeur: number, min: number, max: number, a: number, b: 
   if (max === min) return (a + b) / 2
   return a + ((valeur - min) / (max - min)) * (b - a)
 }
+
+/** Valeurs rondes pour graduer un axe : environ `n` graduations entre `min` et `max`. */
+export function graduations(min: number, max: number, n = 4): number[] {
+  if (max <= min) return [min]
+  const brut = (max - min) / n
+  const puissance = 10 ** Math.floor(Math.log10(brut))
+  const f = brut / puissance
+  const pas = (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * puissance
+  const valeurs: number[] = []
+  for (let v = Math.ceil(min / pas) * pas; v <= max + 1e-9; v += pas) valeurs.push(Number(v.toFixed(10)))
+  return valeurs
+}

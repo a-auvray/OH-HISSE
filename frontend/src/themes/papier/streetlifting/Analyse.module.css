@@ -1,0 +1,190 @@
+/* Analyse, Papier : une planche, un rail de miniatures, des filets. */
+.page {
+  display: grid;
+  gap: clamp(16px, 2.6vh, 28px);
+}
+
+.filtres {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 32px;
+}
+
+.choix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.choix button {
+  position: relative;
+  padding: 8px 12px;
+  border: 0;
+  background: none;
+  color: var(--texte-doux);
+  font: 700 0.82rem var(--police-texte);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.choix button::after {
+  content: '';
+  position: absolute;
+  inset: auto 12px 0 12px;
+  height: 4px;
+  background: var(--sienne);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--expo, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.choix button:hover,
+.choix button[aria-checked='true'] {
+  color: var(--encre);
+}
+
+.choix button[aria-checked='true']::after {
+  transform: scaleX(1);
+}
+
+.chiffres {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  border-top: 3px solid var(--encre);
+  border-bottom: 1px solid var(--encre);
+}
+
+.chiffres div {
+  display: grid;
+  gap: 2px;
+  padding: 10px clamp(12px, 1.6vw, 24px) 12px;
+  border-left: 1px solid var(--trait);
+}
+
+.chiffres div:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.chiffres dt {
+  font: 500 12px/1.3 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.chiffres dd {
+  margin: 0;
+  font:
+    400 clamp(2rem, 3.4vw, 3.2rem) / 1 'Anton',
+    Impact,
+    sans-serif;
+  color: var(--sienne);
+  font-variant-numeric: tabular-nums;
+}
+
+.chiffres .detail {
+  font: 400 0.85rem var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.corps {
+  display: grid;
+  grid-template-columns: clamp(170px, 16vw, 230px) minmax(0, 1fr);
+  gap: clamp(16px, 2.4vw, 40px);
+  align-items: start;
+}
+
+/* ---------- Rail de miniatures ---------- */
+.rail {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--encre);
+}
+
+.rail button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    'nom valeur'
+    'forme forme';
+  gap: 2px 8px;
+  width: 100%;
+  padding: 10px 6px 10px 12px;
+  border: 0;
+  border-bottom: 1px solid var(--trait);
+  border-left: 4px solid transparent;
+  background: none;
+  color: var(--texte-doux);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.rail button:hover {
+  color: var(--encre);
+  background: color-mix(in srgb, var(--encre) 5%, transparent);
+}
+
+.rail button[aria-pressed='true'] {
+  color: var(--encre);
+  border-left-color: var(--sienne);
+  background: color-mix(in srgb, var(--sienne) 10%, transparent);
+}
+
+.nomMetrique {
+  grid-area: nom;
+  font: 700 0.78rem var(--police-texte);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.derniere {
+  grid-area: valeur;
+  font: 500 0.95rem var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+}
+
+.miniature {
+  grid-area: forme;
+  width: 100%;
+  height: 34px;
+}
+
+.miniature path {
+  stroke: var(--sienne);
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ---------- Planche ---------- */
+.planche {
+  margin: 0;
+  min-width: 0;
+}
+
+.planche figcaption {
+  margin-bottom: 6px;
+  font: 500 12px/1.3 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.vide {
+  margin: 8px 0;
+  color: var(--texte-doux);
+  font-style: italic;
+}

@@ -1,0 +1,323 @@
+/* Streetlifting, Papier : une feuille de séance. Anton, encre sienne, filets francs. */
+.page {
+  display: grid;
+  gap: clamp(16px, 2.6vh, 28px);
+}
+
+.attente,
+.erreur {
+  margin: 0;
+  color: var(--texte-doux);
+  font-style: italic;
+}
+
+.erreur {
+  color: var(--danger);
+  font-style: normal;
+}
+
+.etiquette {
+  margin: 0;
+  font: 500 12px/1.3 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.entete {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: end;
+  gap: clamp(16px, 2.4vw, 40px);
+  padding-bottom: 14px;
+  border-bottom: 3px solid var(--encre);
+}
+
+.bloc {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.type {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 3px 8px;
+  background: var(--sienne);
+  color: var(--papier);
+  font: 700 12px/1.1 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.avancement {
+  display: grid;
+  gap: 6px;
+}
+
+.avancement ol {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.avancement li {
+  height: 14px;
+  background: var(--trait);
+  transform-origin: bottom;
+  animation: monter 0.7s calc(var(--r) * 40ms + 0.3s) var(--expo, cubic-bezier(0.16, 1, 0.3, 1)) backwards;
+}
+
+@keyframes monter {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+.avancement li[data-etat='fait'] {
+  background: var(--sienne);
+}
+
+.avancement li[data-etat='courant'] {
+  background: var(--sienne);
+  box-shadow:
+    0 0 0 2px var(--papier),
+    0 0 0 4px var(--sienne);
+}
+
+.poids {
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+  margin: 0;
+}
+
+.poids strong {
+  font: 500 1.5rem var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+}
+
+.poids em {
+  color: var(--sienne);
+  font-size: 0.85rem;
+}
+
+.nom {
+  margin: 0;
+  font:
+    400 clamp(3rem, 6.4vw, 6rem) / 0.95 'Anton',
+    Impact,
+    sans-serif;
+  text-transform: uppercase;
+  color: var(--sienne);
+}
+
+.forme {
+  padding: 4px 0 4px 16px;
+  border-left: 4px solid var(--sienne);
+  font-style: italic;
+}
+
+.forme ul {
+  margin: 4px 0 6px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+
+.lien {
+  color: var(--encre);
+  font: 400 13px var(--police-chiffres);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.lien:hover {
+  color: var(--sienne);
+}
+
+/* ---------- Les exercices : une ligne chacun ---------- */
+.exercices {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--encre);
+}
+
+.ligne {
+  position: relative;
+  display: grid;
+  grid-template-columns: clamp(48px, 5vw, 80px) minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: clamp(12px, 2vw, 32px);
+  padding: clamp(14px, 2.4vh, 26px) 0;
+  border-bottom: 1px solid var(--encre);
+}
+
+/* Un filet de couleur balaie la ligne au survol. */
+.ligne::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 4px;
+  background: var(--sienne);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s var(--expo, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.ligne:hover::before {
+  transform: scaleX(1);
+}
+
+.rang {
+  font:
+    400 clamp(3rem, 5.4vw, 5rem) / 1 'Anton',
+    Impact,
+    sans-serif;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--sienne);
+}
+
+.programme h3 {
+  margin: 0;
+  font:
+    400 clamp(1.8rem, 3vw, 2.8rem) / 1 'Anton',
+    Impact,
+    sans-serif;
+  text-transform: uppercase;
+}
+
+.programme p {
+  margin: 4px 0 8px;
+  font: 500 1rem var(--police-chiffres);
+}
+
+.programme p span {
+  color: var(--texte-doux);
+}
+
+/* Une case par série, à cocher sur le papier. */
+.cases {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cases li {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--encre);
+  transform: rotate(calc(var(--i, 0) * 1deg));
+}
+
+.cases li:nth-child(odd) {
+  transform: rotate(-1.5deg);
+}
+.cases li:nth-child(even) {
+  transform: rotate(1.2deg);
+}
+
+.charge {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font:
+    400 clamp(3rem, 6vw, 5.6rem) / 1 'Anton',
+    Impact,
+    sans-serif;
+  color: var(--sienne);
+  font-variant-numeric: tabular-nums;
+}
+
+.charge small {
+  font: 500 1rem var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.aChoisir {
+  font: italic 400 1.4rem var(--police-texte);
+  color: var(--texte-doux);
+}
+
+.marge {
+  grid-column: 2 / -1;
+  display: grid;
+  gap: 2px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.92rem;
+  color: var(--texte-doux);
+}
+
+.marge li::before {
+  content: '↳ ';
+  color: var(--sienne);
+}
+
+/* ---------- Lancer ---------- */
+.lancer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 8px;
+}
+
+.tampon {
+  display: inline-block;
+  padding: 16px 28px;
+  border: 0;
+  background: var(--sienne);
+  color: var(--papier);
+  font:
+    400 1.6rem / 1 'Anton',
+    Impact,
+    sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.4s var(--expo, cubic-bezier(0.16, 1, 0.3, 1)),
+    box-shadow 0.4s var(--expo, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.tampon:hover,
+.tampon:focus-visible {
+  transform: rotate(-1.5deg) translateY(-2px);
+  box-shadow: 4px 6px 0 var(--encre);
+}
+
+.vide {
+  display: grid;
+  gap: 12px;
+  max-width: 40em;
+}
+
+.vide h2 {
+  margin: 0;
+  font:
+    400 clamp(2.6rem, 5vw, 4.4rem) / 1 'Anton',
+    Impact,
+    sans-serif;
+  text-transform: uppercase;
+  color: var(--sienne);
+}
+
+.vide p {
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+}
