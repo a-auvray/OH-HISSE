@@ -1,0 +1,537 @@
+/*
+ * Papier — accueil. Deux tons : jour (papier crème, encre noire) et soir (les
+ * mêmes couleurs inversées). Les couleurs de danger ne changent jamais.
+ */
+.feuille {
+  --papier: #efe9dd;
+  --encre: #141414;
+  --doux: rgb(20 20 20 / 0.68);
+  --trait: rgb(20 20 20 / 0.2);
+  --sienne: #b4471a;
+  --bleu: #0067a5;
+  --vert: #2f6e5a;
+  --violet: #6a4c9c;
+  --bx: clamp(96px, 6.8vw, 130px);
+  --by: clamp(64px, 9vh, 104px);
+  --u: min(calc(100vw / 1440), calc(100vh / 900));
+  --expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --police-papier: 'Geist Variable', system-ui, 'Segoe UI', sans-serif;
+  --police-chiffres: 'Geist Mono Variable', ui-monospace, 'Cascadia Mono', monospace;
+  --police-heros: 'Bricolage Grotesque Variable', var(--police-papier);
+  --police-ecart: 'Instrument Serif', Georgia, serif;
+
+  position: relative;
+  height: 100vh;
+  min-height: 720px;
+  overflow: hidden;
+  isolation: isolate;
+  perspective: 2600px;
+  background: var(--papier);
+  color: var(--encre);
+  font: 16px/1.5 var(--police-papier);
+  transition:
+    --papier 1.2s ease,
+    --encre 1.2s ease,
+    --sienne 1.2s ease,
+    --bleu 1.2s ease,
+    --vert 1.2s ease,
+    --violet 1.2s ease,
+    --doux 1.2s ease,
+    --trait 1.2s ease;
+}
+
+.feuille[data-ton='soir'] {
+  --papier: #121110;
+  --encre: #efe9dd;
+  --doux: rgb(239 233 221 / 0.72);
+  --trait: rgb(239 233 221 / 0.24);
+  --sienne: #f08a4b;
+  --bleu: #5ab4f0;
+  --vert: #8db7ae;
+  --violet: #b49af0;
+}
+
+/* Grain du papier et ombre douce des bords. */
+.papier {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(120% 95% at 48% 44%, transparent 58%, rgb(120 70 20 / 0.08) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3  0 0 0 0 .25  0 0 0 0 .2  0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.feuille[data-ton='soir'] .papier {
+  background: radial-gradient(120% 95% at 48% 44%, transparent 58%, rgb(0 0 0 / 0.4) 100%);
+  mix-blend-mode: normal;
+  opacity: 1;
+}
+
+/* ---------- Rabats : un par bord, chacun porte le nom de son espace ---------- */
+.rabat {
+  position: absolute;
+  z-index: 3;
+  overflow: hidden;
+  background: var(--papier);
+  cursor: pointer;
+  text-decoration: none;
+  outline-offset: -6px;
+}
+
+/* Le pli : une ombre étroite le long du bord intérieur, plus marquée au survol. */
+.rabat::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  transition: opacity 0.4s var(--expo);
+}
+
+.rabat:hover::after,
+.rabat:focus-visible::after {
+  opacity: 1;
+}
+
+.rabat[data-cote='gauche'] {
+  left: 0;
+  top: var(--by);
+  bottom: var(--by);
+  width: var(--bx);
+  transform-origin: 100% 50%;
+}
+.rabat[data-cote='gauche']::after {
+  background: linear-gradient(90deg, transparent 80%, rgb(70 45 20 / 0.22));
+}
+
+.rabat[data-cote='droite'] {
+  right: 0;
+  top: var(--by);
+  bottom: var(--by);
+  width: var(--bx);
+  transform-origin: 0 50%;
+}
+.rabat[data-cote='droite']::after {
+  background: linear-gradient(270deg, transparent 80%, rgb(70 45 20 / 0.22));
+}
+
+.rabat[data-cote='haut'] {
+  top: 0;
+  left: var(--bx);
+  right: var(--bx);
+  height: var(--by);
+  transform-origin: 50% 100%;
+}
+.rabat[data-cote='haut']::after {
+  background: linear-gradient(180deg, transparent 78%, rgb(70 45 20 / 0.22));
+}
+
+.rabat[data-cote='bas'] {
+  bottom: 0;
+  left: var(--bx);
+  right: var(--bx);
+  height: var(--by);
+  transform-origin: 50% 0;
+}
+.rabat[data-cote='bas']::after {
+  background: linear-gradient(0deg, transparent 78%, rgb(70 45 20 / 0.22));
+}
+
+.feuille[data-ton='soir'] .rabat::after {
+  filter: invert(1) brightness(0.3);
+}
+
+/* Les mots sont trop grands pour leur bord : on n'en voit qu'une tranche, c'est voulu. */
+.mot {
+  position: absolute;
+  white-space: nowrap;
+  line-height: 0.86;
+  pointer-events: none;
+  transition: translate 0.5s var(--expo);
+}
+
+.rabat[data-espace='streetlifting'] .mot {
+  left: 50%;
+  top: -2%;
+  writing-mode: vertical-rl;
+  transform: translateX(-50%);
+  font:
+    400 calc(300 * var(--u)) / 0.86 'Anton',
+    Impact,
+    sans-serif;
+  color: var(--sienne);
+}
+
+.rabat[data-espace='marine'] .mot {
+  left: 50%;
+  bottom: -2%;
+  writing-mode: vertical-rl;
+  transform: translateX(-50%) rotate(180deg);
+  font:
+    560 calc(300 * var(--u)) / 0.82 'Fraunces Variable',
+    Georgia,
+    serif;
+  letter-spacing: -0.02em;
+  color: var(--bleu);
+}
+
+.rabat[data-espace='vie-courante'] .mot {
+  left: 50%;
+  bottom: calc(-0.12 * 340 * var(--u));
+  transform: translateX(-50%) rotate(180deg);
+  font: 400 calc(340 * var(--u)) / 0.74 var(--police-ecart);
+  color: var(--vert);
+}
+
+.rabat[data-espace='objectifs'] .mot {
+  left: 50%;
+  top: calc(-0.2 * 260 * var(--u));
+  transform: translateX(-50%) rotate(180deg);
+  font:
+    800 calc(260 * var(--u)) / 1 'Unbounded Variable',
+    var(--police-papier);
+  letter-spacing: 0.14em;
+  color: var(--violet);
+}
+
+.rabat[data-cote='gauche']:hover .mot,
+.rabat[data-cote='gauche']:focus-visible .mot {
+  translate: 6px 0;
+}
+.rabat[data-cote='droite']:hover .mot,
+.rabat[data-cote='droite']:focus-visible .mot {
+  translate: -6px 0;
+}
+.rabat[data-cote='haut']:hover .mot,
+.rabat[data-cote='haut']:focus-visible .mot {
+  translate: 0 6px;
+}
+.rabat[data-cote='bas']:hover .mot,
+.rabat[data-cote='bas']:focus-visible .mot {
+  translate: 0 -6px;
+}
+
+/* ---------- Coins : marque, date, réglages discrets ---------- */
+.coin {
+  position: absolute;
+  top: 16px;
+  left: 14px;
+  z-index: 4;
+  display: grid;
+  gap: 2px;
+}
+
+.marque {
+  font: 800 13px/1 var(--police-heros);
+  font-stretch: 80%;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.date {
+  font: 400 11px/1.3 var(--police-chiffres);
+  color: var(--doux);
+  text-transform: capitalize;
+}
+
+.discret {
+  z-index: 4;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--doux);
+  font: 400 11px/1.3 var(--police-chiffres);
+  text-align: left;
+  border-bottom: 1px dotted currentColor;
+  cursor: pointer;
+}
+
+.discret:hover,
+.discret:focus-visible {
+  color: var(--encre);
+}
+
+.deconnexion {
+  position: absolute;
+  top: 16px;
+  right: 14px;
+  max-width: calc(var(--bx) - 24px);
+}
+
+.ton {
+  position: absolute;
+  bottom: 16px;
+  left: 14px;
+  max-width: calc(var(--bx) - 24px);
+}
+
+/* ---------- Centre : un bloc par espace, en croix ---------- */
+.centre {
+  position: absolute;
+  inset: var(--by) var(--bx);
+  display: grid;
+  grid-template-columns: minmax(210px, 1fr) minmax(0, 1.9fr) minmax(280px, 1.25fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    '. vie .'
+    'street phrase marine'
+    '. objectifs .';
+  column-gap: clamp(20px, 2.4vw, 40px);
+  padding: clamp(18px, 3vh, 34px) clamp(22px, 2.6vw, 44px);
+}
+
+.vie {
+  grid-area: vie;
+  --accent: var(--vert);
+}
+.street {
+  grid-area: street;
+  align-self: center;
+  --accent: var(--sienne);
+}
+.phrase {
+  grid-area: phrase;
+  align-self: center;
+}
+.marine {
+  grid-area: marine;
+  align-self: center;
+  --accent: var(--bleu);
+}
+.objectifs {
+  grid-area: objectifs;
+  --accent: var(--violet);
+}
+
+.rubrique {
+  margin: 0;
+  font: 500 12px/1.3 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--doux);
+}
+
+.heros {
+  margin: 4px 0 0;
+  font: 700 calc(64 * var(--u)) / 0.95 var(--police-heros);
+  font-stretch: 85%;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.street .heros {
+  font-size: calc(76 * var(--u));
+}
+
+.marine .heros {
+  font-size: calc(118 * var(--u));
+  letter-spacing: -0.04em;
+}
+
+.barre {
+  position: relative;
+  height: 4px;
+  margin: 12px 0 8px;
+  background: var(--trait);
+}
+
+.barre i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--p) * 100%);
+  background: var(--accent);
+  transform-origin: left;
+  animation: remplir 1.2s 0.9s var(--expo) backwards;
+}
+
+@keyframes remplir {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.note {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--doux);
+}
+
+.entrer {
+  display: inline-block;
+  margin-top: 10px;
+  padding-bottom: 1px;
+  border-bottom: 1px solid currentColor;
+  color: var(--encre);
+  font: 400 13px/1.3 var(--police-chiffres);
+  text-decoration: none;
+  transition: letter-spacing 0.3s var(--expo);
+}
+
+.entrer:hover,
+.entrer:focus-visible {
+  letter-spacing: 0.05em;
+}
+
+/* Vie courante */
+.ligneVie {
+  display: grid;
+  grid-template-columns: minmax(170px, 1fr) minmax(150px, 1fr) minmax(0, 1.4fr);
+  column-gap: clamp(16px, 2vw, 32px);
+  align-items: start;
+}
+
+.chiffres {
+  display: grid;
+  gap: 2px;
+  padding-top: 8px;
+  font-size: 15px;
+}
+
+.chiffres p {
+  margin: 0;
+}
+
+.chiffres b {
+  font: 500 15px var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+}
+
+.ecart {
+  margin: 0;
+  padding-top: 14px;
+  font: italic 400 clamp(22px, calc(30 * var(--u)), 34px) / 1.12 var(--police-ecart);
+  color: var(--vert);
+}
+
+/* Streetlifting */
+.exercices {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 2px;
+  font-size: 15px;
+}
+
+.exercices li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--trait);
+  padding: 4px 0;
+}
+
+.exercices b {
+  font: 500 14px var(--police-chiffres);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Phrase du jour */
+.salut {
+  margin: 0 0 clamp(8px, 1.4vh, 16px);
+  font: 500 12px/1.3 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--doux);
+}
+
+.titre {
+  margin: 0;
+  font: 700 clamp(40px, calc(72 * var(--u)), 92px) / 0.98 var(--police-heros);
+  font-stretch: 85%;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.ligne {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+
+.ligne > span {
+  display: inline-block;
+}
+
+.unePar {
+  margin: clamp(14px, 2.4vh, 24px) 0 0;
+  font: 400 14px/1.4 var(--police-chiffres);
+  color: var(--doux);
+}
+
+.unePar b {
+  font-weight: 500;
+  color: var(--encre);
+}
+
+.resume {
+  margin: clamp(10px, 1.6vh, 18px) 0 0;
+  max-width: 34em;
+  font-size: clamp(17px, calc(21 * var(--u)), 22px);
+  line-height: 1.4;
+}
+
+/* Marine */
+.enteteMarine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.danger {
+  padding: 5px 8px;
+  background: #2fd67b;
+  color: #141414;
+  font: 500 12px/1 var(--police-chiffres);
+  letter-spacing: 0.06em;
+}
+
+.danger[data-niveau='rouge'] {
+  background: #ff4a3d;
+}
+
+.danger[data-niveau='noir'] {
+  background: #050505;
+  color: #efe9dd;
+  box-shadow:
+    0 0 0 2px var(--papier),
+    0 0 0 3px #050505;
+}
+
+.feuille[data-ton='soir'] .danger[data-niveau='noir'] {
+  box-shadow: 0 0 0 1.5px #efe9dd;
+}
+
+.ligneMarine {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.ligneMarine .note {
+  padding-bottom: 10px;
+}
+
+/* Objectifs */
+.ligneObjectif {
+  display: grid;
+  grid-template-columns: minmax(150px, auto) minmax(0, 1fr);
+  column-gap: clamp(16px, 2vw, 32px);
+  align-items: end;
+}
+
+.ligneObjectif .barre {
+  margin-top: 0;
+}
+
+.objectifs .note + .entrer,
+.ligneObjectif + .note {
+  margin-top: 4px;
+}

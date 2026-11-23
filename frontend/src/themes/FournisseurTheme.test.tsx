@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { act, configure, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -6,6 +6,9 @@ import { useTheme } from './contexte'
 import { FournisseurTheme } from './FournisseurTheme'
 import { Selecteur } from './Selecteur'
 import type { MetaTheme, Theme } from './types'
+
+// Sous charge (CI, machine occupée), le premier rendu peut dépasser la seconde par défaut.
+configure({ asyncUtilTimeout: 4000 })
 
 const vide = () => null
 

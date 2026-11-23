@@ -1,0 +1,44 @@
+.courbe {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 6px 0;
+  overflow: visible;
+}
+
+.trait {
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Les couleurs de danger sont les mêmes dans tous les thèmes et tous les tons. */
+.bande[data-niveau='vert'] {
+  fill: #2fd67b;
+}
+.bande[data-niveau='rouge'] {
+  fill: #ff4a3d;
+}
+.bande[data-niveau='noir'] {
+  fill: #050505;
+  stroke: var(--encre);
+  stroke-width: 0.6;
+}
+
+.repere {
+  fill: var(--encre);
+}
+
+.libelle {
+  font:
+    400 10px 'Geist Mono Variable',
+    ui-monospace,
+    monospace;
+  fill: var(--doux);
+}
+
+.maintenant {
+  stroke: var(--encre);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}

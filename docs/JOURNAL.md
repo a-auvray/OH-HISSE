@@ -183,3 +183,23 @@
 
 ### Ce qui a bloqué / Solutions trouvées
 - Les prototypes du lookbook plantaient dans une fenêtre de taille nulle (onglet en arrière-plan) : leur script attend maintenant une vraie taille. Ils restent un outil de choix, pas du code repris tel quel.
+
+---
+
+## 23/11/2026 — Thème Papier : l'accueil
+
+**Branches :** `feature/accueil-donnees`, `feature/theme-papier`
+
+### Ce qui a été fait
+- Les données du briefing sortent de l'affichage (`useBriefing`) : les thèmes en montrent le même contenu sans le recalculer.
+- Phrase du jour calculée à partir des données (repos si la récupération n'est pas finie, sinon le type de bloc ; la mer ouverte, fermée ou « avant 17 h »).
+- Thème Papier, accueil : feuille crème aux quatre bords repliés (un mot géant par espace), un bloc par espace avec sa jauge de progression, courbe de marée avec le danger heure par heure, ton jour et ton soir (couleurs inversées). Il apparaît dans le sélecteur ; ses espaces restent ceux de Classique pour l'instant.
+
+### Choix techniques
+- **Accueil lisible d'abord** : texte plus gros et mieux contrasté que dans le prototype, détails au survol retirés des infos essentielles.
+- **Ton jour/soir propre au thème**, mémorisé dans le navigateur ; couleurs de danger identiques dans les deux tons.
+- **Courbe de marée sans bibliothèque** (Catmull-Rom en Bézier) : le thème pèse 4 ko de JS.
+
+### Ce qui a bloqué / Solutions trouvées
+- Un test de l'accueil Classique manquait de `heures` et de `marees` dans ses données simulées, que la phrase du jour lit : complété pour coller à l'API réelle.
+- Un test du sélecteur a échoué une fois sur une machine chargée : délai des attentes asynchrones élargi.
