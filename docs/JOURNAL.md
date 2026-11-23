@@ -257,3 +257,17 @@
 ### Ce qui a bloqué / Solutions trouvées
 - jsdom n'a pas de `ResizeObserver` : un stub muet dans la préparation des tests (les composants qui lisent leur largeur n'affichent alors pas leur graphique, ce que les tests n'ont pas à voir).
 - Un axe ne montrait qu'une graduation : le pas de 2,5 est maintenant permis.
+
+---
+
+## 23/11/2026 — Thème Papier : Vie courante, « Aujourd'hui »
+
+**Branche :** `feature/papier-vie-courante`
+
+### Ce qui a été fait
+- Page « Aujourd'hui » refaite pour Papier, calme et aérée : la phrase du jour en grand (Instrument Serif en italique), un anneau qui respire pour la récupération, une assiette dont les parts se remplissent pour l'écart mérité, des champs « sous une ligne » pour la nuit et la pesée. Aucun encadré, beaucoup d'air : tout l'inverse de Streetlifting.
+- Les données et les trois gestes (noter l'écart, la nuit, la pesée) sortent de l'affichage dans `espaces/vie-courante/etat.ts`, partagés avec Classique.
+
+### Choix techniques
+- **Mêmes gestes dans les deux thèmes** : les fonctions `noterEcart`, `noterNuit` et `peser` sont communes, donc aucune fonctionnalité n'existe dans un seul thème.
+- **Mouvement = souffle** : trois anneaux décalés qui respirent sur 7 secondes, rien ne clignote.

@@ -1,0 +1,232 @@
+/*
+ * Vie courante, Papier : le calme. Instrument Serif en italique, vert doux, aucun
+ * encadré, des courbes et beaucoup d'air. Tout l'inverse de Streetlifting.
+ */
+.page {
+  --serif: 'Instrument Serif', Georgia, serif;
+  display: grid;
+  gap: clamp(8px, 1.4vh, 16px);
+  padding-bottom: 24px;
+}
+
+.attente {
+  margin: 0;
+  color: var(--texte-doux);
+  font: italic 1.4rem var(--serif);
+}
+
+.erreur {
+  margin: 8px 0 0;
+  color: var(--danger);
+}
+
+.phrase {
+  margin: 0;
+  font: italic 400 clamp(3.4rem, 7vw, 6.6rem) / 0.95 var(--serif);
+  letter-spacing: -0.01em;
+  color: var(--vert);
+}
+
+.sousPhrase {
+  max-width: 34em;
+  margin: 0 0 clamp(14px, 3vh, 36px);
+  font: 400 clamp(1.1rem, 1.6vw, 1.5rem) / 1.4 var(--serif);
+  color: var(--texte-doux);
+}
+
+.corps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(28px, 5vw, 88px);
+  align-items: start;
+}
+
+.rubrique {
+  margin: 0 0 clamp(10px, 2vh, 20px);
+  font: 500 12px/1.3 var(--police-chiffres);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.texte {
+  margin: 0;
+  max-width: 32em;
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.texte strong {
+  font: italic 400 1.6rem var(--serif);
+  color: var(--vert);
+}
+
+.raisons {
+  display: grid;
+  gap: 4px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--texte-doux);
+  font-size: 0.95rem;
+}
+
+.raisons li::before {
+  content: '·  ';
+  color: var(--vert);
+}
+
+.lien {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--encre);
+  font: italic 1.05rem var(--serif);
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+  transition:
+    background-size 0.5s var(--expo, cubic-bezier(0.16, 1, 0.3, 1)),
+    color 0.3s;
+}
+
+.lien:hover {
+  color: var(--vert);
+  background-size: 0 1px;
+}
+
+/* ---------- Récupération ---------- */
+.recup {
+  display: grid;
+  justify-items: start;
+  gap: 4px;
+}
+
+.recup > :global(div) {
+  margin-bottom: 14px;
+}
+
+.grand {
+  font: italic 400 clamp(3rem, 5vw, 4.6rem) / 1 var(--serif);
+  color: var(--encre);
+}
+
+.petit {
+  font: 400 0.95rem var(--police-texte);
+  color: var(--texte-doux);
+}
+
+/* ---------- Colonne de droite : l'écart, la nuit, le poids ---------- */
+.colonne {
+  display: grid;
+  gap: clamp(22px, 3.6vh, 40px);
+}
+
+.colonne > section + section {
+  padding-top: clamp(18px, 3vh, 32px);
+  border-top: 1px dotted var(--trait);
+}
+
+.assiette {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 36px);
+}
+
+.matin .poids {
+  margin: 0 0 6px;
+  font: italic 400 clamp(2.4rem, 4vw, 3.6rem) / 1 var(--serif);
+}
+
+/* ---------- Champs : une ligne sous un texte, comme sur un carnet ---------- */
+.champ {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin: 10px 0;
+}
+
+.champ label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font: italic 1.4rem var(--serif);
+  color: var(--texte-doux);
+}
+
+.champ input {
+  width: 4.2em;
+  padding: 2px 0;
+  border: 0;
+  border-bottom: 1px solid var(--encre);
+  border-radius: 0;
+  background: none;
+  color: var(--encre);
+  font: italic 400 2.2rem / 1.1 var(--serif);
+  text-align: center;
+  outline: none;
+  transition:
+    border-color 0.3s,
+    border-bottom-width 0.3s;
+}
+
+.champ input:focus {
+  border-bottom-color: var(--vert);
+  border-bottom-width: 2px;
+}
+
+.champ input::placeholder {
+  color: var(--texte-faible);
+}
+
+.lunes {
+  display: flex;
+  gap: 2px;
+}
+
+.lunes button {
+  padding: 0 3px;
+  border: 0;
+  background: none;
+  color: var(--trait);
+  font: 400 1.8rem / 1 var(--serif);
+  cursor: pointer;
+  transition:
+    color 0.3s,
+    transform 0.4s var(--expo, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.lunes button:hover {
+  transform: translateY(-2px);
+}
+
+.lunes button[data-allume] {
+  color: var(--vert);
+}
+
+.bouton {
+  padding: 8px 18px;
+  border: 1px solid var(--vert);
+  border-radius: 999px;
+  background: none;
+  color: var(--vert);
+  font: italic 400 1.1rem var(--serif);
+  cursor: pointer;
+  transition:
+    background-color 0.4s var(--expo, cubic-bezier(0.16, 1, 0.3, 1)),
+    color 0.4s;
+}
+
+.bouton:hover:not(:disabled),
+.bouton:focus-visible {
+  background: var(--vert);
+  color: var(--papier);
+}
+
+.bouton:disabled {
+  opacity: 0.5;
+  cursor: progress;
+}
+
+.ecart .bouton {
+  margin-top: 16px;
+}

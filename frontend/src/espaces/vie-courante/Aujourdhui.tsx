@@ -2,12 +2,11 @@ import { motion } from 'motion/react'
 import { type FormEvent, useState } from 'react'
 import { Link } from 'react-router'
 
-import { api } from '../../api/client'
-import { type EtatDuJour, messageErreur } from '../../api/types'
-import { aujourdhui, kg, nombre } from '../../commun/format'
-import { exiger, useDonnees } from '../../commun/useDonnees'
+import type { EtatDuJour } from '../../api/types'
+import { kg, nombre } from '../../commun/format'
 import { Anneau } from './Anneau'
 import styles from './Aujourdhui.module.css'
+import { noterEcart, noterNuit, peser, useEtatDuJour } from './etat'
 
 const QUAND = new Intl.DateTimeFormat('fr-FR', {
   weekday: 'long',
@@ -30,10 +29,7 @@ const apparaitre = (rang: number) => ({
 
 /** Les verdicts du jour : récupération, écart mérité, sommeil, poids (note 05). */
 export function Aujourdhui() {
-  const [etat, recharger] = useDonnees(
-    async () => exiger(await api.GET('/api/vie-courante/etat'), (e) => messageErreur(e)),
-    [],
-  )
+  const [etat, recharger] = useEtatDuJour()
 
   if (etat.etat === 'chargement') return <p className={styles.attente}>Un instant…</p>
   if (etat.etat === 'erreur') return <p className={styles.erreur}>{etat.message}</p>
@@ -100,7 +96,7 @@ function CheatMeal({ etat, apresEcart }: { etat: EtatDuJour; apresEcart: () => v
 
   async function noter() {
     setEnCours(true)
-    await api.POST('/api/vie-courante/cheat-meals', { body: { date: aujourdhui() } })
+    await noterEcart()
     setEnCours(false)
     apresEcart()
   }
@@ -152,11 +148,8 @@ function Nuit({ etat, apresSaisie }: { etat: EtatDuJour; apresSaisie: () => void
 
   async function enregistrer(evenement: FormEvent) {
     evenement.preventDefault()
-    const { error } = await api.PUT('/api/vie-courante/nuits/{jour}', {
-      params: { path: { jour: aujourdhui() } },
-      body: { heures: Number(heures.replace(',', '.')), qualite },
-    })
-    if (error) setErreur(messageErreur(error, 'Saisie impossible.'))
+    const message = await noterNuit(heures, qualite)
+    if (message) setErreur(message)
     else {
       setErreur(null)
       apresSaisie()
@@ -219,10 +212,8 @@ function Poids({ etat, apresSaisie }: { etat: EtatDuJour; apresSaisie: () => voi
 
   async function enregistrer(evenement: FormEvent) {
     evenement.preventDefault()
-    const { error } = await api.POST('/api/vie-courante/pesees', {
-      body: { date: aujourdhui(), poids_kg: Number(valeur.replace(',', '.')) },
-    })
-    if (error) setErreur(messageErreur(error, 'Pesée impossible.'))
+    const message = await peser(valeur)
+    if (message) setErreur(message)
     else {
       setErreur(null)
       setValeur('')
