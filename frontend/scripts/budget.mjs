@@ -2,9 +2,10 @@
 // Lancé après « npm run build ». Les thèmes ne doivent jamais alourdir le départ de l'appli.
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { gzipSync } from 'node:zlib'
 
-const dossier = new URL('../dist/assets/', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')
+const dossier = fileURLToPath(new URL('../dist/assets/', import.meta.url))
 
 /** [motif du nom de fichier, extension, limite en ko gzip, description] — la première règle qui correspond s'applique. */
 const REGLES = [
