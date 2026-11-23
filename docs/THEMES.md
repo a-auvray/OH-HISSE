@@ -84,7 +84,7 @@ polices des espaces ne se chargent plus qu'avec leur thème).
 | Thème | Accueil | Espaces | Transition |
 |---|---|---|---|
 | Classique | fait | fait | fait |
-| Papier | fait (jour et soir) | coque et vues principales faites pour les quatre ; quelques pages intérieures sur plaque | celle de Classique |
+| Papier | fait (jour et soir) | coque et vues principales faites pour les quatre ; quelques pages intérieures sur plaque | faite : un rabat qui se déplie |
 | Matière | à faire | à faire | à faire |
 | Estampe | à faire | à faire | à faire |
 
@@ -94,8 +94,9 @@ partir de ces données, jamais écrite à la main.
 
 Fait pour Papier : Marine (page Conditions, la plage en coupe), Streetlifting (séance du
 jour, analyse en planche avec rail de miniatures), Vie courante (« Aujourd'hui », calme et
-aérée) et Objectifs (des drisses qu'on hisse). Reste : la transition, puis les pages
-intérieures encore sur la plaque. Pour chaque page, les données et les actions sortent d'abord de l'affichage dans
+aérée) et Objectifs (des drisses qu'on hisse). La transition est un rabat qui se déplie autour du bord par lequel on entre dans
+l'espace. Reste : les pages intérieures encore sur la plaque (saisie, calendrier, blocs,
+sommeil, briefings, assistant, carte, carnet). Pour chaque page, les données et les actions sortent d'abord de l'affichage dans
 un hook commun, puis le thème en montre une version à lui.
 
 **La coque et la plaque.** Chaque espace Papier est une coque commune (`papier/Coque`) :

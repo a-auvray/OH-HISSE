@@ -8,6 +8,8 @@ export type NiveauAnimation = 'cinema' | 'sobre' | 'immobile'
 export interface PropsScene {
   /** Sens du trajet, ou null s'il n'y en a pas (premier affichage, sous-pages). */
   sens: Direction | null
+  /** L'espace que cette page montre, ou null pour l'accueil. */
+  espace: IdEspace | null
   children: ReactNode
 }
 

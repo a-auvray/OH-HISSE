@@ -286,3 +286,22 @@
 ### Choix techniques
 - **Un fil par objectif, pas un graphique** : la tension vers la cible se lit sans légende, et c'est ce que le cahier des charges demandait (« la tension vers la cible »).
 - **Même formulaire, même validation** : `creerObjectif` est commun.
+
+---
+
+## 23/11/2026 — Thème Papier : la transition
+
+**Branche :** `feature/papier-transition`
+
+### Ce qui a été fait
+- Transition propre au thème : en entrant dans un espace, sa page se **déplie comme un rabat**, articulée sur le bord par lequel on y arrive (Marine sur son bord gauche, Vie courante sur son bord bas…), avec l'ombre du pli qui s'efface à mesure qu'elle s'ouvre. L'accueil reste dessous, tassé et assombri. Au retour, la page se replie.
+- Le niveau d'animation s'applique : « Sobre » raccourcit la transition et réduit l'angle, « Immobile » la coupe.
+- Les quatre espaces sont maintenant ceux de Papier : le thème ne charge plus Classique, et chaque espace ne se charge qu'à son ouverture (le thème pèse 5 ko de JS au départ).
+
+### Choix techniques
+- **La scène connaît son espace** (nouvelle propriété `espace` de `PropsScene`, nulle pour l'accueil) : la charnière se déduit de l'espace, pas du sens du trajet, donc l'aller et le retour utilisent le même pli.
+- **L'espace est toujours au-dessus de l'accueil** (z-index), que l'on entre ou que l'on sorte : le rabat recouvre ou découvre l'accueil sans calcul de sens.
+- **Polices rapatriées dans Papier** (Anton, Fraunces) puisqu'il n'importe plus Classique.
+
+### Ce qui a bloqué / Solutions trouvées
+- Après des changements de branche, Vite servait un ancien module (la page Marine montrait l'ancienne vue) : relance du serveur de développement, comme noté dans mes notes de projet.
