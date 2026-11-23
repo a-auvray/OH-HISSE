@@ -7,6 +7,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session
@@ -46,6 +47,10 @@ def creer_application() -> FastAPI:
         allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
         allow_headers=["Content-Type"],
     )
+    if config.sans_connexion:
+        # Sans connexion, seul ce navigateur doit pouvoir parler à l'application : un autre site ne peut pas
+        # l'atteindre en faisant résoudre son nom vers localhost (« DNS rebinding »).
+        application.add_middleware(TrustedHostMiddleware, allowed_hosts=["localhost", "127.0.0.1", "[::1]"])
     application.include_router(sante.routeur, prefix="/api")
     application.include_router(auth.routeur, prefix="/api")
     application.include_router(streetlifting.routeur, prefix="/api")

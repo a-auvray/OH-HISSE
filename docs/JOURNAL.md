@@ -358,3 +358,20 @@
 
 ### Ce qui a bloqué / Solutions trouvées
 - Le lanceur n'arrivait jamais à voir le serveur : sa vérification passait par le proxy système et par `localhost` (IPv6 d'abord, alors que le serveur n'écoute qu'en IPv4). Elle interroge maintenant `127.0.0.1` sans proxy. Trouvé en suivant l'état du serveur, de la fenêtre et du lanceur seconde par seconde.
+
+---
+
+## 24/11/2026 — Pas d'écran de connexion en local
+
+**Branche :** `feature/sans-connexion-local`
+
+### Ce qui a été fait
+- Mode `OH_HISSE_SANS_CONNEXION=1` : sans jeton valide, l'API ouvre le compte personnel (le premier compte non démo). L'interface reçoit un utilisateur connecté dès son premier appel : l'écran de connexion n'apparaît jamais.
+- Activé par `lancer.bat` (donc par `Oh Hisse.exe` et le raccourci). Le travail commencé sur un écran de connexion Papier est mis de côté (remisé), « on verra plus tard ».
+
+### Choix techniques
+- **Garde-fous plutôt qu'un simple interrupteur** : le serveur refuse de démarrer en production avec ce mode, ne sert que `localhost` / `127.0.0.1` (contre le « DNS rebinding » : un site qui ferait résoudre son nom vers localhost ne peut pas atteindre l'application), et ne choisit jamais un bac à sable démo.
+- **Rien ne change pour la mise en ligne** : sans la variable, la connexion reste obligatoire, comme avant.
+
+### Ce qui a bloqué / Solutions trouvées
+- Mes nouveaux tests faisaient échouer deux tests d'autres fichiers : la fixture vidait le cache de configuration avant de restaurer l'environnement, ce qui gardait le mode actif pour la suite. L'environnement est restauré d'abord.

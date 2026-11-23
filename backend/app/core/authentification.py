@@ -8,8 +8,10 @@ utilisateur, et une route ne lit ou n'écrit que les données de
 from typing import Annotated
 
 from fastapi import Cookie, Depends, HTTPException, status
+from sqlmodel import col, select
 
 from app.core.base_de_donnees import SessionDep, en_utc, maintenant
+from app.core.config import parametres
 from app.core.securite import NOM_COOKIE, lire_jeton
 from app.models import Utilisateur
 
@@ -22,6 +24,11 @@ def utilisateur_courant(
 ) -> Utilisateur:
     utilisateur_id = lire_jeton(jeton) if jeton else None
     utilisateur = session.get(Utilisateur, utilisateur_id) if utilisateur_id is not None else None
+    if utilisateur is None and parametres().sans_connexion:
+        # Mode local sans connexion : le premier compte personnel (jamais un bac à sable démo).
+        utilisateur = session.exec(
+            select(Utilisateur).where(col(Utilisateur.est_demo).is_(False)).order_by(col(Utilisateur.id))
+        ).first()
     if utilisateur is None:
         raise NON_CONNECTE
     if utilisateur.expire_le is not None and en_utc(utilisateur.expire_le) <= maintenant():

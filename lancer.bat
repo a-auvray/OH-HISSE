@@ -7,6 +7,9 @@ setlocal
 cd /d "%~dp0"
 set "APP=0"
 if not defined OH_HISSE_PORT set "OH_HISSE_PORT=8000"
+rem Usage personnel en local : pas d'ecran de connexion (le compte personnel s'ouvre directement).
+rem Retirer cette ligne pour reactiver la connexion. Sans effet, et interdit, en production.
+if not defined OH_HISSE_SANS_CONNEXION set "OH_HISSE_SANS_CONNEXION=1"
 if /i "%~1"=="/app" set "APP=1"
 echo === Oh Hisse ! ===
 

@@ -10,13 +10,14 @@ from app.core.base_de_donnees import SessionDep
 from app.models import Bloc, Objectif
 from app.schemas.blocs import BlocImporte, BlocLu, BlocModifie, SeanceDuJour
 from app.services import blocs as service
+from app.services import vie_courante
 
 routeur = APIRouter(prefix="/streetlifting", tags=["streetlifting"])
 
 
 @routeur.get("/blocs")
 def lister_blocs(utilisateur: UtilisateurDep, session: SessionDep) -> list[BlocLu]:
-    jour = dt.date.today()
+    jour = vie_courante.aujourdhui()
     return [service.vers_lecture(session, b, jour) for b in service.blocs(session, utilisateur)]
 
 
@@ -33,13 +34,13 @@ def importer_bloc(donnees: BlocImporte, utilisateur: UtilisateurDep, session: Se
         type=donnees.type,
         cycles=donnees.cycles,
         programme=[s.model_dump(mode="json") for s in donnees.seances],
-        debut=donnees.debut or dt.date.today(),
+        debut=donnees.debut or vie_courante.aujourdhui(),
         objectif_id=donnees.objectif_id,
     )
     session.add(bloc)
     session.commit()
     session.refresh(bloc)
-    return service.vers_lecture(session, bloc, dt.date.today())
+    return service.vers_lecture(session, bloc, vie_courante.aujourdhui())
 
 
 @routeur.patch("/blocs/{bloc_id}", responses={404: {}})
@@ -58,7 +59,7 @@ def modifier_bloc(
     session.add(bloc)
     session.commit()
     session.refresh(bloc)
-    return service.vers_lecture(session, bloc, dt.date.today())
+    return service.vers_lecture(session, bloc, vie_courante.aujourdhui())
 
 
 @routeur.delete("/blocs/{bloc_id}", status_code=status.HTTP_204_NO_CONTENT, responses={404: {}})
@@ -72,4 +73,4 @@ def supprimer_bloc(bloc_id: int, utilisateur: UtilisateurDep, session: SessionDe
 def seance_du_jour(
     utilisateur: UtilisateurDep, session: SessionDep, jour: dt.date | None = None
 ) -> SeanceDuJour:
-    return service.seance_du_jour(session, utilisateur, jour or dt.date.today())
+    return service.seance_du_jour(session, utilisateur, jour or vie_courante.aujourdhui())
