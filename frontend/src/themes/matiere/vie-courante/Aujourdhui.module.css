@@ -1,0 +1,208 @@
+/* Aujourd'hui, Matière : des plaques posées sur la dalle, la phrase en grotesque condensé. */
+.page {
+  display: grid;
+  gap: 16px;
+  max-width: 1120px;
+}
+
+.attente,
+.erreur {
+  margin: 0;
+  font: 400 13px var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.erreur {
+  color: var(--danger-texte);
+}
+
+.phrase {
+  margin: 0;
+  font: 800 clamp(2.4rem, 5vw, 4.2rem) / 0.95 var(--police-titre);
+  font-stretch: 82%;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.sousPhrase {
+  margin: -4px 0 4px;
+  max-width: 60ch;
+  color: var(--texte-doux);
+}
+
+.corps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.colonne {
+  display: grid;
+  gap: 14px;
+}
+
+.recup,
+.ecart,
+.matin {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 10px;
+  padding: 16px 20px 18px;
+  border: 1px solid var(--filet);
+  border-top: 5px solid var(--accent);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--ombre-carte);
+}
+
+.recup > *,
+.ecart > *,
+.matin > * {
+  max-width: 100%;
+}
+
+.rubrique {
+  margin: 0;
+  font: 500 10px/1.3 var(--police-chiffres);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.grand {
+  font: 800 clamp(2.2rem, 3.6vw, 3.2rem) / 1 var(--police-titre);
+  font-stretch: 82%;
+  letter-spacing: -0.02em;
+}
+
+.petit {
+  font: 400 12px var(--police-chiffres);
+  opacity: 0.75;
+}
+
+.texte {
+  margin: 0;
+  color: var(--texte-doux);
+}
+
+.texte strong {
+  font: 800 1.4rem / 1 var(--police-titre);
+  color: var(--texte);
+}
+
+.raisons {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.92rem;
+  color: var(--texte-doux);
+}
+
+.raisons li::before {
+  content: '↳ ';
+  color: var(--accent);
+}
+
+.lien {
+  color: var(--texte);
+  font: 500 11px var(--police-chiffres);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.lien:hover,
+.lien:focus-visible {
+  color: var(--accent);
+}
+
+.assiette {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.poids {
+  margin: 0;
+  font: 800 2.4rem / 1 var(--police-titre);
+  font-stretch: 82%;
+}
+
+.champ {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+}
+
+.champ label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.champ input {
+  width: 7ch;
+  padding: 7px 10px;
+  border: 1px solid var(--filet);
+  border-radius: 8px;
+  background: var(--creux);
+  color: var(--texte);
+  font: 600 1rem var(--police-chiffres);
+  text-align: right;
+}
+
+.champ input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.lunes {
+  display: flex;
+  gap: 4px;
+}
+
+.lunes button {
+  border: 0;
+  background: none;
+  color: var(--filet);
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.lunes button[data-allume] {
+  color: var(--accent);
+}
+
+.bouton {
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--sur-accent);
+  font: 700 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.bouton:hover:not(:disabled),
+.bouton:focus-visible {
+  transform: translateY(-2px);
+}
+
+.bouton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .corps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
