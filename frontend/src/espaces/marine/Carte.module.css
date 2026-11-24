@@ -4,8 +4,8 @@
   min-height: 520px;
   border-radius: 28px;
   overflow: hidden;
-  border: 1px solid rgb(176 216 255 / 0.15);
-  box-shadow: 0 40px 100px -40px #000000;
+  border: 1px solid color-mix(in srgb, var(--accent-clair) 15%, transparent);
+  box-shadow: var(--ombre-carte);
 }
 
 .carte {
@@ -66,9 +66,9 @@
   font-family: var(--police-texte);
   font-size: 0.85rem;
   color: var(--texte);
-  background: #0b2238;
-  border: 1px solid rgb(176 216 255 / 0.25);
-  box-shadow: 0 20px 50px -20px #000000;
+  background: var(--surface-haute);
+  border: 1px solid color-mix(in srgb, var(--accent-clair) 25%, transparent);
+  box-shadow: var(--ombre-carte);
 }
 
 .popup :global(.maplibregl-popup-content strong) {
@@ -79,8 +79,8 @@
 }
 
 .popup :global(.maplibregl-popup-tip) {
-  border-top-color: #0b2238;
-  border-bottom-color: #0b2238;
+  border-top-color: var(--surface-haute);
+  border-bottom-color: var(--surface-haute);
 }
 
 /* --- Mer et courant --- */
@@ -91,9 +91,9 @@
   font-family: var(--police-espace);
   font-style: italic;
   font-size: 1.3rem;
-  color: #041320;
-  background: rgb(176 216 255 / 0.9);
-  box-shadow: 0 10px 30px -10px #000000;
+  color: var(--sur-accent);
+  background: color-mix(in srgb, var(--accent-clair) 90%, transparent);
+  box-shadow: var(--ombre-carte);
   pointer-events: none;
 }
 
@@ -103,7 +103,7 @@
   width: var(--longueur);
   height: 2px;
   rotate: calc(var(--cap) - 90deg);
-  background: linear-gradient(90deg, transparent, #9fe3ff);
+  background: linear-gradient(90deg, transparent, var(--accent-clair));
   opacity: 0.85;
   animation: filer 2.2s ease-in-out infinite;
 }
@@ -113,7 +113,7 @@
   position: absolute;
   right: -2px;
   top: -4px;
-  border-left: 8px solid #9fe3ff;
+  border-left: 8px solid var(--accent-clair);
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
 }
@@ -141,8 +141,8 @@
   border-radius: 18px;
   font-size: 0.85rem;
   color: var(--texte-doux);
-  background: rgb(4 19 32 / 0.78);
-  border: 1px solid rgb(176 216 255 / 0.15);
+  background: color-mix(in srgb, var(--surface-haute) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-clair) 15%, transparent);
   backdrop-filter: blur(10px);
 }
 
@@ -187,7 +187,7 @@
 }
 
 .bouton {
-  border: 1px solid rgb(176 216 255 / 0.25);
+  border: 1px solid color-mix(in srgb, var(--accent-clair) 25%, transparent);
   background: transparent;
   color: var(--texte);
 }
@@ -198,6 +198,6 @@
 
 .principal {
   border: 0;
-  color: #041320;
+  color: var(--sur-accent);
   background: var(--marine-clair);
 }

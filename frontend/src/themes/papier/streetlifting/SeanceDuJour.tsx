@@ -6,7 +6,6 @@ import { TYPES_BLOC } from '../../../espaces/streetlifting/chronologie'
 import { PeseeRapide } from '../../../espaces/streetlifting/PeseeRapide'
 import { useSeanceDuJour } from '../../../espaces/streetlifting/useSeanceDuJour'
 import { Compteur } from '../Compteur'
-import { Plaque } from '../Plaque'
 import styles from './SeanceDuJour.module.css'
 
 const EXPO = [0.16, 1, 0.3, 1] as const
@@ -80,16 +79,14 @@ export function SeanceDuJourPapier() {
       </header>
 
       {(!seance.poids || !seance.poids.a_jour) && (
-        <Plaque>
-          <PeseeRapide
-            apresPesee={recharger}
-            raison={
-              seance.poids
-                ? 'Ta dernière pesée date de plus de trois semaines.'
-                : 'Sans ton poids, les charges ne peuvent pas être calculées.'
-            }
-          />
-        </Plaque>
+        <PeseeRapide
+          apresPesee={recharger}
+          raison={
+            seance.poids
+              ? 'Ta dernière pesée date de plus de trois semaines.'
+              : 'Sans ton poids, les charges ne peuvent pas être calculées.'
+          }
+        />
       )}
 
       <h2 className={styles.nom}>{seance.nom}</h2>

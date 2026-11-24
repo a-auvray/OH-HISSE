@@ -30,7 +30,11 @@
   gap: var(--espace-4);
   padding: var(--espace-4) var(--espace-6);
   border-radius: 20px;
-  background: color-mix(in oklab, var(--niveau) 14%, rgb(4 19 32 / 0.6));
+  background: color-mix(
+    in oklab,
+    var(--niveau) 14%,
+    color-mix(in srgb, var(--surface-haute) 88%, transparent)
+  );
   border: 1px solid color-mix(in oklab, var(--niveau) 50%, transparent);
   backdrop-filter: blur(12px);
 }
@@ -98,5 +102,5 @@
   border-radius: 50%;
   vertical-align: middle;
   background: var(--niveau);
-  outline: 1px solid rgb(255 255 255 / 0.5);
+  outline: 1px solid color-mix(in srgb, var(--texte) 50%, transparent);
 }

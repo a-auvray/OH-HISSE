@@ -100,14 +100,22 @@
   position: sticky;
   top: var(--espace-6);
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--espace-4);
 }
 
 .champRecap {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--espace-1);
   font-size: 0.82rem;
   color: var(--texte-doux);
+}
+
+.champRecap input,
+.champRecap textarea {
+  width: 100%;
+  min-width: 0;
 }
 
 .champRecap textarea {
@@ -118,6 +126,7 @@
   border: 0;
   padding: 0;
   margin: 0;
+  min-width: 0;
   display: grid;
   gap: var(--espace-2);
 }
@@ -130,12 +139,14 @@
 
 .notes {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(10, minmax(0, 1fr));
   gap: 4px;
 }
 
 .notes button {
   --teinte: var(--succes);
+  min-width: 0;
+  padding: 0;
   aspect-ratio: 1;
   border-radius: 6px;
   border: 1px solid color-mix(in oklab, var(--teinte) 35%, transparent);
@@ -161,7 +172,7 @@
 
 .notes button[aria-pressed='true'] {
   background: var(--teinte);
-  color: #0b0d10;
+  color: var(--sur-accent);
   font-weight: 700;
 }
 
@@ -170,7 +181,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: var(--espace-2);
   padding: var(--espace-3) 0;
-  border-block: 1px dashed #3a2f28;
+  border-block: 1px dashed var(--filet);
 }
 
 .totaux div {

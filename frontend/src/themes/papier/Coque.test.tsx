@@ -5,7 +5,6 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import type { IdEspace } from '../../espaces/espaces'
 import { rendre } from '../../test/rendu'
 import { Coque } from './Coque'
-import { Plaque } from './Plaque'
 
 const ONGLETS = [
   { chemin: '/marine', libelle: 'Conditions', fin: true },
@@ -48,18 +47,6 @@ describe('Coque du thème Papier', () => {
 
     expect(screen.getByRole('main')).toHaveAttribute('data-ton', 'soir')
     expect(localStorage.getItem('oh-hisse.papier.ton')).toBe('soir')
-  })
-
-  it('affiche les pages pas encore refaites sur une plaque', () => {
-    rendre(
-      <Coque espace="objectifs" titre="Objectifs" onglets={[]}>
-        <Plaque>
-          <p>ancienne page</p>
-        </Plaque>
-      </Coque>,
-    )
-
-    expect(screen.getByText('ancienne page')).toBeInTheDocument()
   })
 })
 

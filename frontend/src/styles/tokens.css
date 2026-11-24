@@ -33,6 +33,22 @@
   --danger: #e5484d;
   --noir-danger: #000000;
 
+  /*
+   * Surfaces et textes des pages intérieures. Chaque thème les redéfinit pour
+   * que ces pages prennent ses couleurs : les valeurs ci-dessous sont celles du
+   * thème Classique (sombre).
+   */
+  --surface: #1b1613; /* une carte */
+  --surface-haute: #14110f; /* une fenêtre posée par-dessus */
+  --creux: rgb(0 0 0 / 0.35); /* un champ de saisie, un fond en creux */
+  --voile: rgb(255 255 255 / 0.04); /* un survol, une ligne alternée */
+  --filet: #3a2f28; /* le filet d'une carte ou d'un champ */
+  --sur-accent: #0b0d10; /* le texte posé sur une pastille de couleur d'espace */
+  --ombre-carte: 0 20px 50px -30px rgb(0 0 0 / 0.9);
+  --succes-texte: #b8f0c6;
+  --alerte-texte: #ffe2b8;
+  --danger-texte: #ffb3b5;
+
   /* Accent courant : neutre hors des espaces */
   --accent: #e9ecef;
   --accent-clair: #ffffff;
