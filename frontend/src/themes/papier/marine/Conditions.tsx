@@ -7,7 +7,7 @@ import { Fleche, IconeMeteo } from '../../../espaces/marine/Icones'
 import { beaufort, jourCourt, lireCodeMeteo, pointCardinal } from '../../../espaces/marine/lecture'
 import { heureCourte, titreMarine } from '../../../espaces/marine/titre'
 import { useCreneau } from '../../../espaces/marine/useCreneau'
-import { Panneau } from '../Panneau'
+import { Panneau } from '../../Panneau'
 import styles from './Conditions.module.css'
 import { Coupe } from './Coupe'
 

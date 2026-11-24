@@ -1,0 +1,166 @@
+/* Analyse, Estampe : un relevé. Des filets d'encre, des petites capitales, des chiffres en italique. */
+.page {
+  display: grid;
+  gap: 26px;
+}
+
+.filtres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 40px;
+}
+
+.choix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 18px;
+}
+
+.choix button {
+  padding: 5px 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: none;
+  color: var(--texte-doux);
+  font: 500 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.choix button:hover,
+.choix button:focus-visible {
+  color: var(--texte);
+}
+
+.choix button[aria-checked='true'] {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.chiffres {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 32px;
+  margin: 0;
+}
+
+.chiffres > div {
+  display: grid;
+  gap: 2px;
+  padding-top: 10px;
+  border-top: 1px solid var(--texte);
+}
+
+.chiffres dt {
+  font: 500 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.chiffres dd {
+  margin: 0;
+  font: italic 400 clamp(2.2rem, 4vw, 3.4rem) / 1 var(--police-titre);
+  color: var(--accent);
+}
+
+.chiffres dd.detail {
+  font: 400 12px/1.4 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.corps {
+  display: grid;
+  grid-template-columns: minmax(200px, 250px) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.rail {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--trait);
+}
+
+.rail button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    'nom valeur'
+    'trace valeur';
+  align-items: center;
+  column-gap: 12px;
+  width: 100%;
+  padding: 10px 0 10px 10px;
+  border: 0;
+  border-top: 1px solid var(--trait);
+  border-left: 2px solid transparent;
+  background: none;
+  color: var(--texte-doux);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.rail button:hover,
+.rail button:focus-visible {
+  color: var(--texte);
+}
+
+.rail button[aria-pressed='true'] {
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+.nomMetrique {
+  grid-area: nom;
+  font: 500 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.rail svg {
+  grid-area: trace;
+  width: 100%;
+  max-width: 120px;
+  height: 28px;
+}
+
+.derniere {
+  grid-area: valeur;
+  font: italic 400 1.5rem / 1 var(--police-titre);
+}
+
+.planche {
+  margin: 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--texte);
+  min-width: 0;
+}
+
+.planche figcaption {
+  margin-bottom: 8px;
+  font: 500 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.vide {
+  margin: 0;
+  max-width: 52ch;
+  color: var(--texte-doux);
+}
+
+@media (max-width: 900px) {
+  .corps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

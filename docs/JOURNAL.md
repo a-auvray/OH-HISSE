@@ -463,3 +463,13 @@
   - les panneaux teintés du carnet, de l'assistant, du sommeil et d'« Aujourd'hui » étaient translucides sur le papier, donc ternes : ils reposent sur `--fond-panneau` ;
   - la carte de Marine restait sombre : elle prend un fond clair dans un thème de jour, et ses surcouches (vent, bord de l'eau, tracé) changent de couleur avec.
 - Non vérifié : les tuiles de la carte (pas de réseau dans mon environnement de test) ; seul le cadre et la palette l'ont été.
+
+---
+
+## 24/11/2026 — Vues de Streetlifting propres à Estampe et à Matière
+
+**Branche :** `feature/themes-vues-streetlifting`
+
+- **Estampe :** la séance du jour est un relevé (strates du bloc encrées jusqu'à la séance du jour, tableau réglé, charge en italique) ; l'analyse est mise en page par filets et petites capitales.
+- **Matière :** la séance du jour est une plaque d'acier dont les bandes (une par séance du bloc) prennent les couleurs de revenu de la friction, puis une plaque gravée par exercice ; l'analyse est faite de plaques posées sur la dalle.
+- Un thème peut maintenant donner ses vues à `EspaceStreetliftingCommun` (celles qu'il ne donne pas restent les pages communes). L'analyse a une structure commune (`AnalyseThemee`) dont la feuille de style fait la page de chaque thème. `Panneau` et la miniature de courbe sont partagés entre thèmes.

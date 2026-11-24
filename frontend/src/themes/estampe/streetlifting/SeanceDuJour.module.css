@@ -1,0 +1,247 @@
+/* Séance du jour, Estampe : un relevé, des filets d'encre, la charge en italique. */
+.page {
+  display: grid;
+  gap: 18px;
+  max-width: 1080px;
+}
+
+.attente,
+.erreur {
+  margin: 0;
+  font: 400 13px var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.erreur {
+  color: var(--danger-texte);
+}
+
+.entete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 10px 36px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--texte);
+}
+
+.releve,
+.etiquette {
+  margin: 0;
+  font: 500 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+/* Les strates du bloc : une colonne de lignes fines par séance, encrées jusqu'à celle du jour. */
+.strates {
+  display: grid;
+  gap: 4px;
+  flex: 1 1 260px;
+  max-width: 420px;
+}
+
+.strates ol {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.strates li {
+  height: 26px;
+  background: repeating-linear-gradient(180deg, var(--trait) 0 1px, transparent 1px 5px);
+}
+
+.strates li[data-etat='fait'] {
+  background: repeating-linear-gradient(180deg, var(--accent) 0 1px, transparent 1px 5px);
+}
+
+.strates li[data-etat='courant'] {
+  background: repeating-linear-gradient(180deg, var(--accent) 0 2px, transparent 2px 5px);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.strates span {
+  font: 400 12px/1.3 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.poids {
+  margin: 0 0 0 auto;
+  font: 400 12px/1.3 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.poids strong {
+  font: italic 400 1.5rem / 1 var(--police-titre);
+  color: var(--texte);
+  margin-left: 6px;
+}
+
+.nom {
+  margin: 0;
+  font: italic 400 clamp(2.6rem, 5vw, 4.4rem) / 0.95 var(--police-titre);
+  color: var(--accent);
+}
+
+.forme {
+  padding: 4px 0 4px 16px;
+  border-left: 2px solid var(--accent);
+  font-style: italic;
+}
+
+.forme ul {
+  margin: 4px 0 6px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+
+.lien {
+  color: var(--texte);
+  font: 400 12px var(--police-chiffres);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.lien:hover,
+.lien:focus-visible {
+  color: var(--accent);
+}
+
+.tableau {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--texte);
+}
+
+.ligne {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: clamp(12px, 2vw, 32px);
+  padding: clamp(12px, 2vh, 22px) 0 0;
+  border-bottom: 1px solid var(--trait);
+}
+
+.rang {
+  font: 400 12px var(--police-chiffres);
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.programme h3 {
+  margin: 0;
+  font: italic 400 clamp(1.7rem, 2.6vw, 2.3rem) / 1 var(--police-titre);
+}
+
+.programme p {
+  margin: 4px 0 0;
+  font: 400 12px var(--police-chiffres);
+  letter-spacing: 0.04em;
+  color: var(--texte-doux);
+}
+
+/* Les séries à cocher : de petits carrés tracés à l'encre. */
+.cases {
+  display: flex;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cases li {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--texte);
+}
+
+.charge {
+  margin: 0;
+  font: italic 400 clamp(2.4rem, 4.4vw, 3.8rem) / 1 var(--police-titre);
+  white-space: nowrap;
+}
+
+.aChoisir {
+  font: 400 13px var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.marge {
+  grid-column: 2 / -1;
+  margin: 6px 0 0;
+}
+
+.raisons {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.92rem;
+  color: var(--texte-doux);
+}
+
+.raisons li::before {
+  content: '↳ ';
+  color: var(--accent);
+}
+
+.lancer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 6px;
+}
+
+.principal {
+  display: inline-block;
+  padding: 12px 22px;
+  border: 1px solid var(--texte);
+  background: none;
+  color: var(--texte);
+  font: 500 12px/1.3 var(--police-chiffres);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.principal:hover,
+.principal:focus-visible {
+  background: var(--texte);
+  color: var(--fond);
+}
+
+.vide {
+  display: grid;
+  justify-items: start;
+  gap: 14px;
+  padding: 24px 0;
+}
+
+.vide h2 {
+  margin: 0;
+  font: italic 400 3rem / 1 var(--police-titre);
+}
+
+.vide p {
+  margin: 0;
+  max-width: 52ch;
+  color: var(--texte-doux);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
