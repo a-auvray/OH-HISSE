@@ -437,3 +437,17 @@
 ### Ce qui a bloqué / Solutions trouvées
 - `fils.ts` et `Fils.tsx` ne diffèrent que par la casse : tsc refuse sous Windows. Le modèle s'appelle `modele.ts`.
 - Les libellés des bords tombaient dans la réserve du centre : ils sont maintenant au bord de l'écran, sur une petite plaque qui coupe les fils.
+
+---
+
+## 24/11/2026 — Thème Matière
+
+**Branche :** `feature/theme-matiere`
+
+### Ce qui a été fait
+- Quatrième thème : **Matière**, un banc d'essai. Sur une dalle de carbone (sombre) ou de béton (jour), quatre plaques en croix : de l'acier poli par le bloc aux couleurs de revenu de la friction, un estran que la vraie marée couvre, de l'albâtre éclairé par la récupération, un polymère aux franges de contrainte qui se resserrent vers la cible. Au centre, le briefing sur la dalle nue.
+- Les espaces portent l'échantillon de leur matière. La transition est une plaque qui se pose.
+- Les quatre espaces communs sont maintenant fabriqués par `themes/espacesCommuns.tsx` : un thème n'écrit plus que sa coque, les pages sont partagées et accordées par les jetons. Estampe en profite aussi.
+
+### À savoir
+- Pas de WebGL : tout est en canvas 2D, le thème pèse 5 ko de JS.

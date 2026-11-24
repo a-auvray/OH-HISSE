@@ -1,26 +1,11 @@
 import { motion } from 'motion/react'
-import type { ReactNode } from 'react'
 import { Link, NavLink } from 'react-router'
 
-import { espaceParId, type IdEspace } from '../../espaces/espaces'
+import { espaceParId } from '../../espaces/espaces'
 import { OPPOSE } from '../../navigation/directions'
+import type { PropsCoque } from '../espacesCommuns'
 import { useTon } from '../ton'
 import styles from './Coque.module.css'
-
-export interface OngletEstampe {
-  chemin: string
-  libelle: string
-  fin: boolean
-}
-
-interface Props {
-  espace: IdEspace
-  titre: string
-  onglets: readonly OngletEstampe[]
-  /** Posé à côté des onglets (le choix de plage en Marine, par exemple). */
-  entete?: ReactNode
-  children: ReactNode
-}
 
 const EXPO = [0.16, 1, 0.3, 1] as const
 
@@ -29,7 +14,7 @@ const EXPO = [0.16, 1, 0.3, 1] as const
  * en-tête de relevé, le retour à l'accueil et le ton jour ou sombre. Les
  * pages intérieures n'ont rien à savoir d'elle : elles lisent ses jetons.
  */
-export function Coque({ espace, titre, onglets, entete, children }: Props) {
+export function Coque({ espace, titre, onglets, entete, children }: PropsCoque) {
   const [ton, changerTon] = useTon()
   const cote = OPPOSE[espaceParId(espace).direction]
 

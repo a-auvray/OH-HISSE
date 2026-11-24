@@ -86,7 +86,7 @@ polices des espaces ne se chargent plus qu'avec leur thème).
 | Classique | fait | fait | fait |
 | Papier | fait (jour et soir) | coque et vues principales faites pour les quatre ; pages intérieures accordées par les jetons de surface | faite : un rabat qui se déplie |
 | Estampe | fait (jour et sombre) : quatre faisceaux de fils d'encre | pages de l'espace dans une coque d'imprimeur (en-tête de relevé, faisceau sur le bord d'entrée) | faite : une passe d'encre qui révèle la page depuis son bord |
-| Matière | à faire | à faire | à faire |
+| Matière | fait (jour et sombre) : quatre plaques de matière sur une dalle | pages de l'espace dans une coque à échantillon de matière | faite : la plaque se pose |
 
 L'accueil de Papier montre les mêmes données que celui de Classique, lues par
 `accueil/useBriefing` ; la phrase du jour (`accueil/phrase.ts`) est calculée à
@@ -121,6 +121,17 @@ la progression. Ce que chaque faisceau représente est calculé dans `estampe/mo
 la coque Estampe : leur identité vient de la coque, des jetons et du faisceau d'entrée.
 Le mode sombre est un réglage commun (`themes/ton.ts`, clé `oh-hisse.ton`) : Papier et
 Estampe le partagent, Classique, déjà sombre, l'ignore.
+
+**Matière.** Un banc d'essai en canvas 2D (5 ko JS de thème) : sur une dalle de carbone (sombre)
+ou de béton (jour), quatre plaques dont les matières ne changent pas d'un ton à l'autre. L'acier
+(Streetlifting) a une bande polie par séance du bloc, qui prend les couleurs de revenu de
+l'acier chauffé selon l'effort ; le sable (Marine) est couvert par la vraie marée (la hauteur
+est interpolée entre les marées extrêmes), le clapot suit le vent, un front sombre entre au
+rouge, tout est noir et figé au noir ; l'albâtre (Vie courante) est éclairé par la récupération ;
+le polymère (Objectifs) a une éprouvette par objectif en cours, aux franges de contrainte de plus
+en plus nombreuses, cadre verrouillé à 100 %. Le modèle est dans `matiere/modele.ts` (testé), le
+dessin dans `dessin.ts`. Les espaces sont fabriqués par `themes/espacesCommuns.tsx` (les
+pages communes dans la coque du thème) : un thème n'écrit que sa coque.
 
 Le lookbook et ses prototypes sont dans `design-lookbook/` (hors dépôt).
 
