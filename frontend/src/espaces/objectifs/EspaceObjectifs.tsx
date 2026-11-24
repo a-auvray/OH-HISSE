@@ -211,7 +211,7 @@ interface PropsFormulaire {
   apresCreation: () => void
 }
 
-function FormulaireObjectif({ exercices, premier, apresCreation }: PropsFormulaire) {
+export function FormulaireObjectif({ exercices, premier, apresCreation }: PropsFormulaire) {
   const [valeurs, setValeurs] = useState<ObjectifEcrit>({
     titre: '',
     type: 'max',
