@@ -1,6 +1,7 @@
 import { type ComponentType, type ReactNode, Suspense } from 'react'
 import { Route, Routes } from 'react-router'
 
+import type { Conditions as DonneesConditions } from '../api/types'
 import { Aujourdhui } from '../espaces/vie-courante/Aujourdhui'
 import { Analyse } from '../espaces/streetlifting/Analyse'
 import { Assistant } from '../espaces/marine/Assistant'
@@ -94,8 +95,13 @@ export function EspaceObjectifsCommun({ Coque }: { Coque: CoqueTheme }) {
   )
 }
 
-export function EspaceMarineCommun({ Coque }: { Coque: CoqueTheme }) {
+export interface VuesMarine {
+  Conditions?: ComponentType<{ conditions: DonneesConditions; spotId: number | null }>
+}
+
+export function EspaceMarineCommun({ Coque, vues = {} }: { Coque: CoqueTheme; vues?: VuesMarine }) {
   const { spots, spotId, choisirSpot, conditions, recharger } = useMarine()
+  const ConditionsVue = vues.Conditions
 
   return (
     <Coque
@@ -134,7 +140,11 @@ export function EspaceMarineCommun({ Coque }: { Coque: CoqueTheme }) {
                 </button>
               </div>
             ) : conditions.valeur ? (
-              <Conditions conditions={conditions.valeur} />
+              ConditionsVue ? (
+                <ConditionsVue conditions={conditions.valeur} spotId={spotId} />
+              ) : (
+                <Conditions conditions={conditions.valeur} />
+              )
             ) : null
           }
         />

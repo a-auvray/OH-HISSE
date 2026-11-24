@@ -1,0 +1,219 @@
+/* Conditions de la mer, Matière : une plaque d'estran, des instruments gravés sur des plaques. */
+.page {
+  display: grid;
+  gap: 16px;
+  max-width: 1180px;
+}
+
+.reponse {
+  display: grid;
+  gap: 4px;
+}
+
+.lieu,
+.instrument h3,
+.legende span,
+.curseur label {
+  margin: 0;
+  font: 500 10px/1.3 var(--police-chiffres);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.titre {
+  margin: 0;
+  font: 800 clamp(2rem, 4vw, 3.4rem) / 0.95 var(--police-titre);
+  font-stretch: 82%;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.detail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 0;
+  color: var(--texte-doux);
+}
+
+.danger {
+  padding: 4px 9px;
+  border-radius: 5px;
+  background: #2fd67b;
+  color: #141414;
+  font: 600 11px/1 var(--police-chiffres);
+  letter-spacing: 0.14em;
+}
+
+.danger[data-niveau='rouge'] {
+  background: #ff4a3d;
+}
+
+.danger[data-niveau='noir'] {
+  background: #050505;
+  color: #efe9dd;
+  box-shadow: 0 0 0 1.5px #efe9dd;
+}
+
+.planche {
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.legende {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 20px;
+}
+
+.legende strong {
+  font: 800 1.8rem / 1 var(--police-titre);
+  font-stretch: 85%;
+}
+
+.curseur {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 10px 14px;
+  border: 1px solid var(--filet);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.curseur input {
+  flex: 1 1 220px;
+  accent-color: var(--accent);
+}
+
+.curseur output {
+  min-width: 6ch;
+  font: 500 12px var(--police-chiffres);
+}
+
+.curseur button {
+  padding: 5px 11px;
+  border: 1px solid var(--filet);
+  border-radius: 6px;
+  background: none;
+  color: var(--texte);
+  font: 500 11px var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.instruments {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.instrument {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  padding: 14px 16px;
+  border: 1px solid var(--filet);
+  border-top: 5px solid var(--accent);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--ombre-carte);
+}
+
+.valeur {
+  margin: 0;
+  font: 800 clamp(1.8rem, 3vw, 2.6rem) / 1 var(--police-titre);
+  font-stretch: 82%;
+  letter-spacing: -0.02em;
+}
+
+.valeur span {
+  margin-left: 4px;
+  font: 400 12px var(--police-chiffres);
+  letter-spacing: 0;
+  color: var(--texte-doux);
+}
+
+.avecIcone {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fleche {
+  display: inline-flex;
+  color: var(--accent);
+}
+
+.note {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--texte-doux);
+}
+
+.frise ol {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 3px;
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.frise button {
+  display: grid;
+  grid-template-rows: 64px 16px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: var(--texte-doux);
+}
+
+.frise i {
+  align-self: end;
+  height: var(--h);
+  border-radius: 3px 3px 0 0;
+  background: #2fd67b;
+  opacity: 0.85;
+  transition: height 0.5s ease;
+}
+
+.frise i[data-niveau='rouge'] {
+  background: #ff4a3d;
+}
+
+.frise i[data-niveau='noir'] {
+  background: #050505;
+  box-shadow: 0 0 0 1px var(--texte);
+}
+
+.frise li[data-choisie] i,
+.frise button:hover i,
+.frise button:focus-visible i {
+  opacity: 1;
+  outline: 1.5px solid var(--texte);
+  outline-offset: 1px;
+}
+
+.frise span {
+  font: 400 10px/16px var(--police-chiffres);
+  text-align: left;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.source {
+  margin: 0;
+  font: 400 11px/1.5 var(--police-chiffres);
+  color: var(--texte-faible);
+}
