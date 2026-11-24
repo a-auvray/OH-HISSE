@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 
 import { kg, nombre } from '../../../commun/format'
 import { noterEcart, noterNuit, peser, useEtatDuJour } from '../../../espaces/vie-courante/etat'
+import { Panneau } from '../Panneau'
 import { Assiette } from './Assiette'
 import styles from './Aujourdhui.module.css'
 import { Souffle } from './Souffle'
@@ -108,11 +109,15 @@ export function AujourdhuiPapier() {
               ? 'Tu es récupéré : la prochaine séance peut être intense.'
               : `Prochain effort intense conseillé ${r.fin ? QUAND.format(new Date(r.fin)) : 'bientôt'}.`}
           </p>
-          <ul className={styles.raisons}>
-            {r.raisons.map((raison) => (
-              <li key={raison}>{raison}</li>
-            ))}
-          </ul>
+          {r.raisons.length > 0 && (
+            <Panneau id="vie-recuperation" titre="Pourquoi" resume={r.raisons[0]}>
+              <ul className={styles.raisons}>
+                {r.raisons.map((raison) => (
+                  <li key={raison}>{raison}</li>
+                ))}
+              </ul>
+            </Panneau>
+          )}
           {r.recup_active_conseillee && (
             <Link to="/marine/assistant" className={styles.lien}>
               Une baignade courte t’aiderait : l’assistant de sortie →
@@ -132,11 +137,13 @@ export function AujourdhuiPapier() {
               </p>
             </div>
             {v.details.length > 0 && (
-              <ul className={styles.raisons}>
-                {v.details.map((d) => (
-                  <li key={d}>{d}</li>
-                ))}
-              </ul>
+              <Panneau id="vie-ecart" titre="Le détail des points" resume={v.details[0]}>
+                <ul className={styles.raisons}>
+                  {v.details.map((d) => (
+                    <li key={d}>{d}</li>
+                  ))}
+                </ul>
+              </Panneau>
             )}
             <button type="button" className={styles.bouton} onClick={() => void ecart()} disabled={enCours}>
               J’ai pris mon écart aujourd’hui

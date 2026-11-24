@@ -7,6 +7,7 @@ import { Fleche, IconeMeteo } from '../../../espaces/marine/Icones'
 import { beaufort, jourCourt, lireCodeMeteo, pointCardinal } from '../../../espaces/marine/lecture'
 import { heureCourte, titreMarine } from '../../../espaces/marine/titre'
 import { useCreneau } from '../../../espaces/marine/useCreneau'
+import { Panneau } from '../Panneau'
 import styles from './Conditions.module.css'
 import { Coupe } from './Coupe'
 
@@ -218,35 +219,36 @@ export function ConditionsPapier({ conditions, spotId }: { conditions: Condition
         </article>
       </section>
 
-      <section className={styles.frise} aria-label="Vent et danger heure par heure">
-        <h3>48 heures</h3>
-        <ol>
-          {heures.map((h, i) => (
-            <li key={h.instant} data-choisie={i === rang || undefined}>
-              <button
-                type="button"
-                onClick={() => setRang(i)}
-                title={`${jourCourt(h.instant)} ${heureCourte(h.instant)} · vent ${arrondi(h.vent_kmh)} km/h · ${NOM_DANGER[h.danger]}`}
-                aria-label={`${jourCourt(h.instant)} ${heureCourte(h.instant)}, danger ${NOM_DANGER[h.danger].toLowerCase()}`}
-              >
-                <i
-                  data-niveau={h.danger}
-                  style={{
-                    ['--h' as string]: `${Math.max(4, Math.min(1, (h.vent_kmh ?? 0) / venteMax) * 100)}%`,
-                  }}
-                />
-                <span aria-hidden="true">
-                  {i % 3 === 0 ? `${heureCourte(h.instant).split('h')[0]}h` : ''}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ol>
-        <p className={styles.note}>
-          Hauteur des barres : le vent. Couleur : le danger heure par heure (
-          {NOM_DANGER[dangerChoisi].toLowerCase()} à l’heure choisie).
-        </p>
-      </section>
+      <Panneau id="marine-48-heures" titre="48 heures" resume="le vent et le danger, heure par heure">
+        <section className={styles.frise} aria-label="Vent et danger heure par heure">
+          <ol>
+            {heures.map((h, i) => (
+              <li key={h.instant} data-choisie={i === rang || undefined}>
+                <button
+                  type="button"
+                  onClick={() => setRang(i)}
+                  title={`${jourCourt(h.instant)} ${heureCourte(h.instant)} · vent ${arrondi(h.vent_kmh)} km/h · ${NOM_DANGER[h.danger]}`}
+                  aria-label={`${jourCourt(h.instant)} ${heureCourte(h.instant)}, danger ${NOM_DANGER[h.danger].toLowerCase()}`}
+                >
+                  <i
+                    data-niveau={h.danger}
+                    style={{
+                      ['--h' as string]: `${Math.max(4, Math.min(1, (h.vent_kmh ?? 0) / venteMax) * 100)}%`,
+                    }}
+                  />
+                  <span aria-hidden="true">
+                    {i % 3 === 0 ? `${heureCourte(h.instant).split('h')[0]}h` : ''}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ol>
+          <p className={styles.note}>
+            Hauteur des barres : le vent. Couleur : le danger heure par heure (
+            {NOM_DANGER[dangerChoisi].toLowerCase()} à l’heure choisie).
+          </p>
+        </section>
+      </Panneau>
 
       <p className={styles.source}>
         {conditions.source}. Horaires de marée arrondis : estimation, pas un document de navigation.

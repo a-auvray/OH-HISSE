@@ -1,0 +1,92 @@
+/* Panneau dépliable : un filet d'encre, le titre, un résumé, un signe + / −. */
+.panneau {
+  border-top: 1px solid var(--filet, var(--trait));
+}
+
+.titre {
+  margin: 0;
+  font: inherit;
+}
+
+.bouton {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: 16px;
+  width: 100%;
+  padding: 12px 0;
+  border: 0;
+  background: none;
+  color: var(--texte);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.bouton:hover .nom,
+.bouton:focus-visible .nom {
+  color: var(--accent, var(--texte));
+}
+
+.nom {
+  font: 600 12px/1.3 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.resume {
+  color: var(--texte-doux);
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Le signe : un + qui devient − quand le panneau est ouvert. */
+.signe {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  align-self: center;
+}
+
+.signe::before,
+.signe::after {
+  content: '';
+  position: absolute;
+  inset: 5px 0 auto;
+  height: 2px;
+  background: var(--accent, var(--texte));
+  transition: transform 0.35s var(--expo, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.signe::after {
+  transform: rotate(90deg);
+}
+
+.panneau[data-ouvert] .signe::after {
+  transform: rotate(0deg);
+}
+
+.corps {
+  padding: 4px 0 18px;
+  animation: ouvrir 0.45s var(--expo, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.corps[hidden] {
+  display: none;
+}
+
+@keyframes ouvrir {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .corps {
+    animation: none;
+  }
+}

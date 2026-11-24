@@ -249,16 +249,21 @@
 
 .marge {
   grid-column: 2 / -1;
+  margin: 10px 0 0;
+  --accent: var(--sienne);
+}
+
+.raisons {
   display: grid;
   gap: 2px;
-  margin: 10px 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
   font-size: 0.92rem;
   color: var(--texte-doux);
 }
 
-.marge li::before {
+.raisons li::before {
   content: '↳ ';
   color: var(--sienne);
 }

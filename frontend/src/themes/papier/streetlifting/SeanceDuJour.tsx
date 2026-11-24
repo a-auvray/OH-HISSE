@@ -6,6 +6,7 @@ import { TYPES_BLOC } from '../../../espaces/streetlifting/chronologie'
 import { PeseeRapide } from '../../../espaces/streetlifting/PeseeRapide'
 import { useSeanceDuJour } from '../../../espaces/streetlifting/useSeanceDuJour'
 import { Compteur } from '../Compteur'
+import { Panneau } from '../Panneau'
 import styles from './SeanceDuJour.module.css'
 
 const EXPO = [0.16, 1, 0.3, 1] as const
@@ -141,11 +142,19 @@ export function SeanceDuJourPapier() {
               )}
             </p>
             {p.justifications.length > 0 && (
-              <ul className={styles.marge}>
-                {p.justifications.map((j) => (
-                  <li key={j}>{j}</li>
-                ))}
-              </ul>
+              <div className={styles.marge}>
+                <Panneau
+                  id="streetlifting-pourquoi"
+                  titre="Pourquoi cette charge"
+                  resume={`${p.justifications.length} raison${p.justifications.length > 1 ? 's' : ''}`}
+                >
+                  <ul className={styles.raisons}>
+                    {p.justifications.map((j) => (
+                      <li key={j}>{j}</li>
+                    ))}
+                  </ul>
+                </Panneau>
+              </div>
             )}
           </motion.li>
         ))}

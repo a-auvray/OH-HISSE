@@ -88,6 +88,7 @@ describe('Conditions de la mer, thème Papier', () => {
   it('choisit une heure depuis la frise', () => {
     rendre(<ConditionsPapier conditions={CONDITIONS} spotId={1} />)
 
+    fireEvent.click(screen.getByRole('button', { name: /48 heures/ }))
     fireEvent.click(screen.getByRole('button', { name: /17h, danger rouge/ }))
 
     expect(screen.getByLabelText('Voyage dans le temps')).toHaveValue('2')
