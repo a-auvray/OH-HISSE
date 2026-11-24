@@ -504,3 +504,14 @@
 - **Matière :** chaque objectif est une éprouvette de polymère sous lumière polarisée, aux franges de contrainte de plus en plus serrées, cadre net à 100 % ; fiche sur plaque.
 - Structure commune `ObjectifsThemee`. Le formulaire de création reste celui des pages communes (aux jetons du thème) : il garde des coins arrondis même dans Estampe, à reprendre si tu veux un formulaire tout en filets.
 - Avec cette brique, les quatre espaces ont une vue propre dans Estampe comme dans Matière.
+
+---
+
+## 24/11/2026 — La carte de Marine s'affiche enfin
+
+**Branche :** `fix/carte-travailleur`
+
+- **Cause :** MapLibre 6 charge son travailleur depuis un fichier à part (`maplibre-gl-worker.mjs`) qu'il cherche à côté du morceau de la carte. Vite ne l'embarquait pas : le journal du lanceur montrait `GET /assets/maplibre-gl-worker.mjs → 404`, et la carte restait vide. En développement tout marchait, d'où le piège.
+- **Correction :** un petit plugin Vite (`vite.config.ts`) livre le travailleur sous `assets/maplibre-gl-worker.js` (un nom en `.js`, que tout serveur sert en JavaScript), et `Carte.tsx` lui indique cette adresse dans l'application construite.
+- **Garde-fou :** `npm run budget` (CI) échoue si le travailleur est absent du build, et lui donne sa propre limite de poids.
+- Vérifié dans l'application construite : fond de carte, trait de côte, spots et vent, en ton jour comme en ton sombre.

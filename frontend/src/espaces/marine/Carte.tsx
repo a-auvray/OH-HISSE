@@ -8,6 +8,7 @@ import {
   Marker,
   NavigationControl,
   Popup,
+  setWorkerUrl,
 } from 'maplibre-gl'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
@@ -19,6 +20,10 @@ import { useTon } from '../../themes/ton'
 import styles from './Carte.module.css'
 import { distance, formaterDistance, longueur, type Point } from './geo'
 import { pointCardinal } from './lecture'
+
+// Dans l'application construite, le travailleur de MapLibre est un fichier livré avec la page
+// (voir `travailleurMapLibre` dans vite.config.ts). En développement, Vite le sert lui-même.
+if (import.meta.env.PROD) setWorkerUrl(`${import.meta.env.BASE_URL}assets/maplibre-gl-worker.js`)
 
 const STYLE_SOMBRE = 'https://tiles.openfreemap.org/styles/dark'
 const STYLE_CLAIR = 'https://tiles.openfreemap.org/styles/positron'
