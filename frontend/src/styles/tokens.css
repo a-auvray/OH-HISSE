@@ -40,6 +40,7 @@
    */
   --surface: #1b1613; /* une carte */
   --surface-haute: #14110f; /* une fenêtre posée par-dessus */
+  --fond-panneau: transparent; /* sous les panneaux teintés : transparent sur le fond sombre d'origine */
   --creux: rgb(0 0 0 / 0.35); /* un champ de saisie, un fond en creux */
   --voile: rgb(255 255 255 / 0.04); /* un survol, une ligne alternée */
   --filet: #3a2f28; /* le filet d'une carte ou d'un champ */
@@ -57,6 +58,11 @@
   --police-texte: 'Manrope Variable', system-ui, 'Segoe UI', sans-serif;
   --police-marque: 'Unbounded Variable', var(--police-texte);
   --police-titre: var(--police-marque);
+  /* Police d'identité de chaque espace : un thème qui n'embarque pas ces polices les redéfinit. */
+  --police-streetlifting: 'Anton', 'Impact', sans-serif;
+  --police-marine: 'Fraunces Variable', Georgia, serif;
+  --police-vie-courante: 'Quicksand Variable', var(--police-texte);
+  --police-objectifs: 'Space Grotesk Variable', var(--police-texte);
   /* Police d'identité de l'espace courant (redéfinie par chaque espace) */
   --police-espace: var(--police-marque);
   --police-chiffres: ui-monospace, 'Cascadia Mono', Consolas, monospace;
@@ -81,23 +87,23 @@
 [data-espace='streetlifting'] {
   --accent: var(--streetlifting);
   --accent-clair: var(--streetlifting-clair);
-  --police-espace: 'Anton', 'Impact', sans-serif;
+  --police-espace: var(--police-streetlifting);
 }
 
 [data-espace='marine'] {
   --accent: var(--marine);
   --accent-clair: var(--marine-clair);
-  --police-espace: 'Fraunces Variable', Georgia, serif;
+  --police-espace: var(--police-marine);
 }
 
 [data-espace='vie-courante'] {
   --accent: var(--vie-courante);
   --accent-clair: var(--vie-courante-clair);
-  --police-espace: 'Quicksand Variable', var(--police-texte);
+  --police-espace: var(--police-vie-courante);
 }
 
 [data-espace='objectifs'] {
   --accent: var(--objectifs);
   --accent-clair: var(--objectifs-clair);
-  --police-espace: 'Space Grotesk Variable', var(--police-texte);
+  --police-espace: var(--police-objectifs);
 }

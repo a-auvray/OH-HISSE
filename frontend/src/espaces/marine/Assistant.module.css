@@ -127,11 +127,13 @@
   gap: var(--espace-3);
   padding: var(--espace-6);
   border-radius: 24px;
-  background: linear-gradient(
-    160deg,
-    color-mix(in srgb, var(--accent-clair) 9%, transparent),
-    color-mix(in srgb, var(--accent) 12%, transparent)
-  );
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--accent-clair) 9%, transparent),
+      color-mix(in srgb, var(--accent) 12%, transparent)
+    ),
+    var(--fond-panneau);
   border: 1px solid color-mix(in srgb, var(--accent-clair) 14%, transparent);
   backdrop-filter: blur(12px);
 }
@@ -213,11 +215,13 @@
   gap: var(--espace-3);
   padding: var(--espace-6);
   border-radius: 24px;
-  background: linear-gradient(
-    160deg,
-    color-mix(in srgb, var(--accent-clair) 8%, transparent),
-    color-mix(in srgb, var(--accent) 10%, transparent)
-  );
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--accent-clair) 8%, transparent),
+      color-mix(in srgb, var(--accent) 10%, transparent)
+    ),
+    var(--fond-panneau);
   border: 1px solid color-mix(in srgb, var(--accent-clair) 12%, transparent);
 }
 

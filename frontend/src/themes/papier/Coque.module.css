@@ -37,6 +37,7 @@
   /* Surfaces des pages intérieures : à plat, un trait d'encre, pas d'ombre lourde. */
   --surface: color-mix(in srgb, #fff 42%, var(--papier));
   --surface-haute: color-mix(in srgb, #fff 62%, var(--papier));
+  --fond-panneau: var(--surface);
   --creux: color-mix(in srgb, var(--encre) 6%, transparent);
   --voile: color-mix(in srgb, var(--encre) 5%, transparent);
   --filet: color-mix(in srgb, var(--encre) 26%, transparent);

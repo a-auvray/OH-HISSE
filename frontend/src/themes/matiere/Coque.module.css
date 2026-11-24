@@ -34,10 +34,15 @@
   --police-chiffres: 'Geist Mono Variable', ui-monospace, 'Cascadia Mono', monospace;
   --police-espace: 'Bricolage Grotesque Variable', var(--police-texte);
   --police-titre: 'Bricolage Grotesque Variable', var(--police-texte);
+  --police-streetlifting: 'Bricolage Grotesque Variable', var(--police-texte);
+  --police-marine: 'Bricolage Grotesque Variable', var(--police-texte);
+  --police-vie-courante: 'Bricolage Grotesque Variable', var(--police-texte);
+  --police-objectifs: 'Bricolage Grotesque Variable', var(--police-texte);
 
   /* Surfaces des pages intérieures : un panneau plus clair, un trait net, une ombre courte. */
   --surface: color-mix(in srgb, #fff 34%, var(--dalle));
   --surface-haute: color-mix(in srgb, #fff 54%, var(--dalle));
+  --fond-panneau: var(--surface);
   --creux: color-mix(in srgb, var(--encre) 7%, transparent);
   --voile: color-mix(in srgb, var(--encre) 5%, transparent);
   --filet: color-mix(in srgb, var(--encre) 30%, transparent);
