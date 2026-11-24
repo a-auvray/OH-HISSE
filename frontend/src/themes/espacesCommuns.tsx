@@ -92,10 +92,15 @@ export function EspaceVieCouranteCommun({ Coque, vues = {} }: { Coque: CoqueThem
   )
 }
 
-export function EspaceObjectifsCommun({ Coque }: { Coque: CoqueTheme }) {
+export interface VuesObjectifs {
+  Objectifs?: ComponentType
+}
+
+export function EspaceObjectifsCommun({ Coque, vues = {} }: { Coque: CoqueTheme; vues?: VuesObjectifs }) {
+  const ObjectifsVue = vues.Objectifs ?? Objectifs
   return (
     <Coque espace="objectifs" titre="Objectifs" onglets={[]}>
-      <Objectifs />
+      <ObjectifsVue />
     </Coque>
   )
 }

@@ -6,6 +6,7 @@ import {
 } from '../espacesCommuns'
 import { Coque } from './Coque'
 import { ConditionsMatiere } from './marine/Conditions'
+import { ObjectifsMatiere } from './objectifs/Objectifs'
 import { AnalyseMatiere } from './streetlifting/Analyse'
 import { SeanceDuJourMatiere } from './streetlifting/SeanceDuJour'
 import { AujourdhuiMatiere } from './vie-courante/Aujourdhui'
@@ -19,4 +20,5 @@ const vuesVieCourante = { Aujourdhui: AujourdhuiMatiere }
 export const EspaceVieCouranteMatiere = () => <EspaceVieCouranteCommun Coque={Coque} vues={vuesVieCourante} />
 const vuesMarine = { Conditions: ConditionsMatiere }
 export const EspaceMarineMatiere = () => <EspaceMarineCommun Coque={Coque} vues={vuesMarine} />
-export const EspaceObjectifsMatiere = () => <EspaceObjectifsCommun Coque={Coque} />
+const vuesObjectifs = { Objectifs: ObjectifsMatiere }
+export const EspaceObjectifsMatiere = () => <EspaceObjectifsCommun Coque={Coque} vues={vuesObjectifs} />

@@ -493,3 +493,14 @@
 - **Estampe :** « Aujourd'hui » est un relevé calme : la phrase en italique, la récupération en faisceau de fibres qui s'encrent, l'écart en quatre strates, les rubriques sur filets.
 - **Matière :** la récupération est un disque d'albâtre traversé par la lumière du jour (il s'éteint quand on est peu récupéré), l'écart quatre éprouvettes de polymère, les rubriques des plaques.
 - Structure commune (`AujourdhuiThemee`) avec les formulaires de nuit et de pesée ; chaque thème donne ses deux jauges et sa feuille de style.
+
+---
+
+## 24/11/2026 — Vues d'Objectifs propres à Estampe et à Matière
+
+**Branche :** `feature/themes-vues-objectifs`
+
+- **Estampe :** chaque objectif est une drisse : des câbles tendus du bord vers le centre, dont le mou disparaît avec la progression ; fiche sur filets, chiffres en italique.
+- **Matière :** chaque objectif est une éprouvette de polymère sous lumière polarisée, aux franges de contrainte de plus en plus serrées, cadre net à 100 % ; fiche sur plaque.
+- Structure commune `ObjectifsThemee`. Le formulaire de création reste celui des pages communes (aux jetons du thème) : il garde des coins arrondis même dans Estampe, à reprendre si tu veux un formulaire tout en filets.
+- Avec cette brique, les quatre espaces ont une vue propre dans Estampe comme dans Matière.

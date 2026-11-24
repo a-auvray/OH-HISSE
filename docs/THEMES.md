@@ -135,6 +135,13 @@ en plus nombreuses, cadre verrouillé à 100 %. Le modèle est dans `matiere/mod
 dessin dans `dessin.ts`. Les espaces sont fabriqués par `themes/espacesCommuns.tsx` (les
 pages communes dans la coque du thème) : un thème n'écrit que sa coque.
 
+**Vues propres à Estampe et à Matière.** Elles ne réécrivent pas les pages : une structure commune
+(`AnalyseThemee`, `ConditionsThemee`, `AujourdhuiThemee`, `ObjectifsThemee`) porte les données et
+les gestes, et le thème donne sa feuille de style et les dessins qui comptent (la courbe de marée,
+les jauges, la progression d'un objectif). La séance du jour est écrite à part dans chaque thème.
+`EspaceStreetliftingCommun`, `EspaceMarineCommun`, `EspaceVieCouranteCommun` et
+`EspaceObjectifsCommun` reçoivent ces vues ; celles qu'on ne leur donne pas restent les pages communes.
+
 **La carte de Marine** suit le ton : fond clair (style positron) dans un thème de jour, sombre
 la nuit et dans Classique ; ses surcouches (vent, bord de l'eau, tracé) changent de couleur avec.
 
