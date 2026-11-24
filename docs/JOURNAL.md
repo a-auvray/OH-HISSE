@@ -483,3 +483,13 @@
 - **Estampe :** les conditions sont un relevé de marégraphe : la marée en courbe d'encre fine hachurée dessous, avec les marées extrêmes en petites capitales et un repère à l'heure choisie ; les instruments sont posés sur des filets, les chiffres en italique.
 - **Matière :** la marée est une plaque d'estran (le sable à gauche, l'eau qui arrive par la droite et avance avec la marée, clapot qui dérive, front sombre au rouge, eau noire et figée au noir) ; les instruments sont des plaques gravées.
 - Structure commune (`ConditionsThemee`) : la réponse, le graphique du thème, le curseur de temps, cinq instruments, la frise des 48 heures dans un panneau. Le thème fournit sa feuille de style et son graphique.
+
+---
+
+## 24/11/2026 — Vues de Vie courante propres à Estampe et à Matière
+
+**Branche :** `feature/themes-vues-vie-courante`
+
+- **Estampe :** « Aujourd'hui » est un relevé calme : la phrase en italique, la récupération en faisceau de fibres qui s'encrent, l'écart en quatre strates, les rubriques sur filets.
+- **Matière :** la récupération est un disque d'albâtre traversé par la lumière du jour (il s'éteint quand on est peu récupéré), l'écart quatre éprouvettes de polymère, les rubriques des plaques.
+- Structure commune (`AujourdhuiThemee`) avec les formulaires de nuit et de pesée ; chaque thème donne ses deux jauges et sa feuille de style.

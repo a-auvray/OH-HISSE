@@ -1,0 +1,59 @@
+/* Les deux jauges de Matière : l'albâtre et les éprouvettes de polymère. */
+.albatre {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(100%, 260px);
+  aspect-ratio: 1;
+}
+
+/* La pierre : veinée, éclairée du centre selon la récupération, assombrie quand elle est faible. */
+.pierre {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgb(255 246 220 / calc(0.15 + var(--lumiere) * 0.85)),
+      rgb(255 246 220 / 0) 70%
+    ),
+    repeating-linear-gradient(112deg, rgb(150 120 80 / 0.1) 0 2px, transparent 2px 17px),
+    linear-gradient(180deg, #ebe6d7, #cdc5b0);
+  box-shadow:
+    inset 0 2px 0 rgb(255 255 255 / 0.6),
+    inset 0 0 0 calc((1 - var(--lumiere)) * 200px) rgb(24 22 26 / calc((1 - var(--lumiere)) * 0.5)),
+    0 10px 24px -14px rgb(0 0 0 / 0.6);
+}
+
+.texte {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  color: #17181b;
+}
+
+/* Les éprouvettes : de petites plaques sombres, aux franges de contrainte quand elles sont pleines. */
+.eprouvettes {
+  display: flex;
+  gap: 8px;
+}
+
+.eprouvettes span {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #1d1a22;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.15);
+}
+
+.eprouvettes span[data-pleine] {
+  background: repeating-radial-gradient(
+    ellipse at 50% 50%,
+    #1d1a22 0 3px,
+    #8fa8e0 3px 4px,
+    #1d1a22 4px 7px,
+    #e6a5c2 7px 8px
+  );
+}

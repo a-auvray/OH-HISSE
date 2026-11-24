@@ -1,0 +1,192 @@
+/* Aujourd'hui, Estampe : un relevé calme. La phrase en serif italique, les rubriques sur filets. */
+.page {
+  display: grid;
+  gap: 18px;
+  max-width: 1120px;
+}
+
+.attente,
+.erreur {
+  margin: 0;
+  font: 400 13px var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.erreur {
+  color: var(--danger-texte);
+}
+
+.phrase {
+  margin: 0;
+  font: italic 400 clamp(2.8rem, 5.4vw, 4.8rem) / 0.95 var(--police-titre);
+  color: var(--accent);
+}
+
+.sousPhrase {
+  margin: -6px 0 6px;
+  max-width: 60ch;
+  color: var(--texte-doux);
+}
+
+.corps {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 0 48px;
+  align-items: start;
+}
+
+.recup,
+.ecart,
+.matin {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 12px 0 22px;
+  border-top: 1px solid var(--texte);
+}
+
+.colonne {
+  display: grid;
+}
+
+.rubrique {
+  margin: 0;
+  font: 500 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.grand {
+  font: italic 400 clamp(2.6rem, 4.4vw, 3.8rem) / 1 var(--police-titre);
+}
+
+.petit {
+  font: 400 12px var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.texte {
+  margin: 0;
+  color: var(--texte-doux);
+}
+
+.texte strong {
+  font: italic 400 1.6rem / 1 var(--police-titre);
+  color: var(--texte);
+}
+
+.raisons {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.92rem;
+  color: var(--texte-doux);
+}
+
+.raisons li::before {
+  content: '↳ ';
+  color: var(--accent);
+}
+
+.lien {
+  color: var(--texte);
+  font: 400 12px var(--police-chiffres);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.lien:hover,
+.lien:focus-visible {
+  color: var(--accent);
+}
+
+.assiette {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.poids {
+  margin: 0;
+  font: italic 400 2.4rem / 1 var(--police-titre);
+}
+
+.champ {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.champ label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.champ input {
+  width: 6ch;
+  padding: 4px 0;
+  border: 0;
+  border-bottom: 1px solid var(--texte);
+  background: none;
+  color: var(--texte);
+  font: italic 400 1.6rem / 1 var(--police-titre);
+  text-align: right;
+}
+
+.champ input:focus {
+  outline: none;
+  border-bottom-color: var(--accent);
+}
+
+.lunes {
+  display: flex;
+  gap: 4px;
+}
+
+.lunes button {
+  border: 0;
+  background: none;
+  color: var(--trait);
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.lunes button[data-allume] {
+  color: var(--accent);
+}
+
+.bouton {
+  padding: 7px 14px;
+  border: 1px solid var(--texte);
+  background: none;
+  color: var(--texte);
+  font: 500 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.bouton:hover:not(:disabled),
+.bouton:focus-visible {
+  background: var(--texte);
+  color: var(--fond);
+}
+
+.bouton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .corps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

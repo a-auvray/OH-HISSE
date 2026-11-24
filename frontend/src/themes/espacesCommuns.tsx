@@ -75,11 +75,16 @@ export function EspaceStreetliftingCommun({
   )
 }
 
-export function EspaceVieCouranteCommun({ Coque }: { Coque: CoqueTheme }) {
+export interface VuesVieCourante {
+  Aujourdhui?: ComponentType
+}
+
+export function EspaceVieCouranteCommun({ Coque, vues = {} }: { Coque: CoqueTheme; vues?: VuesVieCourante }) {
+  const AujourdhuiVue = vues.Aujourdhui ?? Aujourdhui
   return (
     <Coque espace="vie-courante" titre="Vie courante" onglets={ONGLETS_VIE}>
       <Routes>
-        <Route index element={<Aujourdhui />} />
+        <Route index element={<AujourdhuiVue />} />
         <Route path="sommeil" element={<Sommeil />} />
         <Route path="briefings" element={<Briefings />} />
       </Routes>
