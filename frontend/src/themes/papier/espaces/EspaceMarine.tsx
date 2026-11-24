@@ -6,6 +6,7 @@ import { Carnet } from '../../../espaces/marine/Carnet'
 import { Carte } from '../../../espaces/marine/EspaceMarine'
 import { ONGLETS } from '../../../espaces/marine/onglets'
 import { useMarine } from '../../../espaces/marine/useMarine'
+import { Vue } from '../../../variantes/Vue'
 import { Coque } from '../Coque'
 import { ConditionsPapier } from '../marine/Conditions'
 import styles from './espaces.module.css'
@@ -51,7 +52,12 @@ export function EspaceMarinePapier() {
                 </button>
               </div>
             ) : conditions.valeur ? (
-              <ConditionsPapier conditions={conditions.valeur} spotId={spotId} />
+              <Vue
+                espace="marine"
+                nom="Conditions"
+                parDefaut={ConditionsPapier}
+                props={{ conditions: conditions.valeur, spotId }}
+              />
             ) : null
           }
         />

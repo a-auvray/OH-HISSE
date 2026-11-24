@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 
 import type { Exercice, ObjectifEcrit } from '../../api/types'
 import { dateCourte, dateLongue, nombre } from '../../commun/format'
+import { Vue } from '../../variantes/Vue'
 import { BoutonRetour } from '../BoutonRetour'
 import styles from './EspaceObjectifs.module.css'
 import { Jauge } from './Jauge'
@@ -15,7 +16,7 @@ export function EspaceObjectifs() {
     <main className={styles.espace} data-espace="objectifs">
       <div className={styles.cible} aria-hidden="true" />
       <BoutonRetour espace="objectifs" />
-      <Objectifs />
+      <Vue espace="objectifs" nom="Objectifs" parDefaut={Objectifs} />
     </main>
   )
 }

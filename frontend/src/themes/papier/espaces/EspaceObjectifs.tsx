@@ -1,3 +1,4 @@
+import { Vue } from '../../../variantes/Vue'
 import { Coque } from '../Coque'
 import { ObjectifsPapier } from '../objectifs/Objectifs'
 
@@ -5,7 +6,7 @@ import { ObjectifsPapier } from '../objectifs/Objectifs'
 export function EspaceObjectifsPapier() {
   return (
     <Coque espace="objectifs" titre="Objectifs" onglets={[]}>
-      <ObjectifsPapier />
+      <Vue espace="objectifs" nom="Objectifs" parDefaut={ObjectifsPapier} />
     </Coque>
   )
 }

@@ -10,6 +10,7 @@ import { BrowserRouter } from 'react-router'
 import { App } from './App'
 import { FournisseurSession } from './session/FournisseurSession'
 import { FournisseurTheme } from './themes/FournisseurTheme'
+import { FournisseurVariantes } from './variantes/FournisseurVariantes'
 
 const racine = document.getElementById('root')
 if (!racine) throw new Error('Élément #root introuvable dans index.html')
@@ -18,9 +19,11 @@ createRoot(racine).render(
   <StrictMode>
     <BrowserRouter>
       <FournisseurTheme>
-        <FournisseurSession>
-          <App />
-        </FournisseurSession>
+        <FournisseurVariantes>
+          <FournisseurSession>
+            <App />
+          </FournisseurSession>
+        </FournisseurVariantes>
       </FournisseurTheme>
     </BrowserRouter>
   </StrictMode>,

@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
 
+import { SelecteurVariantes } from '../variantes/SelecteurVariantes'
 import { useTheme } from './contexte'
 import styles from './Selecteur.module.css'
 import type { NiveauAnimation } from './types'
@@ -98,6 +99,7 @@ export function Selecteur() {
               {erreur}
             </p>
           )}
+          <SelecteurVariantes />
           <div className={styles.animations} role="radiogroup" aria-label="Niveau d’animation">
             {NIVEAUX.map((n) => (
               <button

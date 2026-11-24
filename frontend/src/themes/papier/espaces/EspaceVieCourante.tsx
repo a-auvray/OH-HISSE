@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router'
 import { Briefings } from '../../../espaces/vie-courante/Briefings'
 import { ONGLETS } from '../../../espaces/vie-courante/onglets'
 import { Sommeil } from '../../../espaces/vie-courante/Sommeil'
+import { Vue } from '../../../variantes/Vue'
 import { Coque } from '../Coque'
 import { AujourdhuiPapier } from '../vie-courante/Aujourdhui'
 
@@ -11,7 +12,7 @@ export function EspaceVieCourantePapier() {
   return (
     <Coque espace="vie-courante" titre="Vie courante" onglets={ONGLETS}>
       <Routes>
-        <Route index element={<AujourdhuiPapier />} />
+        <Route index element={<Vue espace="vie-courante" nom="Aujourdhui" parDefaut={AujourdhuiPapier} />} />
         <Route path="sommeil" element={<Sommeil />} />
         <Route path="briefings" element={<Briefings />} />
       </Routes>

@@ -1,5 +1,6 @@
 import { NavLink, Route, Routes } from 'react-router'
 
+import { Vue } from '../../variantes/Vue'
 import { BoutonRetour } from '../BoutonRetour'
 import { Motif } from '../Motifs'
 import { Aujourdhui } from './Aujourdhui'
@@ -35,7 +36,7 @@ export function EspaceVieCourante() {
 
       <div className={styles.contenu}>
         <Routes>
-          <Route index element={<Aujourdhui />} />
+          <Route index element={<Vue espace="vie-courante" nom="Aujourdhui" parDefaut={Aujourdhui} />} />
           <Route path="sommeil" element={<Sommeil />} />
           <Route path="briefings" element={<Briefings />} />
         </Routes>

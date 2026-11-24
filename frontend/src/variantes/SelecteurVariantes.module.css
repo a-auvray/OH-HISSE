@@ -1,0 +1,60 @@
+/* Dans le panneau des réglages : il reprend ses variables, communes à tous les thèmes. */
+.racine {
+  display: grid;
+  gap: 8px;
+}
+
+.titre {
+  margin: 0;
+  font: 600 11px/1 var(--police-texte, system-ui);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--texte-doux, #aaa);
+}
+
+.espace {
+  display: grid;
+  gap: 4px;
+}
+
+.nomEspace {
+  margin: 0;
+  font-weight: 600;
+}
+
+.choix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 3px;
+  border-radius: var(--rayon-petit, 8px);
+  background: color-mix(in srgb, var(--texte, #fff) 8%, transparent);
+}
+
+.choix button {
+  flex: 1 1 auto;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--texte-doux, #aaa);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.choix button[aria-checked='true'] {
+  background: var(--accent, #fff);
+  color: var(--fond, #000);
+  font-weight: 600;
+}
+
+.choix button[aria-busy='true'] {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.erreur {
+  margin: 0;
+  color: var(--danger, #e5484d);
+}

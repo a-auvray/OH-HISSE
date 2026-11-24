@@ -142,6 +142,27 @@ les jauges, la progression d'un objectif). La séance du jour est écrite à par
 `EspaceStreetliftingCommun`, `EspaceMarineCommun`, `EspaceVieCouranteCommun` et
 `EspaceObjectifsCommun` reçoivent ces vues ; celles qu'on ne leur donne pas restent les pages communes.
 
+**Variantes d'espace.** Le lookbook donnait deux directions par espace ; les trois accueils sont les
+trois thèmes, et les autres directions deviennent des **variantes** : une autre façon de montrer les
+pages principales d'un espace (séance du jour et analyse, conditions de Marine, « Aujourd'hui »,
+objectifs). Une variante ne lit que les jetons : elle prend ses couleurs, ses polices et son ton dans
+n'importe quel thème, dans sa coque. On la choisit espace par espace, dans le panneau des réglages
+(« Vues des espaces » : « Du thème » ou une variante) ; le choix est mémorisé (`oh-hisse.variantes`).
+Les routes, les données et les gestes restent communs.
+
+```
+variantes/
+  <espace>/<id>/meta.ts     nom, description, import() du code ; seul fichier dans le paquet de départ
+  <espace>/<id>/index.tsx   exporte les vues de la variante (celles de VuesParEspace)
+  registre.ts               trouve les meta.ts tout seul (import.meta.glob), aucune liste à tenir
+  FournisseurVariantes      charge la variante choisie (et elle seule), garde le thème si elle échoue
+  Vue                       <Vue espace nom parDefaut> : la vue de la variante, sinon celle du thème
+```
+
+Créer une variante : un dossier `variantes/<espace>/<id>/` avec son `meta.ts` ; aucune autre ligne à
+modifier. `registre.test.ts` vérifie qu'elle est rangée dans le bon espace et se charge ; `npm run budget`
+tient son poids (≤ 80 ko JS).
+
 **La carte de Marine** suit le ton : fond clair (style positron) dans un thème de jour, sombre
 la nuit et dans Classique ; ses surcouches (vent, bord de l'eau, tracé) changent de couleur avec.
 
