@@ -1,5 +1,6 @@
 import { NavLink, Route, Routes, useLocation } from 'react-router'
 
+import { Vue } from '../../variantes/Vue'
 import { BoutonRetour } from '../BoutonRetour'
 import { Motif } from '../Motifs'
 import { ONGLETS } from './onglets'
@@ -38,11 +39,11 @@ export function EspaceStreetlifting() {
 
       <div className={styles.contenu}>
         <Routes>
-          <Route index element={<SeanceDuJour />} />
+          <Route index element={<Vue espace="streetlifting" nom="SeanceDuJour" parDefaut={SeanceDuJour} />} />
           <Route path="saisie" element={<SaisieNeuve />} />
           <Route path="saisie/:id" element={<SaisieNeuve />} />
           <Route path="calendrier" element={<Calendrier />} />
-          <Route path="analyse" element={<Analyse />} />
+          <Route path="analyse" element={<Vue espace="streetlifting" nom="Analyse" parDefaut={Analyse} />} />
           <Route path="blocs" element={<Blocs />} />
         </Routes>
       </div>

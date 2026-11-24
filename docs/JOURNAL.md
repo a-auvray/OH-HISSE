@@ -515,3 +515,13 @@
 - **Correction :** un petit plugin Vite (`vite.config.ts`) livre le travailleur sous `assets/maplibre-gl-worker.js` (un nom en `.js`, que tout serveur sert en JavaScript), et `Carte.tsx` lui indique cette adresse dans l'application construite.
 - **Garde-fou :** `npm run budget` (CI) échoue si le travailleur est absent du build, et lui donne sa propre limite de poids.
 - Vérifié dans l'application construite : fond de carte, trait de côte, spots et vent, en ton jour comme en ton sombre.
+
+---
+
+## 25/11/2026 — Variantes d'espace : le mécanisme
+
+**Branche :** `feature/variantes-mecanisme`
+
+- Les 13 directions du lookbook : trois accueils (les trois thèmes), deux transitions et deux directions par espace. Les directions d'espace deviennent des **variantes** choisissables espace par espace (décidé avec toi : « les autres directions d'espace »).
+- Mécanisme seul dans cette brique, sans variante encore : `variantes/` (registre qui se remplit tout seul, fournisseur, composant `Vue`, choix mémorisé) et une section « Vues des espaces » dans les réglages, invisible tant qu'aucune variante n'existe.
+- Les quatre thèmes passent leurs pages principales par `Vue` : Classique, Papier, et les deux coques communes (Estampe, Matière).

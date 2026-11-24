@@ -20,6 +20,7 @@ import { SaisieNeuve } from '../espaces/streetlifting/EspaceStreetlifting'
 import { SeanceDuJour } from '../espaces/streetlifting/SeanceDuJour'
 import { Sommeil } from '../espaces/vie-courante/Sommeil'
 import { useMarine } from '../espaces/marine/useMarine'
+import { Vue } from '../variantes/Vue'
 import styles from './espacesCommuns.module.css'
 
 export interface OngletCoque {
@@ -59,16 +60,22 @@ export function EspaceStreetliftingCommun({
   Coque: CoqueTheme
   vues?: VuesStreetlifting
 }) {
-  const SeanceDuJourVue = vues.SeanceDuJour ?? SeanceDuJour
-  const AnalyseVue = vues.Analyse ?? Analyse
   return (
     <Coque espace="streetlifting" titre="Streetlifting" onglets={ONGLETS_STREET}>
       <Routes>
-        <Route index element={<SeanceDuJourVue />} />
+        <Route
+          index
+          element={
+            <Vue espace="streetlifting" nom="SeanceDuJour" parDefaut={vues.SeanceDuJour ?? SeanceDuJour} />
+          }
+        />
         <Route path="saisie" element={<SaisieNeuve />} />
         <Route path="saisie/:id" element={<SaisieNeuve />} />
         <Route path="calendrier" element={<Calendrier />} />
-        <Route path="analyse" element={<AnalyseVue />} />
+        <Route
+          path="analyse"
+          element={<Vue espace="streetlifting" nom="Analyse" parDefaut={vues.Analyse ?? Analyse} />}
+        />
         <Route path="blocs" element={<Blocs />} />
       </Routes>
     </Coque>
@@ -80,11 +87,13 @@ export interface VuesVieCourante {
 }
 
 export function EspaceVieCouranteCommun({ Coque, vues = {} }: { Coque: CoqueTheme; vues?: VuesVieCourante }) {
-  const AujourdhuiVue = vues.Aujourdhui ?? Aujourdhui
   return (
     <Coque espace="vie-courante" titre="Vie courante" onglets={ONGLETS_VIE}>
       <Routes>
-        <Route index element={<AujourdhuiVue />} />
+        <Route
+          index
+          element={<Vue espace="vie-courante" nom="Aujourdhui" parDefaut={vues.Aujourdhui ?? Aujourdhui} />}
+        />
         <Route path="sommeil" element={<Sommeil />} />
         <Route path="briefings" element={<Briefings />} />
       </Routes>
@@ -97,10 +106,9 @@ export interface VuesObjectifs {
 }
 
 export function EspaceObjectifsCommun({ Coque, vues = {} }: { Coque: CoqueTheme; vues?: VuesObjectifs }) {
-  const ObjectifsVue = vues.Objectifs ?? Objectifs
   return (
     <Coque espace="objectifs" titre="Objectifs" onglets={[]}>
-      <ObjectifsVue />
+      <Vue espace="objectifs" nom="Objectifs" parDefaut={vues.Objectifs ?? Objectifs} />
     </Coque>
   )
 }
@@ -109,9 +117,13 @@ export interface VuesMarine {
   Conditions?: ComponentType<{ conditions: DonneesConditions; spotId: number | null }>
 }
 
+/** Les conditions telles que les montre une page commune : sans le choix de plage, qu'elle n'utilise pas. */
+function ConditionsCommune({ conditions }: { conditions: DonneesConditions }) {
+  return <Conditions conditions={conditions} />
+}
+
 export function EspaceMarineCommun({ Coque, vues = {} }: { Coque: CoqueTheme; vues?: VuesMarine }) {
   const { spots, spotId, choisirSpot, conditions, recharger } = useMarine()
-  const ConditionsVue = vues.Conditions
 
   return (
     <Coque
@@ -150,11 +162,12 @@ export function EspaceMarineCommun({ Coque, vues = {} }: { Coque: CoqueTheme; vu
                 </button>
               </div>
             ) : conditions.valeur ? (
-              ConditionsVue ? (
-                <ConditionsVue conditions={conditions.valeur} spotId={spotId} />
-              ) : (
-                <Conditions conditions={conditions.valeur} />
-              )
+              <Vue
+                espace="marine"
+                nom="Conditions"
+                parDefaut={vues.Conditions ?? ConditionsCommune}
+                props={{ conditions: conditions.valeur, spotId }}
+              />
             ) : null
           }
         />

@@ -2,6 +2,8 @@ import { motion } from 'motion/react'
 import { lazy, Suspense } from 'react'
 import { NavLink, Route, Routes } from 'react-router'
 
+import type { Conditions as DonneesConditions } from '../../api/types'
+import { Vue } from '../../variantes/Vue'
 import { BoutonRetour } from '../BoutonRetour'
 import { Motif } from '../Motifs'
 import { Assistant } from './Assistant'
@@ -13,6 +15,10 @@ import { useMarine } from './useMarine'
 
 // La carte (MapLibre) est lourde : elle n'est chargée qu'à l'ouverture de son onglet.
 export const Carte = lazy(() => import('./Carte').then((m) => ({ default: m.Carte })))
+
+function ConditionsClassique({ conditions }: { conditions: DonneesConditions }) {
+  return <Conditions conditions={conditions} />
+}
 
 /** Espace Marine : fluide, profond, mouvement de vagues (note 11). */
 export function EspaceMarine() {
@@ -72,7 +78,12 @@ export function EspaceMarine() {
                   </button>
                 </div>
               ) : conditions.valeur ? (
-                <Conditions conditions={conditions.valeur} />
+                <Vue
+                  espace="marine"
+                  nom="Conditions"
+                  parDefaut={ConditionsClassique}
+                  props={{ conditions: conditions.valeur, spotId }}
+                />
               ) : null
             }
           />
