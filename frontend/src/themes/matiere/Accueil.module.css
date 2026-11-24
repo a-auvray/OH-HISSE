@@ -1,0 +1,264 @@
+/*
+ * Matière — accueil. La dalle est du carbone mat la nuit, du béton clair le
+ * jour ; les plaques de matière (acier, sable, albâtre, polymère) sont les
+ * mêmes dans les deux tons : c'est la dalle qui change, pas la matière.
+ */
+.dalle {
+  --dalle: #cfccc4;
+  --encre: #17181b;
+  --doux: color-mix(in srgb, var(--encre) 66%, transparent);
+  --trait: color-mix(in srgb, var(--encre) 24%, transparent);
+  --expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --police-texte: 'Geist Variable', system-ui, 'Segoe UI', sans-serif;
+  --police-chiffres: 'Geist Mono Variable', ui-monospace, 'Cascadia Mono', monospace;
+  --police-titre: 'Bricolage Grotesque Variable', var(--police-texte);
+
+  position: relative;
+  height: 100vh;
+  min-height: 720px;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(90% 70% at 50% 45%, color-mix(in srgb, #fff 14%, var(--dalle)), var(--dalle) 75%),
+    var(--dalle);
+  color: var(--encre);
+  font: 16px/1.5 var(--police-texte);
+}
+
+.dalle[data-ton='soir'] {
+  --dalle: #131416;
+  --encre: #e9e7e1;
+  background:
+    radial-gradient(90% 70% at 50% 45%, color-mix(in srgb, #fff 5%, var(--dalle)), var(--dalle) 75%),
+    var(--dalle);
+}
+
+/* ---------- Coins ---------- */
+.marque {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  z-index: 4;
+  margin: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.marque p {
+  margin: 0;
+  font: 800 13px/1 var(--police-titre);
+  font-stretch: 80%;
+  letter-spacing: 0.08em;
+}
+
+.marque .date {
+  font: 400 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.04em;
+  color: var(--doux);
+  text-transform: capitalize;
+}
+
+.discret {
+  position: absolute;
+  z-index: 4;
+  padding: 5px 10px;
+  border: 1px solid var(--trait);
+  border-radius: 6px;
+  background: none;
+  color: var(--doux);
+  font: 400 11px/1.3 var(--police-chiffres);
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.discret:hover,
+.discret:focus-visible {
+  color: var(--encre);
+  border-color: var(--encre);
+}
+
+.deconnexion {
+  top: 12px;
+  right: 20px;
+}
+
+.ton {
+  bottom: 14px;
+  right: 20px;
+}
+
+/* ---------- Plaques : chacune recouvre sa plaque dessinée et la rend cliquable ---------- */
+.plaque {
+  position: absolute;
+  z-index: 3;
+}
+
+.plaque a {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 10px;
+  border-radius: 10px;
+  color: #f4f1ea;
+  text-decoration: none;
+  transition: box-shadow 0.3s var(--expo);
+}
+
+.plaque a:hover,
+.plaque a:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--encre),
+    0 14px 30px -14px rgb(0 0 0 / 0.55);
+}
+
+.plaque[data-cote='haut'] {
+  left: 30%;
+  top: 3.5%;
+  width: 40%;
+  height: 20%;
+}
+.plaque[data-cote='bas'] {
+  left: 30%;
+  top: 76.5%;
+  width: 40%;
+  height: 20%;
+}
+.plaque[data-cote='gauche'] {
+  left: 3.5%;
+  top: 26%;
+  width: 24%;
+  height: 48%;
+}
+.plaque[data-cote='droite'] {
+  left: 72.5%;
+  top: 26%;
+  width: 24%;
+  height: 48%;
+}
+
+/* L'étiquette gravée, comme sur un instrument : fond carbone, texte clair, quoi qu'il arrive. */
+.etiquette {
+  display: grid;
+  gap: 1px;
+  max-width: 100%;
+  padding: 8px 11px;
+  border-radius: 6px;
+  background: rgb(14 15 17 / 0.82);
+  backdrop-filter: blur(4px);
+}
+
+.nom {
+  font: 500 10px/1.3 var(--police-chiffres);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.nom i {
+  font-style: normal;
+  opacity: 0.6;
+}
+
+.chiffre {
+  font: 700 clamp(22px, 2.2vw, 32px) / 1.05 var(--police-titre);
+  font-stretch: 85%;
+  letter-spacing: -0.02em;
+}
+
+.detail {
+  max-width: 26ch;
+  font-size: 12px;
+  line-height: 1.35;
+  opacity: 0.78;
+}
+
+.barre {
+  position: relative;
+  display: block;
+  width: 140px;
+  max-width: 100%;
+  height: 3px;
+  margin-top: 6px;
+  background: rgb(255 255 255 / 0.2);
+}
+
+.barre i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--p) * 100%);
+  background: #f4f1ea;
+  transform-origin: left;
+  animation: remplir 1.2s 0.6s var(--expo) backwards;
+}
+
+@keyframes remplir {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* ---------- Centre : la dalle nue, et le briefing ---------- */
+.centre {
+  position: absolute;
+  z-index: 2;
+  inset: 27% 30% 27% 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  min-height: 0;
+}
+
+.salut {
+  margin: 0 0 clamp(6px, 1vh, 12px);
+  font: 500 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--doux);
+}
+
+.titre {
+  margin: 0;
+  font: 800 clamp(26px, 3.1vw, 48px) / 1 var(--police-titre);
+  font-stretch: 82%;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.ligne {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+
+.ligne > span {
+  display: inline-block;
+}
+
+.ligne + .ligne {
+  margin-top: 0.1em;
+  font-size: 0.62em;
+  font-weight: 600;
+  color: var(--doux);
+}
+
+.unePar {
+  margin: clamp(8px, 1.4vh, 16px) 0 0;
+  font: 400 12px/1.4 var(--police-chiffres);
+  color: var(--doux);
+}
+
+.unePar b {
+  font-weight: 500;
+  color: var(--encre);
+}
+
+.resume {
+  margin: clamp(6px, 1vh, 12px) auto 0;
+  max-width: 46ch;
+  font-size: 14px;
+  line-height: 1.45;
+}

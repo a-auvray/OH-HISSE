@@ -1,0 +1,140 @@
+import { type ComponentType, type ReactNode, Suspense } from 'react'
+import { Route, Routes } from 'react-router'
+
+import { Aujourdhui } from '../espaces/vie-courante/Aujourdhui'
+import { Analyse } from '../espaces/streetlifting/Analyse'
+import { Assistant } from '../espaces/marine/Assistant'
+import { Blocs } from '../espaces/streetlifting/Blocs'
+import { Briefings } from '../espaces/vie-courante/Briefings'
+import { Calendrier } from '../espaces/streetlifting/Calendrier'
+import { Carnet } from '../espaces/marine/Carnet'
+import { Carte } from '../espaces/marine/EspaceMarine'
+import { Conditions } from '../espaces/marine/Conditions'
+import type { IdEspace } from '../espaces/espaces'
+import { ONGLETS as ONGLETS_MARINE } from '../espaces/marine/onglets'
+import { ONGLETS as ONGLETS_STREET } from '../espaces/streetlifting/onglets'
+import { ONGLETS as ONGLETS_VIE } from '../espaces/vie-courante/onglets'
+import { Objectifs } from '../espaces/objectifs/EspaceObjectifs'
+import { SaisieNeuve } from '../espaces/streetlifting/EspaceStreetlifting'
+import { SeanceDuJour } from '../espaces/streetlifting/SeanceDuJour'
+import { Sommeil } from '../espaces/vie-courante/Sommeil'
+import { useMarine } from '../espaces/marine/useMarine'
+import styles from './espacesCommuns.module.css'
+
+export interface OngletCoque {
+  chemin: string
+  libelle: string
+  fin: boolean
+}
+
+export interface PropsCoque {
+  espace: IdEspace
+  titre: string
+  onglets: readonly OngletCoque[]
+  /** Posé à côté des onglets (le choix de plage en Marine, par exemple). */
+  entete?: ReactNode
+  children: ReactNode
+}
+
+/** La coque d'un thème : tout ce qui entoure les pages d'un espace. Le reste est commun. */
+export type CoqueTheme = ComponentType<PropsCoque>
+
+/*
+ * Les quatre espaces tels que les thèmes qui n'ont pas dessiné les leurs les
+ * montrent : les pages communes, dans la coque du thème. Les pages ne lisent
+ * que des jetons de couleur, la coque les définit.
+ */
+
+export function EspaceStreetliftingCommun({ Coque }: { Coque: CoqueTheme }) {
+  return (
+    <Coque espace="streetlifting" titre="Streetlifting" onglets={ONGLETS_STREET}>
+      <Routes>
+        <Route index element={<SeanceDuJour />} />
+        <Route path="saisie" element={<SaisieNeuve />} />
+        <Route path="saisie/:id" element={<SaisieNeuve />} />
+        <Route path="calendrier" element={<Calendrier />} />
+        <Route path="analyse" element={<Analyse />} />
+        <Route path="blocs" element={<Blocs />} />
+      </Routes>
+    </Coque>
+  )
+}
+
+export function EspaceVieCouranteCommun({ Coque }: { Coque: CoqueTheme }) {
+  return (
+    <Coque espace="vie-courante" titre="Vie courante" onglets={ONGLETS_VIE}>
+      <Routes>
+        <Route index element={<Aujourdhui />} />
+        <Route path="sommeil" element={<Sommeil />} />
+        <Route path="briefings" element={<Briefings />} />
+      </Routes>
+    </Coque>
+  )
+}
+
+export function EspaceObjectifsCommun({ Coque }: { Coque: CoqueTheme }) {
+  return (
+    <Coque espace="objectifs" titre="Objectifs" onglets={[]}>
+      <Objectifs />
+    </Coque>
+  )
+}
+
+export function EspaceMarineCommun({ Coque }: { Coque: CoqueTheme }) {
+  const { spots, spotId, choisirSpot, conditions, recharger } = useMarine()
+
+  return (
+    <Coque
+      espace="marine"
+      titre="Marine"
+      onglets={ONGLETS_MARINE}
+      entete={
+        spots.etat === 'pret' && (
+          <div className={styles.plages} role="radiogroup" aria-label="Plage">
+            {spots.valeur.map((s) => (
+              <button
+                key={s.id}
+                type="button"
+                role="radio"
+                aria-checked={s.id === spotId}
+                onClick={() => choisirSpot(s.id)}
+              >
+                {s.nom}
+              </button>
+            ))}
+          </div>
+        )
+      }
+    >
+      <Routes>
+        <Route
+          index
+          element={
+            conditions.etat === 'chargement' ? (
+              <p className={styles.attente}>Lecture de la mer…</p>
+            ) : conditions.etat === 'erreur' ? (
+              <div className={styles.erreur} role="alert">
+                <p>{conditions.message}</p>
+                <button type="button" onClick={recharger}>
+                  Réessayer
+                </button>
+              </div>
+            ) : conditions.valeur ? (
+              <Conditions conditions={conditions.valeur} />
+            ) : null
+          }
+        />
+        <Route path="assistant" element={<Assistant spotId={spotId} />} />
+        <Route
+          path="carte"
+          element={
+            <Suspense fallback={<p className={styles.attente}>Chargement de la carte…</p>}>
+              {spots.etat === 'pret' && <Carte spots={spots.valeur} />}
+            </Suspense>
+          }
+        />
+        <Route path="carnet" element={<Carnet spots={spots.etat === 'pret' ? spots.valeur : []} />} />
+      </Routes>
+    </Coque>
+  )
+}

@@ -1,11 +1,6 @@
-import { Objectifs } from '../../../espaces/objectifs/EspaceObjectifs'
 import { Coque } from '../Coque'
+import { EspaceObjectifsCommun } from '../../espacesCommuns'
 
-/** Objectifs en Estampe : une seule page, sans onglets. */
 export function EspaceObjectifsEstampe() {
-  return (
-    <Coque espace="objectifs" titre="Objectifs" onglets={[]}>
-      <Objectifs />
-    </Coque>
-  )
+  return <EspaceObjectifsCommun Coque={Coque} />
 }

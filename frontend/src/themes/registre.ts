@@ -29,6 +29,14 @@ export const THEMES: readonly MetaTheme[] = [
     apercu: ['#ece7da', '#9c3d2a', '#1f4e6b', '#4c6b4a', '#5b4a7a'],
     charger: () => import('./estampe'),
   },
+  {
+    id: 'matiere',
+    nom: 'Matière',
+    description:
+      'Un banc d’essai : acier poli par le bloc, sable couvert par la marée, albâtre éclairé par la récupération. Jour ou sombre.',
+    apercu: ['#cfccc4', '#b5532f', '#1f6a86', '#5b7a5c', '#7a5aa8'],
+    charger: () => import('./matiere'),
+  },
 ]
 
 /** Le thème des nouveaux visiteurs, et celui sur lequel on retombe si le choisi ne se charge pas. */
