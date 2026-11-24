@@ -6,7 +6,7 @@ import { TYPES_BLOC } from '../../../espaces/streetlifting/chronologie'
 import { PeseeRapide } from '../../../espaces/streetlifting/PeseeRapide'
 import { useSeanceDuJour } from '../../../espaces/streetlifting/useSeanceDuJour'
 import { Compteur } from '../Compteur'
-import { Panneau } from '../Panneau'
+import { Panneau } from '../../Panneau'
 import styles from './SeanceDuJour.module.css'
 
 const EXPO = [0.16, 1, 0.3, 1] as const

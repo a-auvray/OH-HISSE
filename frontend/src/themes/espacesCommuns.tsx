@@ -45,15 +45,29 @@ export type CoqueTheme = ComponentType<PropsCoque>
  * que des jetons de couleur, la coque les définit.
  */
 
-export function EspaceStreetliftingCommun({ Coque }: { Coque: CoqueTheme }) {
+/** Les vues qu'un thème a dessinées à lui ; celles qu'il ne donne pas restent les pages communes. */
+export interface VuesStreetlifting {
+  SeanceDuJour?: ComponentType
+  Analyse?: ComponentType
+}
+
+export function EspaceStreetliftingCommun({
+  Coque,
+  vues = {},
+}: {
+  Coque: CoqueTheme
+  vues?: VuesStreetlifting
+}) {
+  const SeanceDuJourVue = vues.SeanceDuJour ?? SeanceDuJour
+  const AnalyseVue = vues.Analyse ?? Analyse
   return (
     <Coque espace="streetlifting" titre="Streetlifting" onglets={ONGLETS_STREET}>
       <Routes>
-        <Route index element={<SeanceDuJour />} />
+        <Route index element={<SeanceDuJourVue />} />
         <Route path="saisie" element={<SaisieNeuve />} />
         <Route path="saisie/:id" element={<SaisieNeuve />} />
         <Route path="calendrier" element={<Calendrier />} />
-        <Route path="analyse" element={<Analyse />} />
+        <Route path="analyse" element={<AnalyseVue />} />
         <Route path="blocs" element={<Blocs />} />
       </Routes>
     </Coque>

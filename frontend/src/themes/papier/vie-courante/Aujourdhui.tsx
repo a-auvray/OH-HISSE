@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 
 import { kg, nombre } from '../../../commun/format'
 import { noterEcart, noterNuit, peser, useEtatDuJour } from '../../../espaces/vie-courante/etat'
-import { Panneau } from '../Panneau'
+import { Panneau } from '../../Panneau'
 import { Assiette } from './Assiette'
 import styles from './Aujourdhui.module.css'
 import { Souffle } from './Souffle'
