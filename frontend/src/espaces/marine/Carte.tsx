@@ -15,11 +15,13 @@ import { useNavigate } from 'react-router'
 import { api } from '../../api/client'
 import type { Conditions, Spot, TraitDeCote } from '../../api/types'
 import { nombre } from '../../commun/format'
+import { useTon } from '../../themes/ton'
 import styles from './Carte.module.css'
 import { distance, formaterDistance, longueur, type Point } from './geo'
 import { pointCardinal } from './lecture'
 
-const STYLE = 'https://tiles.openfreemap.org/styles/dark'
+const STYLE_SOMBRE = 'https://tiles.openfreemap.org/styles/dark'
+const STYLE_CLAIR = 'https://tiles.openfreemap.org/styles/positron'
 const CENTRE: Point = [-0.29, 49.305]
 // Bande côtière d'une vingtaine de kilomètres autour de mes plages.
 const LIMITES: [Point, Point] = [
@@ -35,12 +37,33 @@ const POINTS_COURANT: Point[] = [
   [-0.33, 49.345],
   [-0.25, 49.345],
 ]
-const PALETTE = {
-  terre: '#0d1216',
-  eau: '#0a2a46',
-  eauTrait: '#1d4b74',
-  texteEau: '#7fb2d9',
-}
+/** Les teintes de Marine sur le fond de carte : sombre (nuit, Classique) ou clair (thèmes de jour). */
+const PALETTES = {
+  sombre: {
+    terre: '#0d1216',
+    eau: '#0a2a46',
+    eauTrait: '#1d4b74',
+    texteEau: '#7fb2d9',
+    estran: '#d8efff',
+    estranHalo: '#9fd4ff',
+    trace: '#e9f5ff',
+    traceHalo: '#b0d8ff',
+    point: '#041320',
+    vent: '214, 236, 255',
+  },
+  clair: {
+    terre: '#ebe8de',
+    eau: '#b7d3e2',
+    eauTrait: '#8db3c9',
+    texteEau: '#2b5f7e',
+    estran: '#14506f',
+    estranHalo: '#1f6f98',
+    trace: '#102c3a',
+    traceHalo: '#1f6f98',
+    point: '#f4f1ea',
+    vent: '20, 80, 115',
+  },
+} as const
 
 type ConditionsParSpot = Record<number, Conditions>
 
@@ -51,6 +74,13 @@ export function Carte({ spots }: { spots: Spot[] }) {
   const carte = useRef<CarteMapLibre | null>(null)
   const [conditions, setConditions] = useState<ConditionsParSpot>({})
   const [chargee, setChargee] = useState(false)
+  // Le thème de jour montre une carte claire. Dans un thème sans ton (Classique), elle reste sombre.
+  const [ton] = useTon()
+  const [clair, setClair] = useState<boolean | null>(null)
+  useEffect(() => {
+    setClair(ton === 'jour' && !!conteneur.current?.closest('[data-ton]'))
+  }, [ton])
+  const palette = clair ? PALETTES.clair : PALETTES.sombre
   const [trait, setTrait] = useState<TraitDeCote | null>(null)
   const [enTrace, setEnTrace] = useState(false)
   const [trace, setTrace] = useState<Point[]>([])
@@ -81,10 +111,10 @@ export function Carte({ spots }: { spots: Spot[] }) {
 
   // Création de la carte.
   useEffect(() => {
-    if (!conteneur.current) return
+    if (!conteneur.current || clair === null) return
     const instance = new CarteMapLibre({
       container: conteneur.current,
-      style: STYLE,
+      style: clair ? STYLE_CLAIR : STYLE_SOMBRE,
       center: CENTRE,
       zoom: 12.4,
       minZoom: 10.5,
@@ -95,12 +125,19 @@ export function Carte({ spots }: { spots: Spot[] }) {
     instance.addControl(new NavigationControl({ showCompass: true }), 'bottom-right')
 
     instance.on('load', () => {
-      // Les teintes de l'espace Marine sur le fond sombre.
-      instance.setPaintProperty('background', 'background-color', PALETTE.terre)
-      instance.setPaintProperty('water', 'fill-color', PALETTE.eau)
-      instance.setPaintProperty('waterway', 'line-color', PALETTE.eauTrait)
-      instance.setPaintProperty('water_name', 'text-color', PALETTE.texteEau)
-      instance.setPaintProperty('water_name', 'text-halo-color', PALETTE.eau)
+      // Les teintes de l'espace Marine sur le fond de carte (une couche absente d'un style est ignorée).
+      const teinte = (
+        couche: string,
+        propriete: Parameters<typeof instance.setPaintProperty>[1],
+        valeur: string,
+      ) => {
+        if (instance.getLayer(couche)) instance.setPaintProperty(couche, propriete, valeur)
+      }
+      teinte('background', 'background-color', palette.terre)
+      teinte('water', 'fill-color', palette.eau)
+      teinte('waterway', 'line-color', palette.eauTrait)
+      teinte('water_name', 'text-color', palette.texteEau)
+      teinte('water_name', 'text-halo-color', palette.eau)
 
       // Bord de l'eau à la hauteur de marée du moment (relief Litto3D).
       instance.addSource('estran', { type: 'geojson', data: lignes([]) })
@@ -108,13 +145,13 @@ export function Carte({ spots }: { spots: Spot[] }) {
         id: 'estran-halo',
         type: 'line',
         source: 'estran',
-        paint: { 'line-color': '#9fd4ff', 'line-width': 9, 'line-opacity': 0.16, 'line-blur': 5 },
+        paint: { 'line-color': palette.estranHalo, 'line-width': 9, 'line-opacity': 0.16, 'line-blur': 5 },
       })
       instance.addLayer({
         id: 'estran',
         type: 'line',
         source: 'estran',
-        paint: { 'line-color': '#d8efff', 'line-width': 1.6, 'line-opacity': 0.85 },
+        paint: { 'line-color': palette.estran, 'line-width': 1.6, 'line-opacity': 0.85 },
       })
 
       instance.addSource('trace', { type: 'geojson', data: ligne([]) })
@@ -122,13 +159,13 @@ export function Carte({ spots }: { spots: Spot[] }) {
         id: 'trace-halo',
         type: 'line',
         source: 'trace',
-        paint: { 'line-color': '#b0d8ff', 'line-width': 10, 'line-opacity': 0.18, 'line-blur': 4 },
+        paint: { 'line-color': palette.traceHalo, 'line-width': 10, 'line-opacity': 0.18, 'line-blur': 4 },
       })
       instance.addLayer({
         id: 'trace',
         type: 'line',
         source: 'trace',
-        paint: { 'line-color': '#e9f5ff', 'line-width': 3, 'line-dasharray': [2, 1.5] },
+        paint: { 'line-color': palette.trace, 'line-width': 3, 'line-dasharray': [2, 1.5] },
       })
       instance.addLayer({
         id: 'trace-points',
@@ -137,8 +174,8 @@ export function Carte({ spots }: { spots: Spot[] }) {
         filter: ['==', '$type', 'Point'],
         paint: {
           'circle-radius': 5,
-          'circle-color': '#041320',
-          'circle-stroke-color': '#e9f5ff',
+          'circle-color': palette.point,
+          'circle-stroke-color': palette.trace,
           'circle-stroke-width': 2,
         },
       })
@@ -154,8 +191,11 @@ export function Carte({ spots }: { spots: Spot[] }) {
     return () => {
       instance.remove()
       carte.current = null
+      setChargee(false)
     }
-  }, [])
+    // La palette se déduit de `clair` : changer de ton recrée la carte.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clair])
 
   // Trait de côte : celui de la hauteur d'eau actuelle.
   const hauteur = Object.values(conditions)[0]?.maintenant.hauteur_eau_m ?? null
@@ -180,7 +220,7 @@ export function Carte({ spots }: { spots: Spot[] }) {
   useEffect(() => {
     const source = carte.current?.getSource('trace') as GeoJSONSource | undefined
     source?.setData(ligne(trace))
-  }, [trace])
+  }, [trace, chargee])
 
   useEffect(() => {
     carte.current?.getCanvas().style.setProperty('cursor', enTrace ? 'crosshair' : '')
@@ -234,12 +274,13 @@ export function Carte({ spots }: { spots: Spot[] }) {
       }
     }
     return () => marqueurs.forEach((m) => m.remove())
-  }, [spots, conditions])
+  }, [spots, conditions, clair])
 
   // Vent : des traînées qui filent dans le sens où il souffle.
   const reference = Object.values(conditions)[0]
   const vent = reference?.maintenant.vent_kmh ?? null
   const ventDe = reference?.maintenant.vent_direction_deg ?? null
+  const couleurVent = palette.vent
   useEffect(() => {
     const canvas = voile.current
     if (!canvas || vent === null || ventDe === null) return
@@ -268,7 +309,7 @@ export function Carte({ spots }: { spots: Spot[] }) {
         const x = p.x * l
         const y = p.y * h
         const alpha = Math.min(1, p.vie / 30) * Math.min(1, (120 - p.vie) / 30) * 0.5
-        ctx.strokeStyle = `rgba(214, 236, 255, ${alpha})`
+        ctx.strokeStyle = `rgba(${couleurVent}, ${alpha})`
         ctx.lineWidth = 1.4
         ctx.beginPath()
         ctx.moveTo(x, y)
@@ -287,7 +328,7 @@ export function Carte({ spots }: { spots: Spot[] }) {
     }
     image = requestAnimationFrame(dessiner)
     return () => cancelAnimationFrame(image)
-  }, [vent, ventDe])
+  }, [vent, ventDe, couleurVent])
 
   const metres = longueur(trace)
 

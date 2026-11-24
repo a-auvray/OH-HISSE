@@ -451,3 +451,15 @@
 
 ### À savoir
 - Pas de WebGL : tout est en canvas 2D, le thème pèse 5 ko de JS.
+
+---
+
+## 24/11/2026 — Panneaux accordés dans Estampe et Matière
+
+**Branche :** `feature/themes-panneaux-accordes`
+
+- Audit page par page d'Estampe et de Matière, clair et sombre. Trois choses n'étaient pas accordées :
+  - les titres des cartes de briefing prenaient les polices propres à chaque espace d'origine (Anton, Fraunces…), absentes de ces thèmes : elles sont maintenant des jetons (`--police-streetlifting`…) que chaque coque redéfinit ;
+  - les panneaux teintés du carnet, de l'assistant, du sommeil et d'« Aujourd'hui » étaient translucides sur le papier, donc ternes : ils reposent sur `--fond-panneau` ;
+  - la carte de Marine restait sombre : elle prend un fond clair dans un thème de jour, et ses surcouches (vent, bord de l'eau, tracé) changent de couleur avec.
+- Non vérifié : les tuiles de la carte (pas de réseau dans mon environnement de test) ; seul le cadre et la palette l'ont été.

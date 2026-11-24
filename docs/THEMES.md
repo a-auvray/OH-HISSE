@@ -106,7 +106,9 @@ jour ou sombre, et un décor propre à l'espace (houle pour Marine, hachures pou
 Streetlifting, lumière qui respire pour Vie courante, règle graduée pour Objectifs). Les pages
 intérieures n'écrivent plus aucune couleur de surface en dur : elles utilisent les jetons de
 `styles/tokens.css` (`--surface`, `--surface-haute`, `--creux`, `--voile`, `--filet`,
-`--sur-accent`, `--ombre-carte`, `--succes-texte`, `--alerte-texte`, `--danger-texte`, plus
+`--sur-accent`, `--ombre-carte`, `--fond-panneau` (le fond sous les panneaux teintés),
+`--succes-texte`, `--alerte-texte`, `--danger-texte`, les polices d'espace `--police-streetlifting`,
+`--police-marine`, `--police-vie-courante`, `--police-objectifs`, plus
 `--accent` et `--accent-clair`), que chaque thème redéfinit. Un nouveau thème n'a donc qu'à
 donner ces valeurs pour que toutes les pages lui soient accordées ; il redessine ensuite
 celles qui méritent une mise en page à lui.
@@ -132,6 +134,9 @@ le polymère (Objectifs) a une éprouvette par objectif en cours, aux franges de
 en plus nombreuses, cadre verrouillé à 100 %. Le modèle est dans `matiere/modele.ts` (testé), le
 dessin dans `dessin.ts`. Les espaces sont fabriqués par `themes/espacesCommuns.tsx` (les
 pages communes dans la coque du thème) : un thème n'écrit que sa coque.
+
+**La carte de Marine** suit le ton : fond clair (style positron) dans un thème de jour, sombre
+la nuit et dans Classique ; ses surcouches (vent, bord de l'eau, tracé) changent de couleur avec.
 
 Le lookbook et ses prototypes sont dans `design-lookbook/` (hors dépôt).
 

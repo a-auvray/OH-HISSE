@@ -35,10 +35,15 @@
   --police-chiffres: 'Geist Mono Variable', ui-monospace, 'Cascadia Mono', monospace;
   --police-espace: 'Instrument Serif', Georgia, serif;
   --police-titre: 'Instrument Serif', Georgia, serif;
+  --police-streetlifting: 'Instrument Serif', Georgia, serif;
+  --police-marine: 'Instrument Serif', Georgia, serif;
+  --police-vie-courante: 'Instrument Serif', Georgia, serif;
+  --police-objectifs: 'Instrument Serif', Georgia, serif;
 
   /* Surfaces des pages intérieures : un papier un peu plus clair, un trait fin, pas d'ombre lourde. */
   --surface: color-mix(in srgb, #fff 38%, var(--fond-estampe));
   --surface-haute: color-mix(in srgb, #fff 58%, var(--fond-estampe));
+  --fond-panneau: var(--surface);
   --creux: color-mix(in srgb, var(--encre) 6%, transparent);
   --voile: color-mix(in srgb, var(--encre) 5%, transparent);
   --filet: color-mix(in srgb, var(--encre) 28%, transparent);
