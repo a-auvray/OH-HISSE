@@ -13,6 +13,7 @@ const REGLES = [
   [/^index-/, 'css', 12, 'styles de départ'],
   [/^Carte-/, 'js', 320, 'carte (MapLibre), chargée à l’ouverture de son onglet'],
   [/^Carte-/, 'css', 15, 'styles de la carte'],
+  [/^maplibre-gl-worker/, 'js', 200, 'travailleur de la carte, chargé avec elle'],
   // Un thème (son accueil et ses outils communs) et chacun de ses espaces, chargés à la demande.
   [/.*/, 'js', 80, 'morceau chargé à la demande (thème ou espace)'],
   [/.*/, 'css', 50, 'styles d’un morceau chargé à la demande'],
@@ -33,6 +34,12 @@ for (const nom of readdirSync(dossier).sort()) {
   console.log(
     `${ok ? 'ok ' : 'KO '} ${taille.toFixed(1).padStart(7)} / ${String(limite).padStart(3)} ko  ${nom}  (${description})`,
   )
+}
+
+// Sans son travailleur (fichier à part, voir vite.config.ts) la carte reste vide : le serveur répond 404.
+if (!readdirSync(dossier).includes('maplibre-gl-worker.js')) {
+  echecs += 1
+  console.log('KO  maplibre-gl-worker.js est absent du build : la carte ne s’afficherait pas.')
 }
 
 if (echecs > 0) {
