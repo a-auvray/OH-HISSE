@@ -85,8 +85,8 @@ polices des espaces ne se chargent plus qu'avec leur thème).
 |---|---|---|---|
 | Classique | fait | fait | fait |
 | Papier | fait (jour et soir) | coque et vues principales faites pour les quatre ; pages intérieures accordées par les jetons de surface | faite : un rabat qui se déplie |
+| Estampe | fait (jour et sombre) : quatre faisceaux de fils d'encre | pages de l'espace dans une coque d'imprimeur (en-tête de relevé, faisceau sur le bord d'entrée) | faite : une passe d'encre qui révèle la page depuis son bord |
 | Matière | à faire | à faire | à faire |
-| Estampe | à faire | à faire | à faire |
 
 L'accueil de Papier montre les mêmes données que celui de Classique, lues par
 `accueil/useBriefing` ; la phrase du jour (`accueil/phrase.ts`) est calculée à
@@ -110,6 +110,17 @@ intérieures n'écrivent plus aucune couleur de surface en dur : elles utilisent
 `--accent` et `--accent-clair`), que chaque thème redéfinit. Un nouveau thème n'a donc qu'à
 donner ces valeurs pour que toutes les pages lui soient accordées ; il redessine ensuite
 celles qui méritent une mise en page à lui.
+
+**Estampe.** L'accueil est un canvas 2D (pas de WebGL, 4,6 ko JS de thème) : chaque bord a
+un faisceau qui dit une donnée par son comportement. En haut des fibres s'encrent avec la
+récupération et se penchent avec l'heure ; à gauche des strates, une bande par séance du
+bloc, serrées par le RPE cible ; à droite un écoulement orienté par le vent, secoué par
+les rafales, trouble au rouge, figé au noir ; en bas une drisse dont le mou disparaît avec
+la progression. Ce que chaque faisceau représente est calculé dans `estampe/modele.ts`
+(testé), le dessin est dans `dessin.ts`. Les espaces réutilisent les pages communes dans
+la coque Estampe : leur identité vient de la coque, des jetons et du faisceau d'entrée.
+Le mode sombre est un réglage commun (`themes/ton.ts`, clé `oh-hisse.ton`) : Papier et
+Estampe le partagent, Classique, déjà sombre, l'ignore.
 
 Le lookbook et ses prototypes sont dans `design-lookbook/` (hors dépôt).
 

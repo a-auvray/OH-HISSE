@@ -8,7 +8,7 @@ import type { Direction, IdEspace } from '../../espaces/espaces'
 import { useSession } from '../../session/contexte'
 import styles from './Accueil.module.css'
 import { CourbeDeMaree } from './CourbeDeMaree'
-import { useTon } from './ton'
+import { useTon } from '../ton'
 
 /** L'entrée en scène ne se joue qu'une fois par connexion, comme pour les autres thèmes. */
 let entreeJoueePour: number | null = null

@@ -16,7 +16,7 @@
 
 .piste {
   fill: none;
-  stroke: #241a2b;
+  stroke: var(--filet);
   stroke-width: 12;
   stroke-linecap: round;
 }
@@ -65,6 +65,6 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #120a16;
+  color: var(--sur-accent);
   background: var(--objectifs-clair);
 }

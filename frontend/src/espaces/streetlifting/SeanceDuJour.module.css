@@ -23,7 +23,7 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #1a0f07;
+  color: var(--sur-accent);
   background: var(--accent);
 }
 
@@ -41,11 +41,11 @@
 
 .crans span {
   border-radius: 2px;
-  background: #2c2420;
+  background: var(--filet);
 }
 
 .crans span[data-etat='fait'] {
-  background: color-mix(in oklab, var(--accent) 70%, #2c2420);
+  background: color-mix(in oklab, var(--accent) 70%, var(--filet));
 }
 
 .crans span[data-etat='courant'] {
@@ -137,11 +137,11 @@
   grid-column: 1 / -1;
   list-style: none;
   padding: var(--espace-3) 0 0;
-  border-top: 1px dashed #3a2f28;
+  border-top: 1px dashed var(--filet);
   display: grid;
   gap: 2px;
   font-size: 0.9rem;
-  color: #e8ddd3;
+  color: var(--texte);
 }
 
 .raisons li::before {

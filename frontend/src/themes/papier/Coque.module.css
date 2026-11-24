@@ -46,6 +46,9 @@
   --alerte-texte: #86560a;
   --danger-texte: #a8262b;
 
+  /* Barres de défilement et champs natifs suivent le ton. */
+  color-scheme: light;
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -60,6 +63,7 @@
 }
 
 .coque[data-ton='soir'] {
+  color-scheme: dark;
   --papier: #121110;
   --encre: #efe9dd;
   --sienne: #f08a4b;

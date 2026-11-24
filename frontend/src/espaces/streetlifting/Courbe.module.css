@@ -16,9 +16,9 @@
   border-radius: 10px;
   pointer-events: none;
   white-space: nowrap;
-  background: #241b16;
+  background: var(--surface-haute);
   border: 1px solid var(--streetlifting);
-  box-shadow: 0 12px 30px -10px rgb(0 0 0 / 0.8);
+  box-shadow: var(--ombre-carte);
   font-size: 0.8rem;
   color: var(--texte-doux);
 }

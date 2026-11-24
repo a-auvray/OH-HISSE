@@ -45,7 +45,7 @@ describe('Accueil du thème Papier', () => {
 
     expect(screen.getByRole('main')).toHaveAttribute('data-ton', 'soir')
     expect(screen.getByRole('button', { name: '◑ Mode clair' })).toHaveAttribute('aria-pressed', 'true')
-    expect(localStorage.getItem('oh-hisse.papier.ton')).toBe('soir')
+    expect(localStorage.getItem('oh-hisse.ton')).toBe('soir')
   })
 
   it('reprend le ton mémorisé', () => {

@@ -14,8 +14,8 @@
   padding: 4px;
   gap: 2px;
   border-radius: 12px;
-  background: rgb(0 0 0 / 0.3);
-  border: 1px solid #2c2420;
+  background: var(--creux);
+  border: 1px solid var(--filet);
 }
 
 .segments button {
@@ -36,7 +36,7 @@
 }
 
 .segments button[aria-checked='true'] {
-  color: #1a0f07;
+  color: var(--sur-accent);
   background: var(--accent);
 }
 

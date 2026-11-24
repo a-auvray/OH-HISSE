@@ -79,8 +79,8 @@
 }
 
 .bouton {
-  border: 1px solid #3a2b45;
-  background: rgb(255 255 255 / 0.03);
+  border: 1px solid var(--filet);
+  background: color-mix(in srgb, var(--texte) 3%, transparent);
   color: var(--texte);
 }
 
@@ -91,7 +91,7 @@
 
 .principal {
   border: 0;
-  color: #120a16;
+  color: var(--sur-accent);
   background: linear-gradient(135deg, var(--objectifs-clair), var(--objectifs));
   box-shadow: 0 12px 30px -12px var(--objectifs);
 }
@@ -107,7 +107,7 @@
 }
 
 .discret:hover {
-  color: #ff9a9d;
+  color: var(--danger-texte);
 }
 
 /* --- Objectif principal --- */
@@ -196,8 +196,8 @@
   gap: var(--espace-3);
   padding: var(--espace-6);
   border-radius: 20px;
-  background: color-mix(in oklab, #1a1320 85%, transparent);
-  border: 1px solid #2c2235;
+  background: color-mix(in oklab, var(--surface) 85%, transparent);
+  border: 1px solid var(--filet);
 }
 
 .carte[data-statut='atteint'] {
@@ -233,7 +233,7 @@
   height: 6px;
   border-radius: 3px;
   overflow: hidden;
-  background: #2a2031;
+  background: var(--filet);
 }
 
 .barre span {
@@ -265,8 +265,8 @@
   align-items: end;
   padding: var(--espace-6);
   border-radius: 20px;
-  background: #16101b;
-  border: 1px solid #3a2b45;
+  background: var(--surface-haute);
+  border: 1px solid var(--filet);
 }
 
 .formulaire label {
@@ -283,8 +283,8 @@
   color: var(--texte);
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid #3a2b45;
-  background: rgb(0 0 0 / 0.35);
+  border: 1px solid var(--filet);
+  background: var(--creux);
 }
 
 .formulaire input:focus,
@@ -318,7 +318,7 @@
 .erreur {
   grid-column: 1 / -1;
   white-space: pre-line;
-  color: #ffb3b5;
+  color: var(--danger-texte);
 }
 
 .vide {

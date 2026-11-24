@@ -4,7 +4,7 @@
 }
 
 .repere circle {
-  fill: #041320;
+  fill: var(--sur-accent);
   stroke: var(--marine-clair);
   stroke-width: 2;
 }
@@ -16,14 +16,14 @@
 }
 
 .maintenant {
-  stroke: #ffffff;
+  stroke: var(--texte);
   stroke-width: 1.5;
   stroke-dasharray: 3 4;
   opacity: 0.8;
 }
 
 .libelleMaintenant {
-  fill: #ffffff;
+  fill: var(--texte);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
