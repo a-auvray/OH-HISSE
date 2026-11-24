@@ -412,3 +412,13 @@
 
 - Le panneau « Récapitulatif » de la saisie débordait de sa carte et sous le dos du pli (les champs et les neuf boutons de ressenti avaient une largeur minimale plus grande que la colonne) : colonnes `minmax(0, 1fr)`.
 - La carte de Marine reste sombre : c'est son fond de carte.
+
+---
+
+## 24/11/2026 — Panneaux dépliables
+
+**Branche :** `feature/papier-bandeau-panneaux`
+
+- Nouveau composant `Panneau` (thème Papier) : un titre et un résumé toujours visibles, le détail se déplie dessous, et le choix est retenu d'une visite à l'autre. Même geste, même place partout.
+- Appliqué là où l'écran était chargé : les raisons de chaque charge (séance du jour), la frise des 48 heures (Marine), le pourquoi de la récupération et le détail des points de l'écart (Vie courante). L'essentiel reste lisible d'un coup d'œil, la précision est à un clic.
+- Les lignes de houle derrière le contenu de Marine sont plus discrètes : elles gênaient la lecture du bas de page.

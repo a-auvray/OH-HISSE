@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { rendre } from '../../../test/rendu'
@@ -60,7 +60,11 @@ describe('Séance du jour, thème Papier', () => {
     await waitFor(() => expect(screen.getByText(/\+32,5/)).toBeInTheDocument())
     expect(screen.getByText('PDC')).toBeInTheDocument()
     expect(screen.getByText('À choisir')).toBeInTheDocument()
-    expect(screen.getByText('+2,5 kg depuis mardi')).toBeInTheDocument()
+    // Les raisons de l'auto-régulation sont dans un panneau, fermé tant qu'on ne l'ouvre pas.
+    const pourquoi = screen.getAllByRole('button', { name: /Pourquoi cette charge/ })
+    expect(pourquoi[0]).toHaveAttribute('aria-expanded', 'false')
+    fireEvent.click(pourquoi[0] as HTMLElement)
+    expect(screen.getAllByText('+2,5 kg depuis mardi')[0]).toBeVisible()
   })
 
   it('rappelle la forme du jour et propose de commencer', async () => {

@@ -138,10 +138,10 @@
 /* Marine : des lignes de houle qui dérivent lentement au bas de la page. */
 .coque[data-espace='marine'] .decor {
   inset: auto 0 0 0;
-  height: 34vh;
+  height: 22vh;
   background: repeating-linear-gradient(
     180deg,
-    color-mix(in srgb, var(--bleu) 42%, transparent) 0 1px,
+    color-mix(in srgb, var(--bleu) 22%, transparent) 0 1px,
     transparent 1px 15px
   );
   mask-image: linear-gradient(0deg, #000 10%, transparent 100%);
