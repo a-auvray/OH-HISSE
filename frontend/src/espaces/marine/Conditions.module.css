@@ -27,9 +27,9 @@
 .previsions {
   padding: var(--espace-6);
   border-radius: 24px;
-  background: linear-gradient(160deg, rgb(120 190 255 / 0.08), rgb(10 40 70 / 0.25));
-  border: 1px solid rgb(176 216 255 / 0.12);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--accent-clair) 8%, transparent), color-mix(in srgb, var(--accent) 10%, transparent));
+  border: 1px solid color-mix(in srgb, var(--accent-clair) 12%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--texte) 6%, transparent);
   backdrop-filter: blur(14px);
 }
 
@@ -95,12 +95,12 @@
   border-radius: 999px;
   font-weight: 700;
   font-size: 0.78rem;
-  color: #041320;
+  color: var(--sur-accent);
   background: var(--marine-clair);
 }
 
 .etatMaree [data-tendance='descendante'] {
-  background: #7fb2d9;
+  background: var(--accent-clair);
 }
 
 .vent {
@@ -122,8 +122,8 @@
   width: 108px;
   aspect-ratio: 1;
   border-radius: 50%;
-  border: 1px solid rgb(176 216 255 / 0.25);
-  background: radial-gradient(circle, rgb(47 143 224 / 0.25), transparent 70%);
+  border: 1px solid color-mix(in srgb, var(--accent-clair) 25%, transparent);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 25%, transparent), transparent 70%);
   color: var(--marine-clair);
 }
 
@@ -191,7 +191,7 @@
   grid-auto-columns: 64px;
   overflow-x: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgb(176 216 255 / 0.3) transparent;
+  scrollbar-color: color-mix(in srgb, var(--accent-clair) 30%, transparent) transparent;
 }
 
 .heures li {
@@ -203,7 +203,7 @@
 }
 
 .heures li[data-nouveau-jour] {
-  border-left: 1px solid rgb(176 216 255 / 0.2);
+  border-left: 1px solid color-mix(in srgb, var(--accent-clair) 20%, transparent);
 }
 
 .jour {
@@ -242,7 +242,7 @@
   width: 8px;
   height: 38px;
   border-radius: 4px;
-  background: rgb(176 216 255 / 0.1);
+  background: color-mix(in srgb, var(--accent-clair) 10%, transparent);
   overflow: hidden;
 }
 

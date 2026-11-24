@@ -1,15 +1,15 @@
 [data-niveau='vert'] {
   --niveau: #3fae5e;
-  --niveau-texte: #c9f2d4;
+  --niveau-texte: var(--succes-texte);
 }
 [data-niveau='rouge'] {
   --niveau: #e5484d;
-  --niveau-texte: #ffc9cb;
+  --niveau-texte: var(--danger-texte);
 }
 /* Le noir se distingue par un anneau blanc : un disque noir seul disparaîtrait sur le fond. */
 [data-niveau='noir'] {
   --niveau: #000000;
-  --niveau-texte: #ffffff;
+  --niveau-texte: var(--texte);
 }
 
 .pastille {

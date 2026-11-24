@@ -422,3 +422,18 @@
 - Nouveau composant `Panneau` (thème Papier) : un titre et un résumé toujours visibles, le détail se déplie dessous, et le choix est retenu d'une visite à l'autre. Même geste, même place partout.
 - Appliqué là où l'écran était chargé : les raisons de chaque charge (séance du jour), la frise des 48 heures (Marine), le pourquoi de la récupération et le détail des points de l'écart (Vie courante). L'essentiel reste lisible d'un coup d'œil, la précision est à un clic.
 - Les lignes de houle derrière le contenu de Marine sont plus discrètes : elles gênaient la lecture du bas de page.
+
+---
+
+## 24/11/2026 — Thème Estampe
+
+**Branche :** `feature/theme-estampe`
+
+### Ce qui a été fait
+- Troisième thème : **Estampe**. Un accueil en canvas 2D où quatre faisceaux de fils d'encre partent des bords et disent chacun une donnée par leur mouvement (récupération, bloc, danger de la mer, progression), un centre qui est le briefing, et une transition en « passe d'encre ». Jour ou sombre.
+- Les quatre espaces, avec toutes leurs pages, s'affichent dans une coque d'imprimeur (en-tête de relevé, faisceau de fils sur le bord d'entrée). Le mode sombre est maintenant un réglage commun à Papier et Estampe (`themes/ton.ts`).
+- Pour que les pages d'origine servent à tous les thèmes : elles ne contiennent plus aucune couleur en dur (jetons de surface, y compris le texte du danger en mer), la page Objectifs est séparée de son enveloppe Classique, et les barres de défilement suivent le ton.
+
+### Ce qui a bloqué / Solutions trouvées
+- `fils.ts` et `Fils.tsx` ne diffèrent que par la casse : tsc refuse sous Windows. Le modèle s'appelle `modele.ts`.
+- Les libellés des bords tombaient dans la réserve du centre : ils sont maintenant au bord de l'écran, sur une petite plaque qui coupe les fils.

@@ -17,9 +17,17 @@ export const THEMES: readonly MetaTheme[] = [
     id: 'papier',
     nom: 'Papier',
     description:
-      'Feuille crème aux bords repliés, encres d’imprimerie, un ton soir. Accueil seulement pour l’instant.',
+      'Feuille crème aux bords repliés, encres d’imprimerie, jour ou sombre. Complet : accueil et quatre espaces.',
     apercu: ['#efe9dd', '#b4471a', '#0067a5', '#2f6e5a', '#6a4c9c'],
     charger: () => import('./papier'),
+  },
+  {
+    id: 'estampe',
+    nom: 'Estampe',
+    description:
+      'Des fils d’encre partent des quatre bords : chaque faisceau dit une donnée par son mouvement. Jour ou sombre.',
+    apercu: ['#ece7da', '#9c3d2a', '#1f4e6b', '#4c6b4a', '#5b4a7a'],
+    charger: () => import('./estampe'),
   },
 ]
 

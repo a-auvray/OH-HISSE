@@ -1,0 +1,280 @@
+/*
+ * Estampe — accueil. Deux tons : jour (papier écru, encre noire) et sombre
+ * (encre de nuit, papier en texte). Quatre faisceaux de fils sur un canvas,
+ * quatre libellés sur les bords, et au centre la réserve que les fils contournent.
+ */
+.feuille {
+  --fond-estampe: #ece7da;
+  --encre: #17181c;
+  --doux: color-mix(in srgb, var(--encre) 68%, transparent);
+  --trait: color-mix(in srgb, var(--encre) 24%, transparent);
+  --brique: #9c3d2a;
+  --prusse: #1f4e6b;
+  --olive: #4c6b4a;
+  --fume: #5b4a7a;
+  --expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --police-texte: 'Geist Variable', system-ui, 'Segoe UI', sans-serif;
+  --police-chiffres: 'Geist Mono Variable', ui-monospace, 'Cascadia Mono', monospace;
+  --police-titre: 'Instrument Serif', Georgia, serif;
+
+  --fil-vie: var(--olive);
+  --fil-street: var(--brique);
+  --fil-mer: var(--prusse);
+  --fil-objectif: var(--fume);
+  --fil-trait: color-mix(in srgb, var(--encre) 20%, transparent);
+
+  position: relative;
+  height: 100vh;
+  min-height: 720px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--fond-estampe);
+  color: var(--encre);
+  font: 16px/1.5 var(--police-texte);
+}
+
+.feuille[data-ton='soir'] {
+  --fond-estampe: #0e1014;
+  --encre: #e8e4d8;
+  --brique: #e0795a;
+  --prusse: #6fb0d8;
+  --olive: #9cc29a;
+  --fume: #b5a2dc;
+}
+
+/* ---------- Coins : marque, date, réglages discrets ---------- */
+.marque {
+  position: absolute;
+  top: 18px;
+  left: 22px;
+  z-index: 4;
+  margin: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.marque p {
+  margin: 0;
+  font: 600 12px/1 var(--police-chiffres);
+  letter-spacing: 0.18em;
+}
+
+.marque .date {
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--doux);
+  text-transform: capitalize;
+}
+
+.discret {
+  position: absolute;
+  z-index: 4;
+  padding: 5px 10px;
+  border: 1px solid var(--trait);
+  border-radius: 999px;
+  background: none;
+  color: var(--doux);
+  font: 400 11px/1.3 var(--police-chiffres);
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.discret:hover,
+.discret:focus-visible {
+  color: var(--encre);
+  border-color: var(--encre);
+}
+
+.deconnexion {
+  top: 14px;
+  right: 22px;
+}
+
+.ton {
+  bottom: 16px;
+  right: 22px;
+}
+
+/* ---------- Bords : un libellé par faisceau, posé près de son bord ---------- */
+.bord {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  gap: 8px;
+}
+
+.bord a {
+  display: grid;
+  gap: 2px;
+  color: var(--encre);
+  text-decoration: none;
+}
+
+.bord a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+}
+
+.bord[data-espace='vie-courante'] {
+  --accent: var(--olive);
+}
+.bord[data-espace='streetlifting'] {
+  --accent: var(--brique);
+}
+.bord[data-espace='marine'] {
+  --accent: var(--prusse);
+}
+.bord[data-espace='objectifs'] {
+  --accent: var(--fume);
+}
+
+.nom {
+  font: 500 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.chiffre {
+  font: 400 clamp(32px, 3.4vw, 52px) / 1 var(--police-titre);
+  font-style: italic;
+  letter-spacing: -0.01em;
+  transition: letter-spacing 0.4s var(--expo);
+}
+
+.bord a:hover .chiffre,
+.bord a:focus-visible .chiffre {
+  letter-spacing: 0.02em;
+}
+
+.detail {
+  max-width: 24ch;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--doux);
+}
+
+.barre {
+  position: relative;
+  width: min(180px, 100%);
+  height: 2px;
+  background: var(--trait);
+}
+
+.barre i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--p) * 100%);
+  background: var(--accent);
+  transform-origin: left;
+  animation: remplir 1.2s 0.7s var(--expo) backwards;
+}
+
+@keyframes remplir {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.bord {
+  padding: 10px 14px;
+  background: var(--fond-estampe);
+  border: 1px solid var(--trait);
+}
+
+.bord[data-cote='haut'] {
+  top: 14px;
+  left: 50%;
+  translate: -50% 0;
+  justify-items: center;
+  text-align: center;
+}
+.bord[data-cote='bas'] {
+  bottom: 14px;
+  left: 50%;
+  translate: -50% 0;
+  justify-items: center;
+  text-align: center;
+}
+.bord[data-cote='gauche'] {
+  left: 14px;
+  top: 50%;
+  translate: 0 -50%;
+}
+.bord[data-cote='droite'] {
+  right: 14px;
+  top: 50%;
+  translate: 0 -50%;
+  justify-items: end;
+  text-align: right;
+}
+
+/* ---------- Centre : la réserve que les fils contournent ---------- */
+.reserve {
+  position: absolute;
+  z-index: 2;
+  inset: 31% 28% 31% 29%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  min-height: 0;
+}
+
+.salut {
+  margin: 0 0 clamp(6px, 1vh, 12px);
+  font: 500 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--doux);
+}
+
+.titre {
+  margin: 0;
+  font: 400 clamp(28px, 3.3vw, 52px) / 1 var(--police-titre);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.ligne {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+
+.ligne > span {
+  display: inline-block;
+}
+
+.ligne + .ligne {
+  margin-top: 0.1em;
+  font-size: 0.62em;
+  font-style: italic;
+  color: var(--doux);
+}
+
+.unePar {
+  margin: clamp(8px, 1.4vh, 16px) 0 0;
+  font: 400 12px/1.4 var(--police-chiffres);
+  color: var(--doux);
+}
+
+.unePar b {
+  font-weight: 500;
+  color: var(--encre);
+}
+
+.resume {
+  margin: clamp(6px, 1vh, 12px) auto 0;
+  max-width: 44ch;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.chiffres {
+  margin: clamp(4px, 0.8vh, 10px) 0 0;
+  font: 400 12px/1.4 var(--police-chiffres);
+  color: var(--doux);
+}

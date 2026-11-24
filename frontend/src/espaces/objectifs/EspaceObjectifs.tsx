@@ -11,6 +11,20 @@ import { creerObjectif, echeance, STATUTS, useObjectifs } from './useObjectifs'
 
 /** Espace Objectifs : un cap qui structure les blocs (note 06). */
 export function EspaceObjectifs() {
+  return (
+    <main className={styles.espace} data-espace="objectifs">
+      <div className={styles.cible} aria-hidden="true" />
+      <BoutonRetour espace="objectifs" />
+      <Objectifs />
+    </main>
+  )
+}
+
+/**
+ * Le contenu de la page, sans son enveloppe (fond, retour à l'accueil) : un fragment,
+ * à poser dans la grille d'un thème. Classique et les autres thèmes l'utilisent.
+ */
+export function Objectifs() {
   const {
     objectifs,
     exercices,
@@ -25,10 +39,7 @@ export function EspaceObjectifs() {
   const [formulaireOuvert, setFormulaireOuvert] = useState(false)
 
   return (
-    <main className={styles.espace} data-espace="objectifs">
-      <div className={styles.cible} aria-hidden="true" />
-      <BoutonRetour espace="objectifs" />
-
+    <>
       <header className={styles.entete}>
         <p className={styles.marque}>Objectifs</p>
         <button type="button" className={styles.bouton} onClick={() => setFormulaireOuvert((v) => !v)}>
@@ -190,7 +201,7 @@ export function EspaceObjectifs() {
           ))}
         </section>
       )}
-    </main>
+    </>
   )
 }
 

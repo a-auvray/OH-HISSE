@@ -46,7 +46,7 @@ describe('Coque du thème Papier', () => {
     await user.click(screen.getByRole('button', { name: '◐ Mode sombre' }))
 
     expect(screen.getByRole('main')).toHaveAttribute('data-ton', 'soir')
-    expect(localStorage.getItem('oh-hisse.papier.ton')).toBe('soir')
+    expect(localStorage.getItem('oh-hisse.ton')).toBe('soir')
   })
 })
 

@@ -5,7 +5,7 @@ import { Link, NavLink } from 'react-router'
 import { espaceParId, type IdEspace } from '../../espaces/espaces'
 import { OPPOSE } from '../../navigation/directions'
 import styles from './Coque.module.css'
-import { useTon } from './ton'
+import { useTon } from '../ton'
 
 export interface OngletPapier {
   chemin: string
