@@ -1,0 +1,45 @@
+/* La ligne de charge : un filet tendu, une ombre douce qui la suit, deux appuis. Tout vient des jetons du thème. */
+.poutre {
+  display: block;
+  overflow: visible;
+}
+
+.ligne {
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+/* L'ombre portée suit la déformée : 6 px plus bas, très atténuée. Une ombre est toujours sombre. */
+.ombre {
+  fill: none;
+  stroke: rgb(0 0 0 / 0.18);
+  stroke-width: 1.5;
+  filter: blur(2px);
+}
+
+.fantome,
+.survol path {
+  fill: none;
+  stroke: var(--texte);
+  stroke-width: 1.5;
+}
+
+.fantome {
+  opacity: 0.25;
+}
+
+.survol {
+  opacity: 0.3;
+}
+
+.survol text,
+.etiquette {
+  fill: var(--texte);
+  font: 400 13px var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+}
+
+.appui {
+  fill: var(--filet);
+}
