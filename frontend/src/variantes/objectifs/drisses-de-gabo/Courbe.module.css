@@ -1,0 +1,63 @@
+.courbe {
+  margin: 0;
+}
+
+.courbe svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.courbe figcaption {
+  margin-top: 6px;
+  font: 500 12px/1.4 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.axe {
+  stroke: var(--filet);
+  stroke-width: 1;
+}
+
+/* Le bord droit EST la drisse : le tracé du mât à l'échéance. */
+.drisse {
+  stroke: var(--texte-doux);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 5;
+}
+
+.historique,
+.necessaire,
+.tendance {
+  fill: none;
+}
+
+.historique {
+  stroke: var(--accent-clair);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.necessaire {
+  stroke: var(--accent-clair);
+  stroke-width: 1;
+}
+
+/* La tendance réelle : des créneaux, pas une courbe, pour ne pas évoquer la mer. */
+.tendance {
+  stroke: var(--alerte-texte);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 3;
+}
+
+.point {
+  fill: var(--accent);
+  stroke: var(--fond);
+  stroke-width: 1.5;
+}
+
+.graduation {
+  fill: var(--texte-doux);
+  font: 500 10px var(--police-chiffres);
+}

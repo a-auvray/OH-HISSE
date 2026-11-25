@@ -1,0 +1,223 @@
+/*
+ * La pièce des Drisses de Gabo : pas de cartes, deux filets (tête et base) qui traversent la page, la lecture à
+ * gauche, la sculpture au milieu, les drisses à droite. Les couleurs viennent toutes des jetons du thème ;
+ * la « lumière de tête » est un voile d'accent qui tombe du haut, assez léger pour ne rien changer au contraste du texte.
+ */
+.page {
+  display: grid;
+  gap: 22px;
+  min-width: 0;
+  padding-top: 8px;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--accent) 9%, transparent), transparent 360px)
+    no-repeat;
+}
+
+.barre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+
+.barre p {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--texte-doux);
+  font-size: 14px;
+}
+
+.erreur {
+  margin: 0;
+  color: var(--danger-texte);
+}
+
+.etat {
+  margin: 0;
+  color: var(--texte-doux);
+  font: 500 14px/1.4 var(--police-chiffres);
+}
+
+/* Le rail des onglets dans la marge, le panneau à droite. */
+.corps {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 48px);
+  align-items: start;
+}
+
+.panneau {
+  min-width: 0;
+}
+
+/* La lecture (4 colonnes sur 12), puis la scène (8 colonnes) : sculpture et drisses se partagent l'espace restant. */
+.piece {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: clamp(24px, 3vw, 48px);
+  align-items: start;
+}
+
+.scene {
+  --ecart: 32px;
+  --haut-entete: 64px;
+  --haut-zone: clamp(280px, 52vh, 500px);
+
+  display: flex;
+  align-items: start;
+  gap: var(--ecart);
+  min-width: 0;
+}
+
+/* Un seul objectif : la sculpture occupe toute la scène, c'est le seul objet de la pièce. */
+.sculpture {
+  display: grid;
+  grid-template-rows: var(--haut-entete) var(--haut-zone) auto;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.zoneSculpture {
+  position: relative;
+  min-height: 0;
+  outline-offset: 4px;
+}
+
+.zoneSculpture > canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.zoneSculpture:focus-visible {
+  outline: 3px double var(--texte);
+}
+
+.legende {
+  margin: 0;
+  padding-top: 14px;
+  text-align: center;
+  color: var(--texte-doux);
+  font: 500 12px/1.4 var(--police-chiffres);
+  letter-spacing: 0.04em;
+}
+
+.rangee {
+  display: flex;
+  flex: 1 1 0;
+  flex-wrap: wrap;
+  gap: 32px var(--ecart);
+  min-width: 0;
+}
+
+/* Quatre drisses ou plus : elles passent à la ligne au lieu de s'écraser et de se chevaucher. */
+.rangee > * {
+  flex: 1 1 120px;
+  max-width: 200px;
+}
+
+.rien {
+  margin: 0;
+  max-width: 52ch;
+  color: var(--texte-doux);
+  font-size: 15px;
+}
+
+/* L'état vide : une seule drisse en pointillé, de la base à la tête, et la pince posée au sol. */
+.vide {
+  --haut-zone: 220px;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px clamp(24px, 4vw, 56px);
+  padding: 8px 0 8px 12px;
+}
+
+.videZone {
+  position: relative;
+  flex: none;
+  width: 72px;
+  height: var(--haut-zone);
+  --ecart: 24px;
+}
+
+.videZone svg {
+  position: absolute;
+  inset: 0;
+  left: 50%;
+  width: 48px;
+  height: 100%;
+  translate: -50% 0;
+  overflow: visible;
+}
+
+.videZone line {
+  stroke: var(--texte-doux);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 6;
+  vector-effect: non-scaling-stroke;
+}
+
+.videZone span {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 26px;
+  height: 7px;
+  translate: -50% 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--fond);
+}
+
+.videTexte {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  max-width: 52ch;
+}
+
+.videTexte > * {
+  margin: 0;
+}
+
+.videTexte h2 {
+  font: 400 clamp(1.8rem, 3vw, 2.6rem) / 1.1 var(--police-objectifs, var(--police-titre));
+  color: var(--texte);
+}
+
+.videTexte p {
+  color: var(--texte-doux);
+  font-size: 15px;
+}
+
+@media (max-width: 1100px) {
+  .piece {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .corps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .scene {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sculpture {
+    flex: none;
+  }
+
+  .rangee {
+    flex: none;
+    flex-wrap: wrap;
+    row-gap: 32px;
+  }
+
+  .rangee > * {
+    flex: 1 1 140px;
+    max-width: none;
+  }
+}

@@ -1,0 +1,89 @@
+/* Le rail : une ligne de 1 px et des taquets de 16 px, le taquet plein est l'onglet actif. */
+.rail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 14px;
+  border-left: 1px solid var(--filet);
+}
+
+.onglet {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 10px 8px 14px;
+  border: 0;
+  background: none;
+  color: var(--texte-doux);
+  font: 500 14px/1.3 var(--police-texte);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.onglet:hover {
+  color: var(--texte);
+}
+
+.onglet[aria-selected='true'] {
+  color: var(--texte);
+  font-weight: 700;
+}
+
+.onglet:focus-visible {
+  outline: 3px double var(--texte);
+  outline-offset: 2px;
+}
+
+/* Le taquet : accroché au rail, plein quand l'onglet est actif. */
+.taquet {
+  position: absolute;
+  left: -15px;
+  top: 50%;
+  width: 16px;
+  height: 6px;
+  translate: 0 -50%;
+  border: 1px solid var(--texte-doux);
+  background: none;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease;
+}
+
+.onglet[aria-selected='true'] .taquet {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.compte {
+  font: 500 12px var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+:root[data-animations='immobile'] .onglet,
+:root[data-animations='immobile'] .taquet {
+  transition: none;
+}
+
+@media (max-width: 860px) {
+  .rail {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0;
+    border-left: 0;
+    border-bottom: 1px solid var(--filet);
+  }
+
+  .onglet {
+    padding: 8px 12px 14px;
+  }
+
+  .taquet {
+    left: 50%;
+    top: auto;
+    bottom: -4px;
+    translate: -50% 0;
+  }
+}
