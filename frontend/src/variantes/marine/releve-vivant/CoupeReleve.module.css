@@ -1,0 +1,143 @@
+/*
+ * La coupe de plage du Relevé Vivant. Le sable est une teinte chaude tirée du jeton d'alerte du thème,
+ * l'eau une teinte du bleu de Marine : rien n'est écrit en dur, la coupe est lisible dans les deux tons.
+ */
+.coupe {
+  display: block;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.legende {
+  font: 400 12px var(--police-chiffres);
+  fill: var(--texte-doux);
+}
+
+.repereFixe {
+  stroke: var(--texte);
+  stroke-opacity: 0.16;
+  stroke-width: 1;
+}
+
+.sable {
+  fill: color-mix(in srgb, var(--alerte-texte) 24%, var(--surface));
+}
+
+/* La frontière du sable est toujours à l'encre : la teinte seule ne porterait pas l'information. */
+.profil {
+  stroke: var(--texte);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.eau {
+  fill: color-mix(in srgb, var(--marine) 34%, var(--surface));
+}
+
+/* La mise en eau : l'eau monte depuis le fond de la coupe et se pose avec un petit rebond. */
+.mise {
+  animation: monter 900ms cubic-bezier(0.34, 1.35, 0.5, 1) both;
+}
+
+@keyframes monter {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes fondu {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+:root[data-animations='sobre'] .mise {
+  animation: fondu 250ms ease-out both;
+}
+
+:root[data-animations='immobile'] .mise {
+  animation: none;
+}
+
+.isoligne {
+  stroke: var(--texte);
+  stroke-width: 1.25;
+  stroke-opacity: 0.75;
+}
+
+.isoligneFine {
+  stroke: var(--texte);
+  stroke-width: 1.25;
+  stroke-opacity: 0.4;
+  stroke-dasharray: 3 3;
+}
+
+.etiquette,
+.niveau,
+.texteCote {
+  font: 500 12px var(--police-chiffres);
+  fill: var(--texte);
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 3.5px;
+  stroke-linejoin: round;
+}
+
+/* La frange glisse d'une longueur d'onde par période de houle : le mouvement encode la mesure. */
+.derive {
+  animation: deriver var(--duree, 7s) linear infinite;
+}
+
+@keyframes deriver {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(var(--periode) * -1));
+  }
+}
+
+:root[data-animations='sobre'] .derive {
+  animation-duration: calc(var(--duree, 7s) * 2);
+}
+
+:root[data-animations='immobile'] .derive {
+  animation: none;
+}
+
+.frange {
+  stroke: var(--texte);
+  stroke-width: 1.75;
+  stroke-linejoin: round;
+}
+
+.rivage {
+  stroke: var(--accent);
+  stroke-width: 2.25;
+  stroke-linecap: round;
+}
+
+.cote line,
+.cote path {
+  stroke: var(--accent);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.texteCote {
+  fill: var(--accent);
+}
+
+/* Mer noire : deux traits d'encre barrent la coupe, voulu, le relevé n'est pas fait pour y aller. */
+.barre line {
+  stroke: var(--texte);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
