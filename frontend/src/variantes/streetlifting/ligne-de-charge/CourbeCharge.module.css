@@ -1,0 +1,89 @@
+/* La courbe d'analyse : un tracé de banc d'essai sur un quadrillage d'un pixel. Jetons du thème uniquement. */
+.courbe {
+  position: relative;
+  line-height: 0;
+}
+
+.courbe:focus-visible {
+  outline: 2px solid var(--texte);
+  outline-offset: 2px;
+}
+
+.grille {
+  stroke: var(--filet);
+  stroke-width: 1;
+  opacity: 0.6;
+}
+
+.graduation {
+  fill: var(--texte-doux);
+  font: 400 12px var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+}
+
+.aire {
+  stroke: none;
+}
+
+.trace {
+  fill: none;
+  stroke: var(--texte);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  animation: tracer 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes tracer {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fondu {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* « Sobre » : le tracé apparaît en fondu ; « immobile » : il est là, tout de suite. */
+:global(:root[data-animations='sobre']) .trace {
+  animation: fondu 250ms ease-out both;
+}
+
+:global(:root[data-animations='immobile']) .trace {
+  animation: none;
+}
+
+/* Des repères carrés, jamais ronds : le rond est réservé au ressenti. */
+.repere {
+  fill: var(--texte);
+}
+
+.repere[data-dernier] {
+  fill: var(--accent);
+  stroke: var(--texte);
+  stroke-width: 1;
+}
+
+.repere[data-actif] {
+  stroke: var(--texte);
+  stroke-width: 2;
+}
+
+.fil {
+  stroke: var(--texte);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+.zone {
+  fill: transparent;
+  cursor: crosshair;
+}

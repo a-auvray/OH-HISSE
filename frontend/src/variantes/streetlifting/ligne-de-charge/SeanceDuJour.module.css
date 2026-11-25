@@ -1,0 +1,541 @@
+/*
+ * Séance du jour, « Ligne de charge ».
+ * La poutre en haut, un seul héros à gauche, les plaques qui pendent à droite. Toutes les couleurs
+ * viennent des jetons du thème : la page est lisible dans les quatre thèmes et dans les deux tons.
+ */
+.page {
+  display: block;
+  max-width: 1280px;
+}
+
+.attente,
+.erreur {
+  margin: 0;
+  font: 400 13px var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.erreur {
+  color: var(--danger-texte);
+}
+
+.cadre {
+  position: relative;
+}
+
+.poutre {
+  margin: 0 0 4px;
+}
+
+.grille {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px 48px;
+  align-items: start;
+}
+
+/* ───────────── Le héros ───────────── */
+.heros {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  min-width: 0;
+}
+
+.etiquette {
+  margin: 0;
+  font: 500 12px/1.4 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.bloc {
+  margin: 0;
+  font: 400 13px/1.4 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.nom {
+  margin: 0;
+  font: 500 20px/1.3 var(--police-texte);
+  color: var(--texte);
+}
+
+/* Un cran par séance du bloc : des rectangles d'un pixel, le courant en couleur d'accent. */
+.avancement {
+  display: grid;
+  gap: 3px;
+  width: min(100%, 360px);
+}
+
+.avancement span {
+  height: 8px;
+  border: 1px solid var(--texte-doux);
+}
+
+.avancement span[data-etat='fait'] {
+  background: var(--texte);
+  border-color: var(--texte);
+}
+
+.avancement span[data-etat='courant'] {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Le seul grand chiffre de la page : la charge de l'exercice choisi. */
+.charge {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 8px 0 0;
+  color: var(--texte);
+}
+
+.nombre {
+  font: 400 clamp(5rem, 10.5vw, 9.3rem) / 0.9 var(--police-streetlifting);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.nombre[data-long] {
+  font-size: clamp(2.6rem, 5vw, 4.5rem);
+}
+
+.unite {
+  font: 400 25px/1 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.seance {
+  margin: 0;
+  font: 400 20px/1.3 var(--police-texte);
+  color: var(--texte);
+}
+
+/* La bande de chauffe : de 6 à 10 par demi-points, plus l'effort est dur plus la teinte approche du texte. */
+.chauffe {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 2px;
+  width: min(100%, 360px);
+}
+
+.chauffe span {
+  height: 6px;
+  border: 1px solid var(--filet);
+}
+
+.chauffe span[data-plein] {
+  background: var(--teinte);
+  border-color: var(--teinte);
+}
+
+.cases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cases li {
+  width: 28px;
+  height: 18px;
+  border: 1px solid var(--texte-doux);
+}
+
+.equivalent {
+  margin: 0;
+  font: 400 13px/1.5 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.raisons {
+  display: grid;
+  gap: 4px;
+  max-width: 52ch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: 400 15px/24px var(--police-texte);
+  color: var(--texte);
+}
+
+.secondaire {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 16px 32px;
+  margin: 12px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--filet);
+  width: 100%;
+}
+
+.secondaire dt {
+  font: 500 12px/1.4 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.secondaire dd {
+  margin: 0;
+}
+
+.e1rm {
+  font: 400 clamp(1.7rem, 2.7vw, 2.4rem) / 1.1 var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+  color: var(--texte);
+}
+
+.detail {
+  font: 400 13px/1.4 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.alerte {
+  font: 500 12px/1.4 var(--police-chiffres);
+  color: var(--alerte-texte);
+}
+
+.tendance dd {
+  color: var(--texte);
+  line-height: 0;
+}
+
+.forme {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--filet);
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+}
+
+.forme ul {
+  margin: 0;
+  padding-left: 18px;
+  font: 400 15px/24px var(--police-texte);
+}
+
+.lancer {
+  margin-top: 8px;
+}
+
+.principal {
+  display: inline-block;
+  padding: 12px 22px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--sur-accent);
+  font: 600 14px/1.2 var(--police-texte);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.principal:hover {
+  background: var(--accent-clair);
+  border-color: var(--accent-clair);
+}
+
+.lien {
+  color: var(--texte);
+  font: 500 14px/1.4 var(--police-texte);
+  text-underline-offset: 3px;
+}
+
+.principal:focus-visible,
+.lien:focus-visible {
+  outline: 2px solid var(--texte);
+  outline-offset: 2px;
+}
+
+.vide {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  max-width: 52ch;
+}
+
+.vide h1 {
+  margin: 0;
+  font: 400 clamp(2.4rem, 5vw, 3.6rem) / 1 var(--police-streetlifting);
+  color: var(--texte);
+}
+
+.vide p {
+  margin: 0;
+  font: 400 15px/24px var(--police-texte);
+  color: var(--texte);
+}
+
+.vide .etiquette {
+  font: 500 12px/1.4 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+/* ───────────── Le graphique de profondeur ───────────── */
+.profondeur {
+  min-width: 0;
+}
+
+.titreProfondeur {
+  margin: 0 0 4px;
+  font: 500 12px/1.4 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.aide {
+  max-width: 52ch;
+  margin: 0 0 8px;
+  font: 400 13px/1.5 var(--police-texte);
+  color: var(--texte-doux);
+}
+
+.plan {
+  position: relative;
+  isolation: isolate;
+}
+
+.echelle span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  font: 400 12px/1 var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+  color: var(--texte-doux);
+}
+
+.echelle span::after {
+  content: '';
+  position: absolute;
+  left: 52px;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: color-mix(in srgb, var(--filet) 50%, transparent);
+}
+
+.cent {
+  position: absolute;
+  left: 52px;
+  right: 0;
+  border-top: 1px solid var(--texte-doux);
+}
+
+.cent span {
+  position: absolute;
+  right: 0;
+  bottom: 3px;
+  font: 400 12px/1 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.cible {
+  position: absolute;
+  left: 52px;
+  right: 0;
+  border-top: 1px dashed color-mix(in srgb, var(--texte) 55%, transparent);
+  transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.cible a {
+  position: absolute;
+  right: 0;
+  top: 6px;
+  z-index: 2;
+  display: grid;
+  gap: 2px;
+  padding: 3px 8px;
+  background: var(--surface-haute);
+  color: var(--texte);
+  font: 500 12px/1.3 var(--police-chiffres);
+  text-align: right;
+  text-decoration: none;
+}
+
+.cible a small {
+  font: 400 12px/1.3 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.cible a:focus-visible {
+  outline: 2px solid var(--texte);
+  outline-offset: 2px;
+}
+
+/* La ligne de cible s'étire de 8 px vers le bas, vers l'espace Objectifs : seulement en « cinéma ». */
+:global(:root:not([data-animations='sobre']):not([data-animations='immobile'])) .cible:hover,
+:global(:root:not([data-animations='sobre']):not([data-animations='immobile'])) .cible:focus-within {
+  transform: translateY(8px);
+}
+
+.plaques {
+  position: absolute;
+  inset: 0 0 0 52px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.colonne {
+  position: relative;
+  min-width: 0;
+}
+
+/* La plaque arrive en glissant : plus elle est lourde (son lest), plus elle est lente et démarre tard. */
+.suspente {
+  position: absolute;
+  inset: 0;
+  animation: glisse calc(420ms * var(--masse, 1)) cubic-bezier(0.22, 1, 0.36, 1) var(--retard, 0ms) both;
+}
+
+@keyframes glisse {
+  0% {
+    transform: translateX(-160px);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(-5px);
+  }
+  90% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes apparait {
+  from {
+    opacity: 0;
+    transform: translateX(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+:global(:root[data-animations='sobre']) .suspente {
+  animation: apparait 250ms ease-out both;
+}
+
+:global(:root[data-animations='immobile']) .suspente {
+  animation: none;
+}
+
+.cable {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  background: var(--texte-doux);
+  opacity: 0.6;
+}
+
+.plaque {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  z-index: 1;
+  display: grid;
+  gap: 3px;
+  align-content: start;
+  padding: 10px 12px;
+  border: 1px solid var(--filet);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--texte);
+  text-align: left;
+  /* Une arête claire en haut, comme une plaque éclairée en lumière rasante. */
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--texte) 22%, transparent),
+    var(--ombre-carte);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.plaque:hover {
+  border-color: var(--texte-doux);
+}
+
+.plaque[aria-pressed='true'] {
+  border-color: var(--texte);
+  background: var(--surface-haute);
+}
+
+.plaque:focus-visible {
+  outline: 2px solid var(--texte);
+  outline-offset: 2px;
+}
+
+.plaque[data-inconnu] {
+  border-style: dashed;
+}
+
+.nomPlaque {
+  font: 500 12px/1.3 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+  overflow-wrap: anywhere;
+}
+
+.chargePlaque {
+  font: 400 clamp(1.1rem, 1.9vw, 1.6rem) / 1.1 var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+}
+
+.pctPlaque {
+  font: 400 12px/1.3 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+@media (max-width: 900px) {
+  .grille {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .plaques {
+    inset: 0 0 0 44px;
+  }
+
+  .echelle span::after,
+  .cent,
+  .cible {
+    left: 44px;
+  }
+
+  .plaque {
+    left: 2px;
+    right: 2px;
+    padding: 8px;
+  }
+}

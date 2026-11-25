@@ -1,0 +1,134 @@
+/*
+ * Analyse, « Ligne de charge » : la poutre, des choix en capitales à chasse fixe, trois chiffres et un tracé
+ * de banc d'essai. Les couleurs viennent toutes des jetons du thème.
+ */
+.page {
+  display: block;
+  max-width: 1280px;
+}
+
+.cadre {
+  display: grid;
+  gap: 24px;
+}
+
+.cadre > * {
+  min-width: 0;
+}
+
+.poutre {
+  margin: 0 0 -12px;
+}
+
+.filtres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 40px;
+}
+
+.choix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 18px;
+}
+
+.choix button {
+  padding: 6px 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: none;
+  color: var(--texte-doux);
+  font: 500 12px/1.3 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.choix button:hover {
+  color: var(--texte);
+}
+
+.choix button[aria-checked='true'] {
+  color: var(--texte);
+  border-bottom-color: var(--texte);
+}
+
+.choix button:focus-visible {
+  outline: 2px solid var(--texte);
+  outline-offset: 2px;
+}
+
+.chiffres {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 32px;
+  margin: 0;
+}
+
+.chiffres > div {
+  display: grid;
+  gap: 2px;
+  padding-top: 10px;
+  border-top: 1px solid var(--filet);
+}
+
+.chiffres dt {
+  font: 500 12px/1.4 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.chiffres dd {
+  margin: 0;
+}
+
+.valeur {
+  font: 400 clamp(1.8rem, 3.4vw, 2.4rem) / 1.1 var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+  color: var(--texte);
+}
+
+.detail {
+  font: 400 13px/1.4 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.planche {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.planche figcaption {
+  font: 500 12px/1.4 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.lecture {
+  min-height: 1.5em;
+  margin: 0;
+  font: 400 13px/1.5 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.vide,
+.erreur {
+  margin: 0;
+  max-width: 52ch;
+  font: 400 15px/24px var(--police-texte);
+  color: var(--texte-doux);
+}
+
+.erreur {
+  color: var(--danger-texte);
+}
+
+@media (max-width: 640px) {
+  .chiffres {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+}
