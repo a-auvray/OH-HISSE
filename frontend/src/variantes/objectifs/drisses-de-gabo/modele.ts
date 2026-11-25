@@ -94,7 +94,7 @@ export function calculerRythme(o: ObjectifLu, points: readonly PointEvolution[],
   const semainesRestantes = Math.max(0, o.jours_restants) / 7
   const reel = penteReelle(points, aujourdhui)
   const necessaire =
-    actuel === null || o.jours_restants <= 0
+    actuel === null || o.progression?.cible_atteinte || o.jours_restants <= 0
       ? null
       : Math.max(0, (o.valeur_cible_kg - actuel) / semainesRestantes)
   const projection = actuel === null || reel === null ? null : actuel + reel * semainesRestantes
@@ -141,7 +141,7 @@ export function phrasePente(o: ObjectifLu, rythme: Rythme | null, chargement = f
 
 /** « −3,1 kg au 15 mars au rythme actuel » ; vide si la projection est inconnue. */
 export function phraseEcart(o: ObjectifLu, rythme: Rythme | null): string {
-  if (!rythme || rythme.ecart === null || o.statut !== 'en_cours') return ''
+  if (!rythme || rythme.ecart === null || o.statut !== 'en_cours' || o.progression?.cible_atteinte) return ''
   const date = dateCourte(o.date_cible)
   return rythme.ecart >= 0
     ? `${signe(rythme.ecart, 1)} kg d’avance au ${date} au rythme actuel`

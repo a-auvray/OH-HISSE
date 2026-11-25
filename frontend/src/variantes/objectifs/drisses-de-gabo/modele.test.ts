@@ -151,6 +151,16 @@ describe('calculerRythme', () => {
       calculerRythme(objectif({ jours_restants: 0 }), SEANCES_REGULIERES, AUJOURDHUI).necessaire,
     ).toBeNull()
   })
+
+  it('n’exige plus aucune pente quand la cible est déjà atteinte, même avec une échéance devant soi', () => {
+    const atteint = objectif({
+      progression: { e1rm_lest_kg: 51, le: '2026-11-21', pourcentage: 102, cible_atteinte: true },
+    })
+    const r = calculerRythme(atteint, SEANCES_REGULIERES, AUJOURDHUI)
+    expect(r.necessaire).toBeNull()
+    expect(phraseEcart(atteint, r)).toBe('')
+    expect(phrasePente(atteint, r)).toBe('Cible atteinte : tu peux marquer l’objectif atteint.')
+  })
 })
 
 describe('statut', () => {

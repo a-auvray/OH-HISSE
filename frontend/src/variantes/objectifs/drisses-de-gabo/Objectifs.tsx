@@ -1,4 +1,4 @@
-import { type KeyboardEvent, useEffect, useState } from 'react'
+import { type KeyboardEvent, useEffect, useRef, useState } from 'react'
 
 import type { ObjectifLu } from '../../../api/types'
 import { aujourdhui } from '../../../commun/format'
@@ -57,6 +57,10 @@ export function ObjectifsDrisses() {
   const [choix, setChoix] = useState<number | null>(null)
   const [formulaireOuvert, setFormulaireOuvert] = useState(false)
   const [annonce, setAnnonce] = useState('')
+  // Le focus suit l'objectif ouvert : quand le geste fait disparaître l'élément qui l'avait (la drisse qui passe de la
+  // rangée à la fiche, le bouton dont le libellé change), on le pose sur la sculpture plutôt que de le laisser tomber sur <body>.
+  const zoneSculpture = useRef<HTMLDivElement>(null)
+  const [demandeFocus, setDemandeFocus] = useState(0)
   // Un changement de statut se voit tout de suite (la torsion tombe, le ruban pivote) sans attendre le rechargement :
   // on le garde à part, rattaché aux données qu'il corrige, et il s'efface quand de nouvelles données arrivent.
   const [surcharge, setSurcharge] = useState<{
@@ -84,15 +88,22 @@ export function ObjectifsDrisses() {
   const rythmeDe = (o: ObjectifLu): Rythme | null =>
     o.statut === 'en_cours' ? calculerRythme(o, evolutions.get(o.exercice_id) ?? [], jour) : null
 
-  // Touches 1 à 3 : les onglets ; N : tendre une corde. Jamais depuis un champ de saisie.
+  useEffect(() => {
+    if (demandeFocus > 0) zoneSculpture.current?.focus()
+  }, [demandeFocus])
+
+  // Touches 1 à 3 : les onglets ; N : tendre une corde. Jamais depuis un champ de saisie. Le geste est consommé
+  // (preventDefault) : sinon la lettre tapée suivrait le focus et s'inscrirait dans le champ qui vient de s'ouvrir.
   useEffect(() => {
     const surTouche = (e: globalThis.KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey || saisieEnCours(e.target)) return
       const rang = ['1', '2', '3'].indexOf(e.key)
       if (rang >= 0) {
+        e.preventDefault()
         setOnglet(ONGLETS[rang]!.id)
         setChoix(null)
       } else if (e.key === 'n' || e.key === 'N') {
+        e.preventDefault()
         setFormulaireOuvert(true)
       }
     }
@@ -105,16 +116,23 @@ export function ObjectifsDrisses() {
     setChoix(null)
   }
 
+  function choisir(o: ObjectifLu) {
+    setChoix(o.id)
+    setDemandeFocus((n) => n + 1)
+  }
+
   function changer(o: ObjectifLu, statut: Statut) {
     setSurcharge({ source: objectifs, statuts: new Map(statuts).set(o.id, statut) })
     setOnglet(ONGLET_DU_STATUT[statut])
     setChoix(o.id)
     setAnnonce(ANNONCES[statut](o.titre))
+    setDemandeFocus((n) => n + 1)
     void changerStatut(o, statut)
   }
 
   function enAvant(o: ObjectifLu) {
     setChoix(o.id)
+    setDemandeFocus((n) => n + 1)
     setAnnonce(`Objectif mis en avant : ${o.titre}`)
     void mettreEnAvant(o)
   }
@@ -232,6 +250,7 @@ export function ObjectifsDrisses() {
                 <div className={styles.sculpture}>
                   <EnteteDrisse objectif={fiche} />
                   <div
+                    ref={zoneSculpture}
                     className={`${styles.zoneSculpture} ${commun.filets}`}
                     role="meter"
                     tabIndex={0}
@@ -262,7 +281,7 @@ export function ObjectifsDrisses() {
                         chargement={chargement}
                         animation={animation}
                         rang={i + 1}
-                        onChoisir={() => setChoix(o.id)}
+                        onChoisir={() => choisir(o)}
                       />
                     ))}
                   </section>

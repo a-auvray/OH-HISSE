@@ -43,7 +43,9 @@ export function Fiche({
 }: Props) {
   const etat = statut(o, rythme)
   const enCours = o.statut === 'en_cours'
-  const necessaire = enCours ? (rythme?.necessaire ?? null) : null
+  // Cible déjà atteinte : plus de pente à tenir, la décision du jour est de marquer l'objectif atteint.
+  const atteinte = enCours && o.progression?.cible_atteinte === true
+  const necessaire = enCours && !atteinte ? (rythme?.necessaire ?? null) : null
   const reel = enCours ? (rythme?.reel ?? null) : null
   const pente = phrasePente(o, rythme, chargement)
   const ecart = phraseEcart(o, rythme)

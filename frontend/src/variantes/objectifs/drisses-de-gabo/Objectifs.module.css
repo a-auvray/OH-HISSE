@@ -104,12 +104,14 @@
 .rangee {
   display: flex;
   flex: 1 1 0;
-  gap: var(--ecart);
+  flex-wrap: wrap;
+  gap: 32px var(--ecart);
   min-width: 0;
 }
 
+/* Quatre drisses ou plus : elles passent à la ligne au lieu de s'écraser et de se chevaucher. */
 .rangee > * {
-  flex: 1 1 0;
+  flex: 1 1 120px;
   max-width: 200px;
 }
 

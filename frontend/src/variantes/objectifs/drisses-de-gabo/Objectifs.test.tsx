@@ -1,4 +1,5 @@
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ObjectifLu } from '../../../api/types'
@@ -65,7 +66,10 @@ interface Appel {
 }
 
 /** Un petit serveur en mémoire : les écritures changent ce que les lectures suivantes renvoient, comme la vraie API. */
-function simuler(depart: ObjectifLu[], { evolutions = true }: { evolutions?: boolean } = {}) {
+function simuler(
+  depart: ObjectifLu[],
+  { evolutions = true, attente }: { evolutions?: boolean; attente?: Promise<void> } = {},
+) {
   let objectifs = depart.map((o) => ({ ...o }))
   const appels: Appel[] = []
   vi.spyOn(globalThis, 'fetch').mockImplementation(async (requete) => {
@@ -92,7 +96,10 @@ function simuler(depart: ObjectifLu[], { evolutions = true }: { evolutions?: boo
       return Response.json({})
     }
     if (r.method !== 'GET') return Response.json({})
-    if (r.url.includes('/evolution/')) return Response.json(evolutions ? seances() : [])
+    if (r.url.includes('/evolution/')) {
+      await attente
+      return Response.json(evolutions ? seances() : [])
+    }
     if (r.url.includes('/exercices'))
       return Response.json([
         { id: 1, nom: 'Tractions' },
@@ -312,6 +319,105 @@ describe('Objectifs, variante Drisses de Gabo', () => {
     expect(champ).toHaveFocus()
     fireEvent.keyDown(champ, { key: '2' })
     expect(screen.getByRole('tab', { name: /En cours/ })).toHaveAttribute('aria-selected', 'true')
+  })
+
+  it('n’écrit pas la lettre N dans le champ que la touche N vient d’ouvrir', async () => {
+    const user = userEvent.setup()
+    simuler([TRACTION])
+    rendre(<ObjectifsDrisses />)
+    await screen.findByRole('heading', { level: 2, name: 'Traction +50 kg' })
+
+    await user.keyboard('n')
+    const champ = await screen.findByLabelText('Intitulé')
+    expect(champ).toHaveFocus()
+    expect(champ).toHaveValue('')
+    // Une fois dans le champ, les lettres s'écrivent normalement.
+    await user.keyboard('n')
+    expect(champ).toHaveValue('n')
+  })
+
+  it('garde le focus sur la sculpture quand Entrée fait passer une drisse de la rangée à la fiche', async () => {
+    simuler([TRACTION, DIPS])
+    rendre(<ObjectifsDrisses />)
+    await screen.findByRole('heading', { level: 2, name: 'Traction +50 kg' })
+
+    meter('Dips +70 kg').focus()
+    fireEvent.keyDown(meter('Dips +70 kg'), { key: 'Enter' })
+    expect(screen.getByRole('heading', { level: 2, name: 'Dips +70 kg' })).toBeInTheDocument()
+    expect(meter('Dips +70 kg')).toHaveFocus()
+  })
+
+  it('garde le focus sur la sculpture après un clic sur le nom d’une drisse, et après un changement de statut', async () => {
+    simuler([TRACTION, DIPS])
+    rendre(<ObjectifsDrisses />)
+    await screen.findByRole('heading', { level: 2, name: 'Traction +50 kg' })
+
+    fireEvent.click(screen.getByRole('button', { name: 'Dips +70 kg' }))
+    expect(meter('Dips +70 kg')).toHaveFocus()
+
+    screen.getByRole('button', { name: 'Abandonner' }).focus()
+    fireEvent.click(screen.getByRole('button', { name: 'Abandonner' }))
+    await screen.findByRole('button', { name: 'Reprendre' })
+    expect(meter('Dips +70 kg')).toHaveFocus()
+  })
+
+  it('dit « calcul en cours » tant que l’historique n’est pas arrivé, sans prétendre qu’il manque', async () => {
+    let ouvrir = () => {}
+    const attente = new Promise<void>((resolu) => {
+      ouvrir = resolu
+    })
+    simuler([TRACTION], { attente })
+    rendre(<ObjectifsDrisses />)
+
+    expect(await screen.findByText('pente : calcul en cours', { selector: 'p' })).toBeInTheDocument()
+    expect(screen.queryByText('pente : données insuffisantes')).not.toBeInTheDocument()
+    expect(meter('Traction +50 kg')).toHaveAttribute(
+      'aria-valuetext',
+      expect.stringContaining('pente : calcul en cours'),
+    )
+
+    ouvrir()
+    expect(await screen.findByText('tu fais')).toBeInTheDocument()
+    expect(screen.queryByText('pente : calcul en cours')).not.toBeInTheDocument()
+  })
+
+  it('ne retélécharge pas l’historique d’un mouvement déjà connu', async () => {
+    const appels = simuler([TRACTION, DIPS])
+    rendre(<ObjectifsDrisses />)
+    await screen.findByRole('heading', { level: 2, name: 'Traction +50 kg' })
+    await screen.findByText('tu fais')
+    await waitFor(() => expect(meter('Dips +70 kg').getAttribute('aria-valuetext')).toContain('il faut'))
+
+    fireEvent.click(screen.getByRole('button', { name: 'Dips +70 kg' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Traction +50 kg' }))
+    await screen.findByRole('heading', { level: 2, name: 'Traction +50 kg' })
+
+    const evolutions = appels.filter((a) => a.url.includes('/evolution/'))
+    expect(evolutions).toHaveLength(2)
+    expect(screen.queryByText('pente : données insuffisantes')).not.toBeInTheDocument()
+  })
+
+  it('invite à marquer atteint, sans pente à tenir, quand la cible est déjà atteinte', async () => {
+    simuler([
+      objectif({
+        id: 1,
+        titre: 'Traction +50 kg',
+        principal: true,
+        progression: { e1rm_lest_kg: 51, le: '2026-11-21', pourcentage: 102, cible_atteinte: true },
+      }),
+    ])
+    rendre(<ObjectifsDrisses />)
+
+    const fiche = await screen.findByRole('region', { name: 'Objectif principal' })
+    expect(
+      await within(fiche).findByText('Cible atteinte : tu peux marquer l’objectif atteint.'),
+    ).toBeInTheDocument()
+    // L'historique est arrivé : la décision reste la même, sans « il faut +0 kg/sem ».
+    await waitFor(() => expect(screen.queryByText('pente : calcul en cours')).not.toBeInTheDocument())
+    expect(within(fiche).queryByText('il faut')).not.toBeInTheDocument()
+    expect(within(fiche).queryByText('tu fais')).not.toBeInTheDocument()
+    expect(within(fiche).queryByText(/d’avance/)).not.toBeInTheDocument()
+    expect(within(fiche).getByRole('button', { name: 'Marquer atteint' })).toBeInTheDocument()
   })
 
   it('range les objectifs dans trois onglets, aux touches 1 à 3', async () => {
