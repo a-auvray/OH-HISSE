@@ -1,0 +1,161 @@
+/* L'ensemble : des colonnes de strates à hauteur normalisée, et les prochains paliers à droite. */
+.ensemble {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(190px, 230px);
+  gap: 24px 40px;
+  align-items: start;
+}
+
+.principal {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+
+.colonnes,
+.regles,
+.paliers ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.colonnes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px 40px;
+  align-items: flex-start;
+}
+
+.objet {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  width: 166px;
+  animation: pose 0.5s var(--courbe-sortie, ease-out) both;
+  animation-delay: calc(var(--rang, 0) * 60ms);
+}
+
+@keyframes pose {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+:global(html[data-animations='immobile']) .objet {
+  animation: none;
+}
+
+:global(html[data-animations='sobre']) .objet {
+  animation-duration: 0.25s;
+  animation-delay: 0s;
+}
+
+.nom {
+  margin: 0;
+  font: 800 1.25rem / 1.15 var(--police-titre);
+  overflow-wrap: anywhere;
+}
+
+.nomBouton {
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: var(--texte);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nomBouton:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.nomBouton:focus-visible {
+  outline: 2px solid var(--encre-tirage);
+  outline-offset: 3px;
+}
+
+.pourcent {
+  margin: 0;
+  color: var(--texte);
+  font: 300 3.8rem / 1 var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.estime,
+.etiquette,
+.reste {
+  margin: 0;
+  color: var(--texte-doux);
+  font: 400 12.5px/1.4 var(--police-chiffres);
+  letter-spacing: 0.05em;
+}
+
+.etiquette {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.legende {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--texte-doux);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.regles li {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+
+.regles li > :first-child {
+  width: 100%;
+}
+
+/* --- Les prochains paliers --- */
+.paliers {
+  display: grid;
+  gap: 12px;
+  padding-left: 20px;
+  border-left: 1px solid var(--filet);
+}
+
+.paliers h3 {
+  margin: 0;
+}
+
+.paliers ul {
+  display: grid;
+  gap: 14px;
+}
+
+.paliers li {
+  display: grid;
+  gap: 2px;
+  color: var(--texte);
+  font-size: 14px;
+}
+
+.palier {
+  font: 500 13px/1.4 var(--police-chiffres);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 860px) {
+  .ensemble {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .paliers {
+    padding-left: 0;
+    padding-top: 16px;
+    border-left: 0;
+    border-top: 1px solid var(--filet);
+  }
+}

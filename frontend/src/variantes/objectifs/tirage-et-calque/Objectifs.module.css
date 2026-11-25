@@ -1,0 +1,189 @@
+/*
+ * La planche. Toutes ses couleurs viennent des jetons du thème courant (surface, texte, accent,
+ * filets), dans le ton jour comme dans le ton sombre : une encre (l'accent mêlé au texte), un
+ * trait de construction (l'accent), un halo (l'accent très dilué dans la surface). Rien n'est écrit en dur.
+ */
+.planche {
+  --encre-tirage: color-mix(in srgb, var(--accent) 60%, var(--texte));
+  --construction: var(--accent);
+  --halo: color-mix(in srgb, var(--accent) 22%, var(--surface));
+  --givre: color-mix(in srgb, var(--surface-haute) 16%, transparent);
+  --ombre-calque: rgb(0 0 0 / 0.3);
+
+  max-width: 1280px;
+  padding: clamp(10px, 2vw, 28px);
+  background: var(--surface);
+  box-shadow: var(--ombre-carte);
+  color: var(--texte);
+  font: 15px/1.6 var(--police-texte);
+}
+
+/* Le cadre : un filet double, comme le cadre d'une planche de dessin. */
+.cadre {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0 clamp(12px, 2vw, 28px);
+  padding: clamp(12px, 2vw, 24px);
+  border: 1px solid var(--texte);
+  outline: 1px solid var(--filet);
+  outline-offset: 3px;
+}
+
+/* --- Les intercalaires : empilés sur le bord gauche --- */
+.intercalaires {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-self: start;
+}
+
+.intercalaire {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 128px;
+  padding: 12px 14px;
+  border: 1px solid var(--filet);
+  border-right-width: 3px;
+  background: none;
+  color: var(--texte-doux);
+  font: 500 12px/1.2 var(--police-chiffres);
+  letter-spacing: 0.12em;
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    translate 0.25s var(--courbe-sortie, ease-out);
+}
+
+.intercalaire:hover {
+  background: var(--voile);
+  color: var(--texte);
+}
+
+.intercalaire[aria-selected='true'] {
+  border-color: var(--texte);
+  background: var(--surface-haute);
+  color: var(--texte);
+  translate: 6px 0;
+}
+
+.intercalaire:focus-visible {
+  outline: 2px solid var(--encre-tirage);
+  outline-offset: 2px;
+}
+
+.touche {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid currentColor;
+  font-size: 11px;
+}
+
+.contenu {
+  display: grid;
+  gap: 20px;
+  align-content: start;
+  min-width: 0;
+}
+
+/* --- Le bandeau d'état : tout le diagnostic, lisible sans survol --- */
+.bandeau {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
+  min-height: 56px;
+  padding: 8px 0;
+  border-block: 1px solid var(--texte);
+  box-shadow:
+    0 -3px 0 -2px var(--filet),
+    0 3px 0 -2px var(--filet);
+}
+
+.etat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin: 0;
+  color: var(--texte);
+  font: 400 13px/1.6 var(--police-chiffres);
+  letter-spacing: 0.03em;
+}
+
+.panneau {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+  outline: none;
+}
+
+/* La feuille vierge d'une nouvelle planche : elle se pose au-dessus de la liasse. */
+.feuilleVierge {
+  min-width: 0;
+}
+
+.note {
+  margin: 0;
+  color: var(--texte-doux);
+  font: 400 13px/1.6 var(--police-chiffres);
+}
+
+.erreur {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  margin: 0;
+  color: var(--danger-texte);
+}
+
+.erreur p {
+  margin: 0;
+}
+
+.vide {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  max-width: 56ch;
+  padding: 24px 0;
+}
+
+.vide h2 {
+  margin: 0;
+  font: 800 clamp(1.8rem, 3vw, 2.6rem) / 1.1 var(--police-titre);
+  text-transform: uppercase;
+}
+
+.vide p {
+  margin: 0;
+  color: var(--texte-doux);
+  line-height: 1.6;
+}
+
+/* Sur un écran étroit, les intercalaires passent en rangée au-dessus de la planche. */
+@media (max-width: 760px) {
+  .cadre {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .intercalaires {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .intercalaire {
+    min-width: 0;
+  }
+
+  .intercalaire[aria-selected='true'] {
+    translate: 0 -2px;
+  }
+}
