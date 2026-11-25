@@ -1,0 +1,411 @@
+/* Séance du jour, Banc d'essai : les séries du jour en blocs, la courbe caractéristique de l'exercice. */
+
+/* Une réserve d'impression : la grille millimétrée s'arrête sous le texte, aux bords adoucis. */
+.reserve {
+  position: relative;
+  background: var(--surface);
+  box-shadow: 0 0 6px 6px var(--surface);
+}
+
+.etat {
+  margin: 0;
+  padding: 8px 0;
+  font: 400 14px/1.5 var(--police-chiffres);
+  color: var(--texte);
+}
+
+.etat[role='alert'] {
+  color: var(--danger-texte);
+}
+
+/* --- Le mors du haut : le bloc, l'avancement, le poids --- */
+.bloc {
+  font-weight: 600;
+}
+
+.crans {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1 1 220px;
+  max-width: 420px;
+}
+
+.crans ol {
+  display: grid;
+  flex: 1;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.crans li {
+  height: 14px;
+  background: color-mix(in srgb, currentColor 25%, transparent);
+}
+
+.crans li[data-etat='fait'] {
+  background: currentColor;
+}
+
+.crans li[data-etat='courant'] {
+  background: var(--accent);
+  outline: 1px solid currentColor;
+}
+
+.poids {
+  margin-left: auto;
+}
+
+.poids strong {
+  font-weight: 600;
+}
+
+.poids em {
+  font-style: normal;
+  text-decoration: underline;
+}
+
+/* --- Le corps : l'essai à gauche, la courbe à droite --- */
+.corps {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 32px clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+
+.colonne {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+
+.heros {
+  display: grid;
+  gap: 10px;
+}
+
+/*
+ * Le titre encaisse la charge : il prend la largeur et la graisse de l'intensité du jour
+ * (--largeur, --graisse, --suivi, calculés dans modele.ts). Une police sans axe de largeur
+ * ne garde que l'espacement des lettres ; le conteneur est de largeur fixe, aucun reflow ailleurs.
+ */
+.titre {
+  margin: 0;
+  font-family: var(--police-streetlifting);
+  font-size: clamp(2.8rem, 6.2vw, 6rem);
+  font-weight: 400;
+  font-stretch: calc(var(--largeur, 100) * 1%);
+  font-variation-settings:
+    'wdth' var(--largeur, 100),
+    'wght' var(--graisse, 700);
+  line-height: 0.95;
+  letter-spacing: var(--suivi, 0.04em);
+  text-transform: uppercase;
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+
+:global(:root:not([data-animations='immobile'])) .titre {
+  animation: etire 900ms 300ms var(--expo, cubic-bezier(0.16, 1, 0.3, 1)) backwards;
+}
+
+:global(:root[data-animations='sobre']) .titre {
+  animation-duration: 250ms;
+  animation-delay: 0ms;
+}
+
+@keyframes etire {
+  from {
+    letter-spacing: 0;
+    opacity: 0.4;
+  }
+}
+
+.nom {
+  margin: 0;
+  font: 500 15px/1.4 var(--police-texte);
+  color: var(--texte);
+}
+
+.etiquette {
+  margin: 0;
+  font: 500 13px/1.35 var(--police-chiffres);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texte);
+}
+
+.intensite {
+  display: grid;
+  gap: 8px;
+  max-width: 340px;
+  padding: 6px 0;
+}
+
+.forme {
+  display: grid;
+  gap: 6px;
+  padding: 8px 0 8px 14px;
+  border-left: 2px solid var(--accent);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.forme ul {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lien {
+  justify-self: start;
+  color: var(--texte);
+  font: 500 13px/1.4 var(--police-chiffres);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lien:hover {
+  color: var(--accent);
+}
+
+/* --- Les rangées : un exercice, ses séries en blocs --- */
+.rangees {
+  display: grid;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rangee {
+  display: grid;
+  gap: 8px;
+  padding: 6px 0 6px 14px;
+  border-left: 2px solid var(--texte);
+}
+
+:global(:root:not([data-animations='immobile'])) .rangee {
+  animation: imprime 400ms calc(600ms + var(--rang, 0) * 50ms) var(--expo, cubic-bezier(0.16, 1, 0.3, 1))
+    backwards;
+}
+
+:global(:root[data-animations='sobre']) .rangee {
+  animation-duration: 250ms;
+  animation-delay: 0ms;
+}
+
+@keyframes imprime {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.enteteRangee {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.enteteRangee h3 {
+  margin: 0;
+  font: 600 18px/1.2 var(--police-texte);
+  color: var(--texte);
+}
+
+.courbeBouton,
+.principal,
+.secondaire {
+  display: inline-block;
+  cursor: pointer;
+  font: 600 13px/1.2 var(--police-chiffres);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.courbeBouton {
+  padding: 6px 12px;
+  border: 1px solid var(--texte);
+  background: transparent;
+  color: var(--texte);
+}
+
+.courbeBouton[aria-pressed='true'] {
+  background: var(--texte);
+  color: var(--fond);
+}
+
+.courbeBouton:hover:not([aria-pressed='true']) {
+  background: var(--voile);
+}
+
+.programme {
+  margin: 0;
+  font: 500 14px/1.4 var(--police-chiffres);
+  color: var(--texte);
+}
+
+/*
+ * Le diagramme de chargement : une série = un bloc. La largeur dit les répétitions, la hauteur la
+ * charge totale en % du 1RM, le chiffre le RPE. Contour pointillé : c'est du prévu.
+ */
+.blocs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 6px;
+  min-height: 100px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--texte);
+}
+
+.blocs li {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: calc(var(--reps, 1) * 18px + 16px);
+  height: calc(min(var(--hauteur, 0.5), 1.1) * 96px);
+  padding-bottom: 4px;
+  border: 1.5px dashed var(--texte);
+  border-bottom: 0;
+}
+
+.rpe {
+  font: 600 14px/1 var(--police-chiffres);
+  color: var(--texte);
+}
+
+.marge {
+  margin: 0;
+  font: 400 13px/1.4 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.raisons {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--texte-doux);
+}
+
+.raisons li::before {
+  content: '— ';
+}
+
+.note {
+  margin: 0;
+  font: 400 14px/1.5 var(--police-chiffres);
+  color: var(--texte);
+}
+
+.note[role='alert'] {
+  color: var(--danger-texte);
+}
+
+.historique {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  max-width: 340px;
+}
+
+.trait {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  color: var(--texte);
+}
+
+.trait strong {
+  font: 600 20px/1 var(--police-chiffres);
+  color: var(--texte);
+}
+
+/* --- Les actions --- */
+.lancer,
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.principal {
+  padding: 13px 22px;
+  border: 1px solid var(--texte);
+  background: var(--texte);
+  color: var(--fond);
+}
+
+.principal:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--sur-accent);
+}
+
+.secondaire {
+  padding: 13px 22px;
+  border: 1px solid var(--texte);
+  background: transparent;
+  color: var(--texte);
+}
+
+.secondaire:hover {
+  background: var(--voile);
+}
+
+.courbeBouton:focus-visible,
+.principal:focus-visible,
+.secondaire:focus-visible,
+.lien:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* --- L'état vide --- */
+.vide {
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+  max-width: 560px;
+  padding: 12px 0;
+}
+
+.vide p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.titreVide {
+  margin: 0;
+  font-family: var(--police-streetlifting);
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+@media (max-width: 960px) {
+  .corps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .poids {
+    margin-left: 0;
+  }
+}
