@@ -1,0 +1,70 @@
+.reglette {
+  display: grid;
+  gap: 4px;
+  min-width: 200px;
+}
+
+/* La règle : un trait d'un pixel, graduée. Les crans sont posés par le composant. */
+.regle {
+  position: relative;
+  height: 34px;
+  border-bottom: 1px solid var(--texte);
+  overflow: hidden;
+}
+
+.cran {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  height: 8px;
+  background: var(--texte-doux);
+}
+
+.cran[data-grand] {
+  height: 14px;
+  background: var(--texte);
+}
+
+/*
+ * L'index glisse jusqu'à la valeur, en partant de l'origine. La piste fait toute la largeur et
+ * l'index est collé à son bord droit : décalée de (1 − p) fois sa largeur, il tombe à p.
+ * Seul transform bouge.
+ */
+.course {
+  position: absolute;
+  inset: 0;
+  transform: translateX(calc((var(--p) - 1) * 100%));
+}
+
+.index {
+  position: absolute;
+  top: 0;
+  right: -1px;
+  width: 3px;
+  height: 100%;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px var(--surface);
+}
+
+:global(:root:not([data-animations='immobile'])) .course {
+  animation: glisse 700ms 300ms var(--expo, cubic-bezier(0.16, 1, 0.3, 1)) backwards;
+}
+
+:global(:root[data-animations='sobre']) .course {
+  animation-duration: 250ms;
+  animation-delay: 0ms;
+}
+
+@keyframes glisse {
+  from {
+    transform: translateX(-100%);
+  }
+}
+
+.bornes {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  font: 400 13px/1.2 var(--police-chiffres);
+  color: var(--texte-doux);
+}
