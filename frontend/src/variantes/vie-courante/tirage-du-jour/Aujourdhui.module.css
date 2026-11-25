@@ -1,0 +1,609 @@
+/*
+ * Aujourd'hui, Le Tirage du jour : une feuille de papier non couché, une seule encre (le jeton --accent de
+ * l'espace) et une seconde, le rose du soir, réservée au verdict d'écart. Les couleurs de surface et de texte
+ * viennent toutes des jetons du thème : la feuille est lisible dans les quatre thèmes, jour comme sombre.
+ * Seules les deux encres du verdict (rose et graphite posé dessus) sont fixes, parce qu'elles font partie
+ * de la donnée.
+ */
+
+.page {
+  max-width: 1240px;
+}
+
+.attente,
+.erreur {
+  margin: 0;
+  font: 400 13px var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.erreur {
+  color: var(--danger-texte);
+}
+
+/* ---------- La feuille ---------- */
+.feuille {
+  --rose-du-soir: #f2668b;
+  --graphite: #2b2a28;
+  --marge: clamp(24px, 4cqi, 56px);
+  position: relative;
+  container-type: inline-size;
+  isolation: isolate;
+  background: var(--surface);
+  color: var(--texte);
+  border: 1px solid var(--filet);
+  box-shadow: var(--ombre-carte);
+  font: 400 16px/1.6 var(--police-texte);
+}
+
+/* Pendant l'entrée, ce qui glisse ne doit pas déborder de la feuille. */
+.feuille[data-entree='tirage'],
+.feuille[data-entree='glisse'],
+.feuille[data-entree='fondu'] {
+  overflow: hidden;
+}
+
+/*
+ * La lumière rasante sur les fibres : un dégradé qui part du côté où est le soleil (à gauche le matin, à droite
+ * le soir) et dont la force dit la hauteur du soleil. Il ne dépend que de la position réelle du soleil et des
+ * jetons du thème ; en dessous du soleil de midi ou la nuit, il s'efface presque.
+ */
+.lumiere {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--rasance, 0.3);
+  background: linear-gradient(
+    90deg,
+    var(--surface-haute) 0%,
+    transparent 48%,
+    color-mix(in srgb, var(--texte) 6%, transparent) 100%
+  );
+  transition: opacity 2s ease;
+}
+
+.feuille[data-cote='droite'] .lumiere {
+  transform: scaleX(-1);
+}
+
+:global(:root[data-animations='immobile']) .lumiere {
+  transition: none;
+}
+
+.masque {
+  position: relative;
+}
+
+/*
+ * Le masque compositeur : il descend avec le rouleau pendant que son contenu remonte d'autant. Les deux
+ * translations s'annulent, donc le contenu ne bouge pas : c'est le bord du masque, qui rogne, qui le révèle.
+ * Sans ce rognage, la page apparaîtrait d'un bloc dès le premier instant.
+ */
+.feuille[data-entree='tirage'] .masque,
+.feuille[data-entree='glisse'] .masque {
+  overflow: hidden;
+}
+
+.contenu {
+  display: grid;
+  gap: clamp(24px, 3.5cqi, 44px);
+  padding: clamp(24px, 3cqi, 40px) calc(var(--marge) + 124px) clamp(28px, 4cqi, 52px) var(--marge);
+}
+
+/* ---------- Le premier tirage : le rouleau et le masque ---------- */
+.feuille[data-entree='tirage'] .masque {
+  animation: depot 1100ms cubic-bezier(0.86, 0, 0.07, 1) both;
+}
+
+.feuille[data-entree='tirage'] .contenu {
+  animation: contre-depot 1100ms cubic-bezier(0.86, 0, 0.07, 1) both;
+}
+
+.feuille[data-entree='glisse'] .masque {
+  animation: depot 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.feuille[data-entree='glisse'] .contenu {
+  animation: contre-depot 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.feuille[data-entree='fondu'] .masque {
+  animation: fondu 250ms ease both;
+}
+
+@keyframes depot {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes contre-depot {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fondu {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Le rouleau : une bande de lumière de 40 px au bord du masque qui descend. */
+.rouleau {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  animation: depot 1100ms cubic-bezier(0.86, 0, 0.07, 1) both;
+}
+
+.rouleau::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, var(--surface-haute));
+  border-bottom: 1px solid var(--filet);
+}
+
+/* Le rose arrive un peu après le vert. */
+.feuille[data-entree='tirage'] .titreBloc > span:first-child {
+  animation: encrer 600ms 1220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Le calage : le titre arrive décalé de 2 px et 1 px, puis se cale. Jamais en Sobre ni en Immobile. */
+.feuille[data-entree='tirage'] .titre {
+  animation: calage 700ms 1000ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes encrer {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes calage {
+  from {
+    transform: translate(2px, -1px);
+  }
+  to {
+    transform: translate(0, 0);
+  }
+}
+
+/* Écart pris : la une se recompose sur un fondu vertical. */
+.titreBloc[data-pris] .titre {
+  animation: recomposer 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes recomposer {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+:global(:root[data-animations='immobile']) .masque,
+:global(:root[data-animations='immobile']) .contenu,
+:global(:root[data-animations='immobile']) .titre,
+:global(:root[data-animations='immobile']) .titreBloc > span:first-child {
+  animation: none;
+}
+
+:global(:root[data-animations='sobre']) .titreBloc[data-pris] .titre {
+  animation: fondu 250ms ease both;
+}
+
+/* ---------- Folio ---------- */
+.folio {
+  margin: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--texte);
+  font: 400 clamp(1rem, 1.6cqi, 1.25rem) / 1.4 var(--police-espace);
+  font-variant-numeric: tabular-nums;
+  color: var(--texte);
+}
+
+/* ---------- Grille asymétrique : la une, puis le corps ---------- */
+.grille {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  row-gap: 32px;
+  align-items: start;
+}
+
+.une {
+  grid-column: 1 / 9;
+  display: grid;
+  gap: 16px;
+}
+
+.corps {
+  grid-column: 9 / 13;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 20px;
+  row-gap: 8px;
+  align-content: start;
+}
+
+.corps > .rubrique {
+  grid-column: 1 / -1;
+}
+
+.texteCorps {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  min-width: 0;
+}
+
+.colonneBloc {
+  padding: 4px 10px 4px 0;
+}
+
+.surTitre {
+  margin: 0;
+  font: 400 12px/1.3 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  color: var(--texte-doux);
+}
+
+.titreBloc {
+  position: relative;
+  display: grid;
+  max-width: 100%;
+}
+
+.titre {
+  position: relative;
+  margin: 0;
+  padding: 0.04em 0.3em 0.1em 0;
+  font: italic 400 clamp(2.75rem, 9.4cqi, 7.4rem) / 0.96 var(--police-espace);
+  letter-spacing: -0.01em;
+  color: var(--accent);
+  text-wrap: balance;
+}
+
+/* L'aplat plein porte une encre fixe, graphite : 4,8:1 sur le rose quel que soit le thème. */
+.titreBloc[data-impression='aplat'] .titre {
+  color: var(--graphite);
+}
+
+.titreBloc[data-impression='trame'] .titre,
+.titreBloc[data-impression='vide'] .titre {
+  color: var(--texte);
+}
+
+.chapeau {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--texte);
+}
+
+.rubrique {
+  margin: 0;
+  font: 400 12px/1.3 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.ecart {
+  display: grid;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--filet);
+}
+
+.ligne {
+  margin: 0;
+  color: var(--texte);
+}
+
+.ligne strong {
+  font: 400 1.5rem / 1 var(--police-chiffres);
+}
+
+.verdict {
+  font-weight: 600;
+}
+
+.bareme {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: 400 13px/1.5 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.bareme li + li::before {
+  content: '·';
+  margin: 0 0.6em;
+}
+
+/* ---------- Le corps : la récupération ---------- */
+.pourcentage {
+  margin: 0;
+  font: 400 clamp(3.2rem, 7cqi, 4.75rem) / 1 var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+  color: var(--texte);
+}
+
+.unite {
+  font-size: 0.5em;
+}
+
+.legende {
+  margin: 0;
+  font: 400 12px/1.4 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.raisons {
+  display: grid;
+  gap: 4px;
+  margin: 0 0 12px;
+  padding-left: 1.1em;
+  color: var(--texte);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---------- Rangée du bas : la nuit, la balance, en bref ---------- */
+.rangee {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--texte);
+}
+
+.rubriqueBloc {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  min-width: 0;
+}
+
+.chiffre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  font: 400 clamp(2.4rem, 5cqi, 3.8rem) / 1 var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+  color: var(--texte);
+}
+
+.badge {
+  padding: 1px 6px;
+  border: 1px solid var(--texte);
+  font: 400 12px/1.4 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------- Saisies ---------- */
+.champ {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.champ label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  color: var(--texte);
+}
+
+.champ input {
+  width: 6ch;
+  padding: 6px 8px;
+  border: 1px solid var(--filet);
+  border-bottom: 2px solid var(--accent);
+  border-radius: 0;
+  background: var(--creux);
+  color: var(--texte);
+  font: 400 1.5rem / 1.2 var(--police-chiffres);
+}
+
+.champ input::placeholder {
+  color: var(--texte-doux);
+}
+
+.lunes {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.lunes button {
+  min-width: 34px;
+  min-height: 34px;
+  border: 1px solid var(--filet);
+  border-radius: 0;
+  background: transparent;
+  color: var(--texte-doux);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.lunes button[data-allume] {
+  border-color: var(--accent);
+  background: var(--voile);
+  color: var(--accent);
+}
+
+.bouton {
+  min-height: 36px;
+  padding: 6px 14px;
+  border: 1px solid var(--texte);
+  border-radius: 0;
+  background: transparent;
+  color: var(--texte);
+  font: 500 14px/1.3 var(--police-texte);
+  cursor: pointer;
+  justify-self: start;
+}
+
+.bouton:hover:not(:disabled) {
+  background: var(--voile);
+}
+
+.bouton:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.bouton:focus-visible,
+.lunes button:focus-visible,
+.champ input:focus-visible,
+.lien:focus-visible,
+.onglet:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.liens {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lien {
+  color: var(--texte);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+.lien:hover {
+  color: var(--accent);
+}
+
+/* ---------- Bord droit : onglets de marge et tranche de la pile ---------- */
+.bord {
+  position: absolute;
+  inset: 0 0 0 auto;
+  z-index: 1;
+  display: flex;
+  gap: 10px;
+  padding: clamp(24px, 3cqi, 40px) 0 clamp(28px, 4cqi, 52px) 0;
+}
+
+.marge {
+  display: flex;
+  gap: 6px;
+  writing-mode: vertical-rl;
+}
+
+.onglet {
+  padding: 4px 2px;
+  font: 400 12px/1.3 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--texte-doux);
+}
+
+.onglet:hover {
+  color: var(--texte);
+}
+
+.onglet[aria-current='page'] {
+  color: var(--accent);
+  border-right: 2px solid var(--accent);
+  font-weight: 600;
+}
+
+.pile {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 14px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.legendePile {
+  margin: 0;
+  writing-mode: vertical-rl;
+  font: 400 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.04em;
+  color: var(--texte-doux);
+}
+
+/* ---------- Étroit : une seule colonne, le bord passe sous la page ---------- */
+@container (max-width: 820px) {
+  .contenu {
+    padding-right: var(--marge);
+  }
+
+  .grille {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .une,
+  .corps {
+    grid-column: 1 / -1;
+  }
+
+  .rangee {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bord {
+    position: static;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 var(--marge) 20px;
+  }
+
+  .marge {
+    writing-mode: horizontal-tb;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .onglet[aria-current='page'] {
+    border-right: 0;
+    border-bottom: 2px solid var(--accent);
+  }
+
+  .pile {
+    display: none;
+  }
+
+  .legendePile {
+    writing-mode: horizontal-tb;
+  }
+}

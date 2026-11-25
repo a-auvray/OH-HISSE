@@ -1,0 +1,157 @@
+/* Les dessins de la feuille : colonne de trame, rectangle rose, réglette, barre de nuit, tranche. */
+
+/* ---------- Colonne de récupération ---------- */
+.colonne {
+  position: relative;
+  width: 112px;
+  height: 320px;
+  border: 1px solid var(--accent);
+}
+
+.rempli {
+  position: absolute;
+  inset: auto 0 0;
+  overflow: hidden;
+}
+
+.calque {
+  position: absolute;
+  inset: 0;
+}
+
+/*
+ * La respiration : un deuxième calque, aux points un peu plus gros, apparaît et disparaît. Seule l'opacité
+ * change (compositeur, pas de rééchantillonnage donc pas de moiré). `--periode` vient de la récupération :
+ * 12 s reposé, 6 s en dette. L'animation va et vient (alternate), chaque sens dure donc la moitié.
+ */
+.souffle {
+  opacity: 0;
+  animation: respirer calc(var(--periode, 12s) / 2) ease-in-out infinite alternate;
+}
+
+@keyframes respirer {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+:global(:root[data-animations='sobre']) .souffle {
+  animation-duration: calc(var(--periode, 12s) / 0.6);
+}
+
+:global(:root[data-animations='immobile']) .souffle {
+  animation: none;
+  opacity: 0.5;
+}
+
+.seuil {
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  border-top: 2px solid var(--texte);
+}
+
+/* ---------- Rectangle d'impression du rose ---------- */
+.aplat,
+.rectangleTrame,
+.cadreVide {
+  position: absolute;
+  inset: 0 0 0 -24px;
+  pointer-events: none;
+}
+
+.aplat {
+  background: var(--rose-du-soir);
+}
+
+.rectangleTrame {
+  opacity: 0.6;
+}
+
+.cadreVide {
+  border: 1px solid var(--accent);
+}
+
+/* ---------- Réglette « écart mérité ? » ---------- */
+.reglette {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  max-width: 420px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.case {
+  display: grid;
+  gap: 2px;
+  justify-items: start;
+}
+
+.boite {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 28px;
+  border: 1px solid var(--accent);
+  overflow: hidden;
+}
+
+.case[data-courante] .boite {
+  border-width: 2px;
+}
+
+.plein {
+  position: absolute;
+  inset: 0;
+}
+
+.valeur {
+  font: 400 12px/1.3 var(--police-chiffres);
+  color: var(--texte);
+}
+
+.repere {
+  min-height: 1.3em;
+  font: 400 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+/* ---------- Barre de nuit : hachures sur une échelle de 0 à 10 h ---------- */
+.nuit {
+  position: relative;
+  height: 22px;
+  border-left: 1px solid var(--texte-doux);
+  border-bottom: 1px solid var(--texte-doux);
+}
+
+.barre {
+  position: absolute;
+  inset: 3px auto 3px 0;
+  border: 1px solid var(--accent);
+  overflow: hidden;
+}
+
+.nuit[data-courte] .barre {
+  border-width: 2px;
+}
+
+.moyenne {
+  position: absolute;
+  top: -2px;
+  bottom: 0;
+  border-left: 1px dashed var(--texte);
+}
+
+/* ---------- Tranche de la pile ---------- */
+.tranche {
+  display: block;
+  width: 14px;
+  max-height: 100%;
+}
