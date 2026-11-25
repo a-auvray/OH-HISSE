@@ -143,13 +143,15 @@ function SeanceEnCours({
         .map((p) => p.valeur)
     : []
 
-  const echelle = echelleProfondeur([
-    ...plaques.flatMap((p) => (p.rapport === null ? [] : [p.rapport * 100])),
-    100,
-  ])
   const objectif = references.objectif
   const recordObjectif = objectif ? references.parExercice.get(objectif.exercice_id)?.record : undefined
   const pctCible = objectif ? pourcentageCible(poids, objectif.valeur_cible_kg, recordObjectif ?? null) : null
+  // La cible compte dans l'échelle : sinon sa ligne sortirait du cadre au-delà de 110 % ou sous 60 %.
+  const echelle = echelleProfondeur([
+    ...plaques.flatMap((p) => (p.rapport === null ? [] : [p.rapport * 100])),
+    100,
+    ...(pctCible === null ? [] : [pctCible]),
+  ])
   const y = (pct: number) => DECALAGE + profondeur(pct, echelle, HAUTEUR_PLAN)
   const phraseDeLaCible = objectif
     ? phraseCible(objectif.progression?.pourcentage ?? null, echeance(objectif.jours_restants))

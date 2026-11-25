@@ -2,6 +2,7 @@ import { act, render } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { useRessort } from './animation'
+import { abscisseEtiquette } from './modele'
 import { Poutre } from './Poutre'
 
 function Sonde({ cible }: { cible: number }) {
@@ -72,6 +73,25 @@ describe('La ligne de charge', () => {
       <Poutre largeur={0} amplitude={20} position={0.5} etiquette={null} teinte="var(--texte)" />,
     )
     expect(container.querySelector('svg')).toBeNull()
+  })
+})
+
+describe("L'étiquette de la poutre", () => {
+  const texte = '41,5 kg de lest · 100 % du record'
+
+  it('reste dans le cadre aux deux extrémités', () => {
+    const demi = (texte.length * 7.8) / 2 + 4
+    expect(abscisseEtiquette(576, texte, 600)).toBeCloseTo(600 - demi)
+    expect(abscisseEtiquette(0, texte, 600)).toBeCloseTo(demi)
+    expect(abscisseEtiquette(300, texte, 600)).toBe(300)
+  })
+
+  it('se centre quand elle est plus large que le cadre', () => {
+    expect(abscisseEtiquette(10, texte, 200)).toBe(100)
+  })
+
+  it('suit le point sans texte', () => {
+    expect(abscisseEtiquette(300, null, 600)).toBe(300)
   })
 })
 

@@ -160,6 +160,19 @@ export function profondeur(pct: number, echelle: EchelleProfondeur, hauteur: num
   return ((pct - echelle.min) / (echelle.max - echelle.min)) * hauteur
 }
 
+/** Largeur approchée d'un caractère de l'étiquette (13 px, chiffres tabulaires) : sert à la garder dans le cadre. */
+const LARGEUR_CARACTERE = 7.8
+
+/**
+ * L'abscisse du centre d'une étiquette, bornée pour que le texte entier reste dans le cadre ; si elle est
+ * plus large que le cadre, elle est centrée.
+ */
+export function abscisseEtiquette(centre: number, texte: string | null, largeur: number): number {
+  const demi = ((texte?.length ?? 0) * LARGEUR_CARACTERE) / 2 + 4
+  if (2 * demi >= largeur) return largeur / 2
+  return Math.min(Math.max(centre, demi), largeur - demi)
+}
+
 /* ───────────── Le ressort ───────────── */
 
 export interface ReglageRessort {

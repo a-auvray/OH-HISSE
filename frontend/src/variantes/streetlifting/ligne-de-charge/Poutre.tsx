@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { useRessort } from './animation'
-import { cheminPoutre } from './modele'
+import { abscisseEtiquette, cheminPoutre } from './modele'
 import styles from './Poutre.module.css'
 
 /** Hauteur du dessin : le repos, la flèche maximale, et la place de l'étiquette sous le point bas. */
@@ -53,9 +53,9 @@ export function Poutre({ largeur, amplitude, position, etiquette, teinte, survol
 
   if (largeur <= 0) return <div style={{ height: HAUTEUR_POUTRE }} aria-hidden="true" />
 
-  const x = Math.min(Math.max(p * largeur, 90), Math.max(90, largeur - 90))
+  const x = abscisseEtiquette(p * largeur, etiquette, largeur)
   const yBas = Y_REPOS + a
-  const xSurvol = survol ? Math.min(Math.max(survol.position * largeur, 90), Math.max(90, largeur - 90)) : 0
+  const xSurvol = survol ? abscisseEtiquette(survol.position * largeur, survol.etiquette, largeur) : 0
 
   return (
     <svg
