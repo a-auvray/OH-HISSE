@@ -44,7 +44,12 @@ const ordre = (i: number) => ({ ['--i']: i }) as CSSProperties
  * qu'on fait glisser et la plage en coupe. Toute la page suit l'heure choisie ; l'eau la suit avec un
  * léger retard (un ressort flottant), comme une vraie marée.
  */
-export function ConditionsReleve({ conditions, spotId }: { conditions: Conditions; spotId: number | null }) {
+export function ConditionsReleve(props: { conditions: Conditions; spotId: number | null }) {
+  /* Un autre spot repart de zéro : l'heure choisie et le niveau animé n'ont de sens que pour une plage. */
+  return <PageReleve key={props.conditions.spot.id} {...props} />
+}
+
+function PageReleve({ conditions, spotId }: { conditions: Conditions; spotId: number | null }) {
   const { creneau, durees } = useReleve(spotId)
   const animation = useNiveauAnimation()
   const [cadre, largeurMesuree] = useLargeur<HTMLDivElement>()
@@ -189,9 +194,11 @@ export function ConditionsReleve({ conditions, spotId }: { conditions: Condition
               </ol>
             </div>
             <p className={styles.note}>
-              {eau !== null && eau !== undefined && eau < 15
-                ? 'Sous 15 °C : risque de choc thermique, entre lentement.'
-                : 'Au-dessus du seuil de choc thermique (15 °C).'}
+              {eau === null || eau === undefined
+                ? 'Température de l’eau inconnue : entre lentement.'
+                : eau < 15
+                  ? 'Sous 15 °C : risque de choc thermique, entre lentement.'
+                  : 'Au-dessus du seuil de choc thermique (15 °C).'}
               {surMaintenant && typeof durees?.conseille_min === 'number' && (
                 <>
                   {' '}

@@ -251,14 +251,34 @@ export function CourbeReleve({
           const largeurPlage = px1 - px0
           if (largeurPlage <= 0) return null
           return (
-            <g key={p.debutMs} data-niveau={p.niveau}>
-              <rect x={px0} y={0} width={largeurPlage} height={RUBAN} className={styles.plage} />
+            <g key={p.debutMs}>
+              <rect
+                x={px0}
+                y={0}
+                width={largeurPlage}
+                height={RUBAN}
+                className={styles.plage}
+                data-niveau={p.niveau}
+              />
               {p.niveau === 'rouge' && (
                 <rect x={px0} y={0} width={largeurPlage} height={RUBAN} fill={`url(#${id}rouge)`} />
               )}
-              <rect x={px0} y={0} width={largeurPlage} height={RUBAN} className={styles.contourPlage} />
+              <rect
+                x={px0}
+                y={0}
+                width={largeurPlage}
+                height={RUBAN}
+                className={styles.contourPlage}
+                data-niveau={p.niveau}
+              />
               {largeurPlage > 56 && (
-                <text x={px0 + largeurPlage / 2} y={13} textAnchor="middle" className={styles.libellePlage}>
+                <text
+                  x={px0 + largeurPlage / 2}
+                  y={13}
+                  textAnchor="middle"
+                  className={styles.libellePlage}
+                  data-niveau={p.niveau}
+                >
                   {NOM_DANGER[p.niveau]}
                 </text>
               )}

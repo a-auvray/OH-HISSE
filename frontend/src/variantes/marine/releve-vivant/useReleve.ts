@@ -16,7 +16,15 @@ export function useReleve(spotId: number | null) {
       }),
       (e) => messageErreur(e, 'Assistant indisponible.'),
     )
-    return { creneau: assistant.creneaux[0] ?? null, durees: assistant.recommandations?.durees ?? null }
+    return {
+      spotId,
+      creneau: assistant.creneaux[0] ?? null,
+      durees: assistant.recommandations?.durees ?? null,
+    }
   }, [spotId])
-  return reponse.etat === 'pret' && reponse.valeur ? reponse.valeur : { creneau: null, durees: null }
+  /* `useDonnees` garde l'ancienne réponse jusqu'à la nouvelle : on ne la rend que si elle est pour ce spot. */
+  if (reponse.etat === 'pret' && reponse.valeur && reponse.valeur.spotId === spotId) {
+    return { creneau: reponse.valeur.creneau, durees: reponse.valeur.durees }
+  }
+  return { creneau: null, durees: null }
 }

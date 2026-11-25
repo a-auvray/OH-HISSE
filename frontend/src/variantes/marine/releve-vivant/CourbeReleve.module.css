@@ -121,10 +121,11 @@
 .plage {
   fill: var(--danger-vert);
 }
-[data-niveau='rouge'] .plage {
+/* Le niveau est posé sur l'élément lui-même : un sélecteur descendant attraperait aussi la page, qui porte le danger global. */
+.plage[data-niveau='rouge'] {
   fill: var(--danger-rouge);
 }
-[data-niveau='noir'] .plage {
+.plage[data-niveau='noir'] {
   fill: var(--danger-noir);
 }
 
@@ -138,7 +139,7 @@
   stroke: var(--texte);
   stroke-width: 1;
 }
-[data-niveau='noir'] .contourPlage {
+.contourPlage[data-niveau='noir'] {
   stroke: var(--danger-noir-liseret);
   stroke-width: 1.5;
 }
@@ -148,7 +149,7 @@
   letter-spacing: 0.08em;
   fill: var(--encre-danger);
 }
-[data-niveau='noir'] .libellePlage {
+.libellePlage[data-niveau='noir'] {
   fill: var(--danger-noir-liseret);
 }
 

@@ -62,17 +62,17 @@ export function CoupeReleve({
 
   const utile = Math.max(40, largeur - GAUCHE - DROITE)
   const dMax = Math.max(50, dernier?.distance ?? 0)
-  const hMax = Math.max(premier?.hauteur ?? 0, hauteur)
-  const hMin = dernier?.hauteur ?? 0
-  const haut = Math.ceil(hMax)
-  const bas = Math.min(0, Math.floor(hMin))
+  /* L'échelle ne dépend que du profil : le niveau animé (qui dépasse un peu) ne la fait pas sauter. */
+  const haut = Math.ceil(premier?.hauteur ?? 0)
+  const bas = Math.min(0, Math.floor(dernier?.hauteur ?? 0))
+  const niveau = Math.min(haut, Math.max(bas, hauteur))
   const x = echelle(0, dMax, GAUCHE, GAUCHE + utile)
   const y = echelle(bas, haut, HAUT + HAUTEUR_UTILE, HAUT)
   const yFond = HAUT + HAUTEUR_UTILE
 
-  const dEau = distanceAuNiveau(profil, hauteur)
+  const dEau = distanceAuNiveau(profil, niveau)
   const xEau = x(dEau)
-  const yEau = y(hauteur)
+  const yEau = y(niveau)
   const xFin = x(dMax)
   const longueur = Math.max(0, xFin - xEau)
 
@@ -95,7 +95,7 @@ export function CoupeReleve({
           .join(' ')} L${xEau.toFixed(1)},${y(altitudeADistance(profil, dEau)).toFixed(1)} Z`
       : ''
 
-  const lignes = isolignes(profil, hauteur)
+  const lignes = isolignes(profil, niveau)
   const metres = Array.from({ length: haut - bas + 1 }, (_, k) => bas + k)
   const phrase = phraseDeDistance(distanceM)
   const coteCourte = xEau - x(0) < 120
@@ -169,7 +169,7 @@ export function CoupeReleve({
       )}
       <line x1={xEau} x2={xEau} y1={yEau - 8} y2={yEau + 14} className={styles.rivage} />
       <text x={xFin - 4} y={yEau - amplitude - 8} textAnchor="end" className={styles.niveau}>
-        eau à {nombre(Number(hauteur.toFixed(1)))} m
+        eau à {nombre(Number(niveau.toFixed(1)))} m
       </text>
 
       {/* La cote d'ingénieur : de la digue à l'eau, arrondie à 10 m. */}

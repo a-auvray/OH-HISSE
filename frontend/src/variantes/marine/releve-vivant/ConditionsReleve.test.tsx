@@ -197,6 +197,43 @@ describe('Conditions de la mer, Le Relevé Vivant', () => {
     expect(screen.getAllByRole('heading', { level: 2 })[0]).toHaveTextContent('Pas avant')
   })
 
+  it.each(['rouge', 'noir'] as const)(
+    'peint chaque plage du ruban de son propre niveau, même quand le danger global est %s',
+    (global) => {
+      rendre(
+        <ConditionsReleve
+          conditions={avec({ danger: { niveau: global, raisons: [] } } as Partial<Conditions>)}
+          spotId={1}
+        />,
+      )
+
+      const plages = [...document.querySelectorAll('svg rect[data-niveau]')].map((r) =>
+        r.getAttribute('data-niveau'),
+      )
+      // Le ruban garde ses heures vertes et rouges : le niveau est sur chaque plage, pas sur la page.
+      expect(plages).toContain('vert')
+      expect(plages).toContain('rouge')
+      expect(plages).not.toContain('noir')
+      expect(document.querySelectorAll('svg g[data-niveau]')).toHaveLength(0)
+    },
+  )
+
+  it('ne prétend pas que l’eau est au-dessus du seuil quand sa température est inconnue', () => {
+    const sansEau = CONDITIONS.heures.map((h) => ({ ...h, eau_c: null }))
+    rendre(
+      <ConditionsReleve
+        conditions={avec({
+          heures: sansEau,
+          maintenant: { ...CONDITIONS.maintenant, eau_c: null },
+        } as Partial<Conditions>)}
+        spotId={1}
+      />,
+    )
+
+    expect(screen.getByText(/Température de l’eau inconnue : entre lentement\./)).toBeInTheDocument()
+    expect(screen.queryByText(/Au-dessus du seuil de choc thermique/)).not.toBeInTheDocument()
+  })
+
   it('barre la coupe et retire le créneau quand la mer est noire', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json(ASSISTANT))
     rendre(
