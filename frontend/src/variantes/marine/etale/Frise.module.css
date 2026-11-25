@@ -1,0 +1,151 @@
+/*
+ * La frise des heures. Les couleurs viennent des jetons du thème ; le seul signe qui ne se dit
+ * pas en couleur seule est le danger (trait fin, hachures, plein) : sa forme porte le sens.
+ */
+.frise {
+  width: 100%;
+}
+
+.plan {
+  position: relative;
+  width: 100%;
+  border-radius: 6px;
+}
+
+.plan:has(.curseur:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.dessin {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* Le curseur natif couvre toute la frise, invisible : il porte le clavier, la souris et le doigt. */
+.curseur {
+  position: absolute;
+  top: 0;
+  left: 14px;
+  width: calc(100% - 28px);
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  opacity: 0;
+  cursor: ew-resize;
+  appearance: none;
+  -webkit-appearance: none;
+  touch-action: pan-y;
+}
+
+.curseur::-webkit-slider-runnable-track {
+  height: 100%;
+  background: transparent;
+}
+
+.curseur::-webkit-slider-thumb {
+  width: 2px;
+  height: 176px;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+}
+
+.curseur::-moz-range-track {
+  height: 100%;
+  background: transparent;
+}
+
+.curseur::-moz-range-thumb {
+  width: 2px;
+  height: 176px;
+  background: transparent;
+  border: 0;
+}
+
+.courbe {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.degradeHaut {
+  stop-color: var(--accent);
+  stop-opacity: 0.34;
+}
+
+.degradeBas {
+  stop-color: var(--accent);
+  stop-opacity: 0;
+}
+
+.hachureNuit {
+  stroke: var(--texte);
+  stroke-opacity: 0.2;
+  stroke-width: 1;
+}
+
+.hachureRouge {
+  stroke: var(--fond);
+  stroke-width: 1.4;
+}
+
+.fenetre {
+  fill: var(--accent);
+  fill-opacity: 0.16;
+}
+
+.vert {
+  fill: var(--succes-texte);
+}
+
+.rouge {
+  fill: var(--danger-texte);
+}
+
+.noir {
+  fill: var(--texte);
+}
+
+.maree {
+  fill: var(--fond);
+  stroke: var(--texte);
+  stroke-width: 1.4;
+}
+
+.axe {
+  stroke: var(--texte-doux);
+  stroke-width: 1;
+}
+
+.legende,
+.legendeForte,
+.graduation {
+  font: 400 10.5px var(--police-chiffres);
+  fill: var(--texte-doux);
+  letter-spacing: 0.04em;
+}
+
+.legendeForte {
+  font-weight: 600;
+  fill: var(--texte);
+}
+
+.maintenant {
+  stroke: var(--texte);
+  stroke-width: 1.5;
+}
+
+.vise {
+  stroke: var(--accent);
+  stroke-width: 1;
+}
+
+.pointVise {
+  fill: var(--accent);
+  stroke: var(--fond);
+  stroke-width: 2;
+}
