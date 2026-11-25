@@ -1,0 +1,200 @@
+/* La lecture : une colonne calme, sans carte. Les chiffres qui comptent sont les deux pentes. */
+.fiche {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
+  animation: lire 0.5s var(--courbe-sortie, ease) both;
+}
+
+.fiche > * {
+  margin: 0;
+}
+
+.etiquette {
+  font: 600 12px/1.3 var(--police-texte);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.titre {
+  font: 400 clamp(2.2rem, 4.2vw, 3.8rem) / 1.02 var(--police-objectifs, var(--police-titre));
+  letter-spacing: 0;
+  color: var(--texte);
+  text-wrap: balance;
+}
+
+.cible {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: var(--texte-doux);
+  font: 500 12px/1.3 var(--police-texte);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cible strong {
+  font: 400 clamp(1.6rem, 2.6vw, 2.4rem) / 1 var(--police-chiffres);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--texte);
+}
+
+.statut {
+  display: flex;
+}
+
+/* Le héros de la page : la question du jour, pas une valeur. */
+.heros {
+  display: grid;
+  gap: 8px;
+  min-height: 2.4em;
+}
+
+.heros > * {
+  margin: 0;
+}
+
+.pentes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+}
+
+.pente {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-areas:
+    'legende legende'
+    'valeur unite';
+  align-items: baseline;
+  column-gap: 8px;
+}
+
+.legende {
+  grid-area: legende;
+  font: 500 12px/1.3 var(--police-chiffres);
+  letter-spacing: 0.06em;
+  color: var(--texte-doux);
+}
+
+.pente strong {
+  grid-area: valeur;
+  font: 400 clamp(1.7rem, 2.8vw, 2.4rem) / 1.1 var(--police-chiffres);
+  color: var(--texte);
+}
+
+.pente[data-retard] strong {
+  color: var(--alerte-texte);
+}
+
+.unite {
+  grid-area: unite;
+  font: 500 14px/1 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.ecart {
+  font: 400 clamp(1rem, 1.5vw, 1.25rem) / 1.35 var(--police-chiffres);
+  color: var(--texte);
+}
+
+.sansPente {
+  font: 500 14px/1.4 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.progres {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  font: 500 13px/1.4 var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.progres strong {
+  font: 300 clamp(2rem, 3.4vw, 3rem) / 1 var(--police-chiffres);
+  color: var(--texte);
+}
+
+.faits {
+  display: grid;
+  gap: 0;
+}
+
+.faits > div {
+  display: grid;
+  grid-template-columns: 7.5em minmax(0, 1fr);
+  gap: 10px;
+  padding: 7px 0;
+  border-top: 1px solid var(--filet);
+}
+
+.faits > div:last-child {
+  border-bottom: 1px solid var(--filet);
+}
+
+.faits dt {
+  font: 600 11px/1.6 var(--police-chiffres);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+.faits dd {
+  margin: 0;
+  font-size: 14px;
+  color: var(--texte);
+}
+
+.blocs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+
+.puce {
+  padding: 3px 10px;
+  border: 1px solid var(--accent-clair);
+  color: var(--texte);
+  font: 600 12px var(--police-chiffres);
+  text-decoration: none;
+}
+
+.puce:hover {
+  background: var(--voile);
+}
+
+.lien {
+  color: var(--texte);
+  font: 500 12px var(--police-chiffres);
+  text-decoration: underline dotted;
+  text-underline-offset: 4px;
+}
+
+.puce:focus-visible,
+.lien:focus-visible {
+  outline: 3px double var(--texte);
+  outline-offset: 2px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@keyframes lire {
+  from {
+    opacity: 0;
+  }
+}
+
+:root[data-animations='immobile'] .fiche,
+:root[data-animations='sobre'] .fiche {
+  animation: none;
+}
