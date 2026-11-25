@@ -1,0 +1,158 @@
+/*
+ * Le verdict. Il est dans l'air au-dessus de la dune : une zone sans animation, sur le fond du thème.
+ * Rien de ce bloc ne bouge : le seul changement est l'émoussé du titre, et il se fait par une transition.
+ */
+.verdict {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  max-width: 62ch;
+  padding: 8px 0 4px;
+  color: var(--texte);
+}
+
+.surtitre {
+  margin: 0;
+  color: var(--texte-doux);
+  font: 500 12px/1.4 var(--police-chiffres);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.nuit {
+  color: var(--texte);
+  font-weight: 700;
+}
+
+.titre {
+  margin: 0;
+  font-family: var(--police-marine);
+  font-size: clamp(2.3rem, 5.4vw, 3.8rem);
+  font-weight: 350;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  /* Un peu de réserve en hauteur : un titre qui passe sur deux lignes ne doit pas pousser la coupe sans prévenir. */
+  min-block-size: 1.04em;
+  transition: font-variation-settings 600ms var(--courbe-sortie);
+  text-wrap: balance;
+}
+
+html[data-animations='immobile'] .titre,
+html[data-animations='sobre'] .titre {
+  transition: none;
+}
+
+.creneau {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  margin: 4px 0 0;
+}
+
+.heros {
+  color: var(--texte);
+  font: 300 clamp(2.4rem, 6.2vw, 4.75rem) / 1 var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+.jour {
+  color: var(--texte-doux);
+  font: 500 12px/1.4 var(--police-chiffres);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.durees,
+.etale {
+  margin: 0;
+  color: var(--texte);
+  font: 400 14px/1.5 var(--police-chiffres);
+  letter-spacing: 0.02em;
+}
+
+.etale {
+  color: var(--texte-doux);
+}
+
+.detail {
+  margin: 0;
+  color: var(--texte-doux);
+  font: 400 15px/1.6 var(--police-texte);
+}
+
+/* Le danger : un disque d'eau calme dédié (le scrim est dans le badge), puis le niveau écrit en toutes lettres. */
+.danger {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--filet);
+  width: 100%;
+}
+
+.danger svg {
+  flex: none;
+}
+
+.texte {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.niveau {
+  margin: 0;
+  font: 400 14px/1.3 var(--police-chiffres);
+  letter-spacing: 0.04em;
+}
+
+.niveau strong {
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+[data-niveau='vert'] .niveau strong {
+  color: var(--succes-texte);
+}
+
+[data-niveau='rouge'] .niveau strong {
+  color: var(--danger-texte);
+}
+
+[data-niveau='noir'] .niveau strong {
+  color: var(--texte);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.phrase,
+.bascule {
+  margin: 0;
+  color: var(--texte-doux);
+  font: 400 14px/1.5 var(--police-texte);
+}
+
+.bascule {
+  color: var(--texte);
+  font-family: var(--police-chiffres);
+  font-size: 13px;
+}
+
+.raisons {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--texte);
+  font: 400 14px/1.5 var(--police-texte);
+}
+
+.raisons li::before {
+  content: '— ';
+  color: var(--texte-doux);
+}
