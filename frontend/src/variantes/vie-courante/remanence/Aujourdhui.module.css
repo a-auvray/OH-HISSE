@@ -1,0 +1,406 @@
+/*
+ * Aujourd'hui, Rémanence. Le mur est toujours un mur de nuit : la page pose --rem-mur (le plus sombre
+ * des jetons --fond et --texte du thème) et --rem-lumiere (le plus clair). Tout le reste en dérive,
+ * si bien que le contraste est celui que le thème donne à son propre texte, dans chaque ton.
+ */
+.page {
+  display: grid;
+  max-width: 1180px;
+}
+
+.attente,
+.erreur {
+  margin: 0;
+  font: 400 13px var(--police-chiffres);
+  color: var(--texte-doux);
+}
+
+.erreur {
+  color: var(--danger-texte);
+}
+
+/* Le mur est toujours sombre : --danger-texte, pensé pour le fond du thème, y serait illisible en jour. */
+.mur .erreur {
+  color: var(--rem-erreur);
+}
+
+.mur {
+  /* Les encres du mur (--rem-mur, --rem-lumiere) arrivent par le style de l'élément. */
+  --rem-doux: color-mix(in srgb, var(--rem-lumiere) 78%, var(--rem-mur));
+  --rem-filet: color-mix(in srgb, var(--rem-lumiere) 26%, var(--rem-mur));
+  --rem-bord: color-mix(in srgb, var(--rem-lumiere) 58%, var(--rem-mur));
+  --rem-creux: color-mix(in srgb, var(--rem-lumiere) 8%, var(--rem-mur));
+  /* Encres de donnée : la braise du cheat meal et les trois ressentis, identiques dans tous les thèmes. */
+  --rem-braise: #d99a5b;
+  --rem-vert: #2fd67b;
+  --rem-orange: #ff9f1c;
+  --rem-rouge: #ff4a3d;
+  --rem-erreur: #ffb3b5;
+
+  position: relative;
+  display: grid;
+  gap: 28px;
+  overflow: hidden;
+  padding: clamp(20px, 3.4vw, 44px) clamp(16px, 3.4vw, 44px) 0;
+  border-radius: 18px;
+  color: var(--rem-lumiere);
+  /* Un badigeon de chaux : deux lavis très lents et des reprises de brosse à peine visibles. */
+  background:
+    radial-gradient(
+      60% 40% at 18% 8%,
+      color-mix(in srgb, var(--rem-lumiere) 7%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      50% 45% at 88% 62%,
+      color-mix(in srgb, var(--rem-lumiere) 5%, transparent),
+      transparent 70%
+    ),
+    repeating-linear-gradient(
+      97deg,
+      color-mix(in srgb, var(--rem-lumiere) 1.8%, transparent) 0 2px,
+      transparent 2px 9px
+    ),
+    var(--rem-mur);
+  box-shadow: var(--ombre-carte);
+}
+
+.mur :is(button, input, a, summary, [role='slider']):focus-visible {
+  /* Double anneau : la lumière en dehors, le mur contre le bord, pour rester visible sur une empreinte. */
+  outline: 2px solid var(--rem-lumiere);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 2px var(--rem-mur);
+}
+
+.hero {
+  display: grid;
+  gap: 10px;
+  max-width: min(100%, 760px);
+}
+
+.phrase {
+  margin: 0;
+  /* Deux lignes réservées : réécrire la phrase ne décale jamais la page. */
+  min-height: 1.9em;
+  font: 300 clamp(2.8rem, 7.4vw, 6.4rem) / 0.95 var(--police-espace);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.phrase[data-vide] {
+  color: var(--rem-doux);
+  font-style: italic;
+}
+
+.chiffres {
+  margin: 0;
+  font: 400 clamp(0.9rem, 1.5vw, 1.05rem) / 1.5 var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+  color: var(--rem-doux);
+}
+
+.scene {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(96px, 15vw, 150px);
+  gap: clamp(8px, 2vw, 24px);
+  align-items: start;
+}
+
+.blocs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 28px clamp(20px, 3vw, 40px);
+}
+
+.bloc {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rem-filet);
+}
+
+.bloc > * {
+  max-width: 100%;
+}
+
+.rubrique {
+  margin: 0;
+  font: 500 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rem-doux);
+}
+
+.texte {
+  margin: 0;
+  color: var(--rem-doux);
+  font-size: 0.95rem;
+}
+
+.chiffre {
+  font: 500 1em var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+  color: var(--rem-lumiere);
+}
+
+.verdict {
+  margin: 0;
+  font: italic 400 clamp(1.7rem, 3vw, 2.4rem) / 1.1 var(--police-espace);
+  text-wrap: balance;
+}
+
+.points {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.crans {
+  display: flex;
+  gap: 4px;
+}
+
+.crans span {
+  width: 14px;
+  height: 22px;
+  border: 1px solid var(--rem-bord);
+  border-radius: 3px;
+}
+
+.crans span[data-plein] {
+  background: var(--rem-lumiere);
+  border-color: var(--rem-lumiere);
+}
+
+.raisons {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.92rem;
+  color: var(--rem-doux);
+}
+
+.raisons li::before {
+  content: '— ';
+  color: var(--rem-bord);
+}
+
+.details summary {
+  cursor: pointer;
+  color: var(--rem-doux);
+  font-size: 0.92rem;
+}
+
+.details[open] summary {
+  margin-bottom: 6px;
+}
+
+.lien {
+  color: var(--rem-lumiere);
+  font: 500 12px/1.5 var(--police-chiffres);
+  letter-spacing: 0.04em;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lien:hover {
+  text-decoration-thickness: 2px;
+}
+
+.poids {
+  margin: 0;
+  font: 300 2.4rem / 1 var(--police-chiffres);
+  font-variant-numeric: tabular-nums;
+}
+
+.ligne {
+  width: 160px;
+  max-width: 100%;
+  height: 36px;
+  overflow: visible;
+}
+
+.moyenneMobile {
+  fill: none;
+  stroke: var(--rem-lumiere);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.pointDePesee {
+  fill: var(--rem-lumiere);
+  fill-opacity: 0.7;
+}
+
+.champSaisie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+}
+
+.champSaisie label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.champSaisie input {
+  width: 7ch;
+  padding: 7px 10px;
+  border: 1px solid var(--rem-bord);
+  border-radius: 6px;
+  background: var(--rem-creux);
+  color: var(--rem-lumiere);
+  font: 500 1rem var(--police-chiffres);
+  text-align: right;
+}
+
+.pastilles {
+  display: flex;
+  gap: 6px;
+}
+
+.pastilles button {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 2px solid var(--rem-bord);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--rem-lumiere);
+  font: 500 12px var(--police-chiffres);
+  cursor: pointer;
+}
+
+.pastilles button[data-ressenti='bon'] {
+  --teinte: var(--rem-vert);
+}
+
+.pastilles button[data-ressenti='moyen'] {
+  --teinte: var(--rem-orange);
+}
+
+.pastilles button[data-ressenti='difficile'] {
+  --teinte: var(--rem-rouge);
+}
+
+.pastilles button[data-ressenti] {
+  border-color: var(--teinte);
+}
+
+.pastilles button[aria-checked='true'] {
+  background: var(--teinte);
+  color: var(--rem-mur);
+  font-weight: 700;
+}
+
+.bouton {
+  padding: 10px 16px;
+  border: 1px solid var(--rem-lumiere);
+  border-radius: 6px;
+  background: var(--rem-lumiere);
+  color: var(--rem-mur);
+  font: 600 11px/1.3 var(--police-chiffres);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.bouton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Le geste secondaire (l'écart) : un contour plutôt qu'un aplat, pour que la braise reste le héros. */
+.discret {
+  background: transparent;
+  color: var(--rem-lumiere);
+}
+
+.discret:hover:not(:disabled) {
+  background: var(--rem-creux);
+}
+
+/* Le rebord bas : la braise du cheat meal y monte, et nulle part ailleurs. */
+.rebord {
+  position: relative;
+  height: 72px;
+  margin: 0 calc(-1 * clamp(16px, 3.4vw, 44px));
+  border-top: 1px solid var(--rem-filet);
+  overflow: hidden;
+}
+
+.braise {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(
+    70% 150% at 24% 140%,
+    color-mix(in srgb, var(--rem-braise) 90%, transparent),
+    transparent 72%
+  );
+}
+
+.braise[data-niveau='rougeoyante'] {
+  opacity: 0.5;
+}
+
+.braise[data-niveau='vive'] {
+  opacity: 0.95;
+}
+
+:root[data-animations='cinema'] .braise {
+  transition: opacity 600ms ease;
+}
+
+:root[data-animations='cinema'] .braise[data-consume] {
+  /* « J'ai pris mon écart » : une seule pulsation de 600 ms, puis la braise s'éteint. */
+  animation: pulsation 600ms ease-out;
+}
+
+:root[data-animations='sobre'] .braise {
+  transition: opacity 250ms ease;
+}
+
+@keyframes pulsation {
+  35% {
+    opacity: 1;
+  }
+}
+
+/* Entrée : en cinéma, les blocs montent en cascade après l'allumage ; en sobre, un simple fondu. */
+:root[data-animations='cinema'] .apparait {
+  animation: monter 600ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(900ms + var(--rang, 0) * 50ms);
+}
+
+:root[data-animations='sobre'] .apparait {
+  animation: fondu 250ms ease backwards;
+}
+
+@keyframes monter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes fondu {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .scene {
+    grid-template-columns: minmax(0, 1fr) 92px;
+  }
+}
