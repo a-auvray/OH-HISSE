@@ -1,0 +1,58 @@
+/* Les boutons de la planche : des rectangles droits, en mono capitales, comme les légendes d'un plan. */
+.bouton,
+.plein,
+.discret {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border: 1px solid var(--texte);
+  background: none;
+  color: var(--texte);
+  font: 500 12px/1.2 var(--police-chiffres);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.plein {
+  background: var(--texte);
+  color: var(--surface);
+}
+
+.bouton:hover {
+  background: var(--voile);
+}
+
+.plein:hover {
+  background: var(--encre-tirage);
+  border-color: var(--encre-tirage);
+}
+
+.discret {
+  border-color: transparent;
+  color: var(--texte-doux);
+}
+
+.discret:hover {
+  color: var(--danger-texte);
+  border-color: var(--danger-texte);
+}
+
+.bouton:focus-visible,
+.plein:focus-visible,
+.discret:focus-visible {
+  outline: 2px solid var(--encre-tirage);
+  outline-offset: 3px;
+}
+
+.bouton:disabled,
+.plein:disabled,
+.discret:disabled {
+  opacity: 0.55;
+  cursor: default;
+}

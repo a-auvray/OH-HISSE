@@ -1,0 +1,90 @@
+/* Le tiroir d'archives : des tranches de planches empilées, séparées par un filet. */
+.tiroir {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--texte);
+}
+
+.tranche {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px 20px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--filet);
+}
+
+.numero {
+  color: var(--texte-doux);
+  font: 500 12px/1 var(--police-chiffres);
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+.titre {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.titreBouton {
+  justify-self: start;
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: var(--texte);
+  font: 800 1.1rem / 1.2 var(--police-titre);
+  text-align: left;
+  cursor: pointer;
+}
+
+/* Une planche abandonnée est biffée, et le badge le dit aussi en toutes lettres. */
+.tranche[data-statut='abandonne'] .titreBouton {
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+  color: var(--texte-doux);
+}
+
+.titreBouton:hover {
+  text-underline-offset: 4px;
+}
+
+.titreBouton:focus-visible {
+  outline: 2px solid var(--encre-tirage);
+  outline-offset: 3px;
+}
+
+.faits {
+  margin: 0;
+  color: var(--texte-doux);
+  font: 400 12.5px/1.5 var(--police-chiffres);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.vide {
+  margin: 0;
+  max-width: 56ch;
+  color: var(--texte-doux);
+  line-height: 1.6;
+}
+
+@media (max-width: 720px) {
+  .tranche {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .numero {
+    grid-column: 1 / -1;
+  }
+
+  .actions {
+    grid-column: 1 / -1;
+  }
+}

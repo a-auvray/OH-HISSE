@@ -1,0 +1,27 @@
+.cle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--texte-doux);
+  font: 400 12px/1.4 var(--police-chiffres);
+  letter-spacing: 0.04em;
+}
+
+.cle li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.echantillon {
+  width: 28px;
+  height: 14px;
+}
+
+.echantillon rect {
+  stroke: var(--encre-tirage);
+  stroke-width: 1;
+}

@@ -1,0 +1,23 @@
+.encre line,
+.encre circle {
+  fill: none;
+  stroke: var(--encre-tirage);
+  stroke-width: 1.4;
+}
+
+.encre[data-pleine] circle {
+  fill: var(--encre-tirage);
+}
+
+.construction line,
+.construction circle {
+  fill: none;
+  stroke: var(--construction);
+  stroke-width: 1.2;
+}
+
+.paire {
+  display: block;
+  width: 30px;
+  height: 40px;
+}

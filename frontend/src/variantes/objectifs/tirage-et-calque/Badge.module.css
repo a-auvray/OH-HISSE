@@ -1,0 +1,59 @@
+/*
+ * Le badge se lit sur la couleur du texte et des fonds du thème. « En retard » et « atteint » sont
+ * pleins : le texte y est posé en réserve, dans la couleur du fond, qui contraste avec l'encre.
+ */
+.badge {
+  --couleur: var(--texte);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border: 1px solid var(--couleur);
+  outline: 1px solid var(--couleur);
+  outline-offset: 2px;
+  color: var(--couleur);
+  font: 500 13px/1.2 var(--police-chiffres);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.icone {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: square;
+}
+
+.plein {
+  fill: currentColor;
+}
+
+.badge[data-statut='en-retard'] {
+  --couleur: var(--danger-texte);
+
+  background: var(--danger-texte);
+  color: var(--fond);
+}
+
+.badge[data-statut='atteint'],
+.badge[data-statut='cible-atteinte'] {
+  background: var(--texte);
+  color: var(--fond);
+}
+
+.badge[data-statut='abandonne'] {
+  --couleur: var(--texte-doux);
+}
+
+.badge[data-statut='abandonne'] .libelle {
+  text-decoration: line-through;
+}
+
+.badge[data-statut='sans-estimation'] {
+  border-style: dashed;
+  outline-style: dashed;
+  --couleur: var(--texte-doux);
+}

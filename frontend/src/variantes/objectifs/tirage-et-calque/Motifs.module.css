@@ -1,0 +1,20 @@
+/*
+ * L'encre des trames. Elle suit --encre-tirage, que la planche définit à partir des jetons du
+ * thème : le dessin a donc la couleur d'accent du thème, dans les deux tons.
+ */
+.trait {
+  fill: none;
+  stroke: var(--encre-tirage, currentColor);
+  stroke-width: 0.9;
+}
+
+.traitPale {
+  fill: none;
+  stroke: var(--encre-tirage, currentColor);
+  stroke-width: 0.7;
+  opacity: 0.7;
+}
+
+.point {
+  fill: var(--construction, currentColor);
+}
