@@ -6,7 +6,7 @@
  * dire à quelle intensité chaque série est prévue. Les tests la comparent à des valeurs de la table.
  */
 import type { ObjectifLu, PointEvolution, Proposition } from '../../../api/types'
-import { depuisIso, nombre } from '../../../commun/format'
+import { depuisIso, lest, nombre } from '../../../commun/format'
 import type { Point } from '../../../espaces/streetlifting/chronologie'
 
 // --- La table RPE ---------------------------------------------------------------------------
@@ -366,8 +366,8 @@ export function indexLePlusProche(elements: readonly ElementDeSerie[], px: numbe
 export function phraseLimiteVisee(e1rmLest: number, cibleLest: number): string {
   const reste = cibleLest - e1rmLest
   return reste > 0
-    ? `Reste ${nombre(Math.round(reste * 10) / 10)} kg avant la limite visée de +${nombre(cibleLest)} kg.`
-    : `Limite visée de +${nombre(cibleLest)} kg dépassée de ${nombre(Math.round(-reste * 10) / 10)} kg.`
+    ? `Reste ${nombre(Math.round(reste * 10) / 10)} kg avant la limite visée de ${lest(cibleLest)}.`
+    : `Limite visée de ${lest(cibleLest)} dépassée de ${nombre(Math.round(-reste * 10) / 10)} kg.`
 }
 
 /** La lecture d'un point de la courbe, au survol ou au clavier : « 5 reps éq. · 106,7 kg · 3 @ RPE 8 ». */

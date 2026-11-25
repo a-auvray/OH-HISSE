@@ -1,6 +1,6 @@
 import { type KeyboardEvent, type PointerEvent, useId, useState } from 'react'
 
-import { nombre } from '../../../commun/format'
+import { lest, nombre } from '../../../commun/format'
 import { useLargeur } from '../../../commun/useLargeur'
 import styles from './CourbeCaracteristique.module.css'
 import { chargeSurCourbe, lectureCourbe, miseEnPageCourbe, type PointDeSerie } from './modele'
@@ -155,7 +155,7 @@ export function CourbeCaracteristique({
                 y2={m.y(limiteVisee.charge)}
               />
               <text x={m.marges.gauche + 8} y={m.y(limiteVisee.charge) - 8}>
-                LIMITE VISÉE +{nombre(limiteVisee.lest)} kg
+                LIMITE VISÉE {lest(limiteVisee.lest)}
               </text>
             </g>
           )}

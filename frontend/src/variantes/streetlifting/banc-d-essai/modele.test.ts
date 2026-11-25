@@ -298,6 +298,7 @@ describe('les objectifs et les phrases', () => {
   it('dit ce qui reste à tirer, ou le dépassement', () => {
     expect(phraseLimiteVisee(41.5, 50)).toBe('Reste 8,5 kg avant la limite visée de +50 kg.')
     expect(phraseLimiteVisee(52, 50)).toBe('Limite visée de +50 kg dépassée de 2 kg.')
+    expect(phraseLimiteVisee(2, 0)).toBe('Limite visée de PDC dépassée de 2 kg.')
   })
 
   it('lit un point de la courbe', () => {

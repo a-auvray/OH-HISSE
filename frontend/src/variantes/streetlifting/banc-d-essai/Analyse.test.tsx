@@ -81,6 +81,15 @@ describe('Analyse, variante Banc d’essai', () => {
     expect(await screen.findByText('Reste 8,5 kg avant la limite visée de +50 kg.')).toBeInTheDocument()
   })
 
+  it('lit un objectif à poids du corps seul sans NaN, même sans 1RM estimé', async () => {
+    simuler([{ ...OBJECTIF, valeur_cible_kg: 0, progression: null }])
+    rendre(<AnalyseBanc />)
+
+    expect(await screen.findByText('Vers PDC : 100 % du lest')).toBeInTheDocument()
+    expect(screen.getByRole('meter')).toHaveAttribute('aria-valuenow', '100')
+    expect(await screen.findByText('LIMITE VISÉE PDC')).toBeInTheDocument()
+  })
+
   it('n’affiche ni réglette ni ligne visée sans objectif', async () => {
     simuler([])
     rendre(<AnalyseBanc />)

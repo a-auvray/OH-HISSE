@@ -1,4 +1,4 @@
-import { dateCourte, nombre } from '../../../commun/format'
+import { dateCourte, lest, nombre } from '../../../commun/format'
 import { PERIODES } from '../../../espaces/streetlifting/metriques'
 import { useAnalyse } from '../../../espaces/streetlifting/useAnalyse'
 import { Etincelle } from '../../../themes/Etincelle'
@@ -29,17 +29,16 @@ export function AnalyseBanc() {
       ? objectifDeLExercice(objectifs.valeur, a.exerciceId)
       : undefined
   const progression = a.premier && a.dernier ? a.dernier.valeur - a.premier.valeur : null
-  const pourcentageVise = objectif
-    ? Math.round(
-        Math.min(
-          100,
-          Math.max(
-            0,
-            objectif.progression?.pourcentage ?? ((a.dernier?.valeur ?? 0) / objectif.valeur_cible_kg) * 100,
-          ),
-        ),
-      )
+  const brutVise = objectif
+    ? (objectif.progression?.pourcentage ??
+      (objectif.valeur_cible_kg <= 0 ? 100 : ((a.dernier?.valeur ?? 0) / objectif.valeur_cible_kg) * 100))
     : null
+  const pourcentageVise =
+    brutVise !== null && Number.isFinite(brutVise)
+      ? Math.round(Math.min(100, Math.max(0, brutVise)))
+      : objectif
+        ? 0
+        : null
   const rpeParDate = new Map(
     (a.parMetrique.find((m) => m.id === 'rpe_moyen')?.points ?? []).map((p) => [p.date, p.valeur] as const),
   )
@@ -133,10 +132,10 @@ export function AnalyseBanc() {
             {objectif && pourcentageVise !== null && (
               <div className={`${styles.reserve} ${styles.visee}`}>
                 <p className={styles.etiquette}>
-                  Vers +{nombre(objectif.valeur_cible_kg)} kg : {pourcentageVise} % du lest
+                  Vers {lest(objectif.valeur_cible_kg)} : {pourcentageVise} % du lest
                 </p>
                 <Reglette
-                  libelle={`Progression vers la limite visée de +${nombre(objectif.valeur_cible_kg)} kg`}
+                  libelle={`Progression vers la limite visée de ${lest(objectif.valeur_cible_kg)}`}
                   valeur={pourcentageVise}
                   min={0}
                   max={100}
