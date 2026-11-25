@@ -236,6 +236,50 @@ describe('Aujourd’hui, variante Rémanence', () => {
     expect(screen.queryByText('Écart pris ce soir.')).not.toBeInTheDocument()
   })
 
+  /** Le réseau coupé : seules les écritures échouent, les lectures de la page ont déjà abouti. */
+  function coupeLeReseauPourEcrire() {
+    const lecture = vi.mocked(globalThis.fetch).getMockImplementation()
+    vi.mocked(globalThis.fetch).mockImplementation(async (requete, options) => {
+      const methode = requete instanceof Request ? requete.method : (options?.method ?? 'GET')
+      if (methode !== 'GET') throw new TypeError('Failed to fetch')
+      return (lecture as typeof fetch)(requete, options)
+    })
+  }
+
+  it('rallume la braise, dit l’erreur et libère le bouton quand le réseau est coupé', async () => {
+    rendre(<AujourdhuiRemanence />)
+    const bouton = await screen.findByRole('button', { name: /J’ai pris mon écart/ })
+    coupeLeReseauPourEcrire()
+
+    fireEvent.click(bouton)
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('L’écart n’a pas pu être noté.')
+    expect(screen.getByText('Ce soir, t’as le droit.')).toBeInTheDocument()
+    expect(screen.queryByText('Écart pris ce soir.')).not.toBeInTheDocument()
+    expect(bouton).toBeEnabled()
+  })
+
+  it('dit l’erreur quand la nuit ne part pas faute de réseau', async () => {
+    rendre(<AujourdhuiRemanence />)
+    await screen.findByRole('heading', { level: 2 })
+    coupeLeReseauPourEcrire()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Noter' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('La nuit n’a pas pu être notée.')
+  })
+
+  it('dit l’erreur quand la pesée ne part pas faute de réseau', async () => {
+    rendre(<AujourdhuiRemanence />)
+    await screen.findByRole('heading', { level: 2 })
+    coupeLeReseauPourEcrire()
+
+    fireEvent.change(screen.getByLabelText(/Poids du jour en kg/), { target: { value: '74,6' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Peser' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('La pesée n’a pas pu être notée.')
+  })
+
   it('note la nuit saisie au formulaire, avec son ressenti', async () => {
     rendre(<AujourdhuiRemanence />)
     await screen.findByRole('heading', { level: 2 })

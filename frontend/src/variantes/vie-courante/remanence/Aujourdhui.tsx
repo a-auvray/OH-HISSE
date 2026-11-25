@@ -8,7 +8,7 @@ import styles from './Aujourdhui.module.css'
 import { Balance } from './Balance'
 import { Champ } from './Champ'
 import { Colonne } from './Colonne'
-import { noterEcartVerifie, useNuitsDeLaSemaine } from './donnees'
+import { noterEcartVerifie, sansException, useNuitsDeLaSemaine } from './donnees'
 import {
   dureeEnMots,
   empreintesAffichees,
@@ -139,7 +139,10 @@ function Mur({ etat, nuits, etatNuits, erreurNuits, recharger, rechargerNuits }:
   const eteinte = braiseEteinte === cleVerdict
 
   async function enregistrerNuit(valeur: string) {
-    const message = await noterNuit(valeur, qualiteMontree)
+    const message = await sansException(
+      () => noterNuit(valeur, qualiteMontree),
+      'La nuit n’a pas pu être notée.',
+    )
     setErreurNuit(message)
     if (!message) {
       recharger()
@@ -157,8 +160,12 @@ function Mur({ etat, nuits, etatNuits, erreurNuits, recharger, rechargerNuits }:
     setErreurEcart(null)
     // La braise s'éteint tout de suite ; si l'écart n'est pas enregistré, elle se rallume et on le dit.
     setBraiseEteinte(cleVerdict)
-    const message = await noterEcartVerifie()
-    setEnCours(false)
+    let message: string | null
+    try {
+      message = await noterEcartVerifie()
+    } finally {
+      setEnCours(false)
+    }
     if (message) {
       setBraiseEteinte(null)
       setErreurEcart(message)

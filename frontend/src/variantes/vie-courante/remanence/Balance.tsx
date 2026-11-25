@@ -4,7 +4,7 @@ import type { EtatDuJour } from '../../../api/types'
 import { aujourdhui, dateCourte, kg, nombre } from '../../../commun/format'
 import { peser } from '../../../espaces/vie-courante/etat'
 import styles from './Aujourdhui.module.css'
-import { usePesees } from './donnees'
+import { sansException, usePesees } from './donnees'
 import { pointsDeBalance, tracerBalance, variationDePesee } from './modele'
 
 const LARGEUR = 160
@@ -35,7 +35,7 @@ export function Balance({ poids, apresPesee }: Props) {
 
   async function enregistrer(evenement: FormEvent) {
     evenement.preventDefault()
-    const message = await peser(saisie)
+    const message = await sansException(() => peser(saisie), 'La pesée n’a pas pu être notée.')
     setErreur(message)
     if (!message) {
       setSaisie('')

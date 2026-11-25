@@ -19,6 +19,11 @@
   color: var(--danger-texte);
 }
 
+/* Le mur est toujours sombre : --danger-texte, pensé pour le fond du thème, y serait illisible en jour. */
+.mur .erreur {
+  color: var(--rem-erreur);
+}
+
 .mur {
   /* Les encres du mur (--rem-mur, --rem-lumiere) arrivent par le style de l'élément. */
   --rem-doux: color-mix(in srgb, var(--rem-lumiere) 78%, var(--rem-mur));
@@ -30,6 +35,7 @@
   --rem-vert: #2fd67b;
   --rem-orange: #ff9f1c;
   --rem-rouge: #ff4a3d;
+  --rem-erreur: #ffb3b5;
 
   position: relative;
   display: grid;
@@ -69,14 +75,14 @@
 .hero {
   display: grid;
   gap: 10px;
-  max-width: 62ch;
+  max-width: min(100%, 760px);
 }
 
 .phrase {
   margin: 0;
   /* Deux lignes réservées : réécrire la phrase ne décale jamais la page. */
   min-height: 1.9em;
-  font: 300 clamp(2.8rem, 7.4vw, 6.4rem) / 0.95 var(--police-titre);
+  font: 300 clamp(2.8rem, 7.4vw, 6.4rem) / 0.95 var(--police-espace);
   letter-spacing: -0.01em;
   text-wrap: balance;
 }
@@ -141,7 +147,7 @@
 
 .verdict {
   margin: 0;
-  font: italic 400 clamp(1.7rem, 3vw, 2.4rem) / 1.1 var(--police-titre);
+  font: italic 400 clamp(1.7rem, 3vw, 2.4rem) / 1.1 var(--police-espace);
   text-wrap: balance;
 }
 
