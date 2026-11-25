@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router'
 
 import type { EtatDuJour } from '../../../api/types'
 import { kg, nombre } from '../../../commun/format'
-import { noterEcart, noterNuit, peser, useEtatDuJour } from '../../../espaces/vie-courante/etat'
+import { noterNuit, peser, useEtatDuJour } from '../../../espaces/vie-courante/etat'
 import { ONGLETS } from '../../../espaces/vie-courante/onglets'
 import { Panneau } from '../../../themes/Panneau'
 import { BarreDeNuit, ColonneRecuperation, Rectangle, Reglette, Tranche } from './Dessins'
@@ -17,6 +17,7 @@ import {
   libelleVerdict,
   reglette,
 } from './modele'
+import { enregistrerEcart } from './ecart'
 import { useMaintenant } from './horloge'
 import { EDITIONS, heureCourte, jourDuSoleil, lumiere, palier, positionDuSoleil } from './soleil'
 import { useEntree } from './tirage'
@@ -52,10 +53,12 @@ export function Aujourdhui() {
 }
 
 function Feuille({ etat, recharger }: { etat: EtatDuJour; recharger: () => void }) {
-  const [entree, entreeFinie] = useEntree()
+  const entree = useEntree()
+  const [rouleauPasse, setRouleauPasse] = useState(false)
   const maintenant = useMaintenant()
   const [pris, setPris] = useState(false)
   const [enCours, setEnCours] = useState(false)
+  const [erreurEcart, setErreurEcart] = useState<string | null>(null)
   const [heures, setHeures] = useState<string | null>(null)
   const [qualite, setQualite] = useState<number | null>(null)
   const [erreurNuit, setErreurNuit] = useState<string | null>(null)
@@ -81,10 +84,20 @@ function Feuille({ etat, recharger }: { etat: EtatDuJour; recharger: () => void 
 
   async function ecart() {
     setEnCours(true)
-    await noterEcart()
-    setEnCours(false)
-    setPris(true)
-    recharger()
+    setErreurEcart(null)
+    try {
+      const message = await enregistrerEcart()
+      if (message) {
+        setErreurEcart(message)
+      } else {
+        setPris(true)
+        recharger()
+      }
+    } catch {
+      setErreurEcart('Écart non enregistré : le serveur ne répond pas.')
+    } finally {
+      setEnCours(false)
+    }
   }
 
   async function enregistrerNuit(evenement: FormEvent) {
@@ -128,7 +141,7 @@ function Feuille({ etat, recharger }: { etat: EtatDuJour; recharger: () => void 
         aria-label="Le tirage du jour"
       >
         <div className={styles.lumiere} aria-hidden="true" />
-        <div className={styles.masque} onAnimationEnd={(e) => e.target === e.currentTarget && entreeFinie()}>
+        <div className={styles.masque}>
           <div className={styles.contenu}>
             <p className={styles.folio}>{folio}</p>
 
@@ -174,6 +187,11 @@ function Feuille({ etat, recharger }: { etat: EtatDuJour; recharger: () => void 
                   >
                     J’ai pris mon écart aujourd’hui
                   </button>
+                  {erreurEcart && (
+                    <p className={styles.erreur} role="alert">
+                      {erreurEcart}
+                    </p>
+                  )}
                 </div>
               </section>
 
@@ -330,7 +348,14 @@ function Feuille({ etat, recharger }: { etat: EtatDuJour; recharger: () => void 
           </div>
         </div>
 
-        {entree === 'tirage' && <div className={styles.rouleau} aria-hidden="true" />}
+        {/* Le rouleau s'efface dès son passage fini ; la feuille, elle, garde son entrée jusqu'au dernier calage. */}
+        {entree === 'tirage' && !rouleauPasse && (
+          <div
+            className={styles.rouleau}
+            aria-hidden="true"
+            onAnimationEnd={(e) => e.target === e.currentTarget && setRouleauPasse(true)}
+          />
+        )}
 
         <aside className={styles.bord} aria-label="La pile des jours">
           <nav className={styles.marge} aria-label="Pages de l’espace">

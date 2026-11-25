@@ -46,15 +46,36 @@ function noterTirage(jour: string) {
 }
 
 /**
- * La façon dont la feuille entre, décidée une fois à l'ouverture, et `fini()` à appeler quand
- * l'animation d'entrée est terminée (la feuille retrouve alors ses débords). Le jour du tirage
- * est noté dès l'ouverture : un rechargement en cours de cérémonie ne la rejoue pas.
+ * Combien de temps l'entrée reste posée sur la feuille, en ms : la plus longue de ses animations (pour le
+ * tirage, le rose qui s'encre à 1220 ms + 600 ms) et une marge. Les règles de l'entrée (masque, encrage du
+ * rose, calage du titre) sont toutes accrochées à `data-entree` : la lâcher plus tôt les couperait en route.
  */
-export function useEntree(): [Entree, () => void] {
+export function dureeEntree(entree: Entree): number {
+  switch (entree) {
+    case 'tirage':
+      return 1900
+    case 'glisse':
+      return 800
+    case 'fondu':
+      return 350
+    case 'fixe':
+      return 0
+  }
+}
+
+/**
+ * La façon dont la feuille entre, décidée une fois à l'ouverture. Au bout de `dureeEntree`, elle repasse
+ * à `fixe` et retrouve ses débords ; ce minuteur sert aussi de filet si une animation ne se termine jamais.
+ * Le jour du tirage est noté dès l'ouverture : un rechargement en cours de cérémonie ne la rejoue pas.
+ */
+export function useEntree(): Entree {
   const [initiale] = useState(() => choisirEntree(niveauAnimation(), lireDernierTirage(), aujourdhui()))
   const [entree, setEntree] = useState<Entree>(initiale)
   useEffect(() => {
     noterTirage(aujourdhui())
-  }, [])
-  return [entree, () => setEntree('fixe')]
+    if (initiale === 'fixe') return
+    const minuteur = setTimeout(() => setEntree('fixe'), dureeEntree(initiale))
+    return () => clearTimeout(minuteur)
+  }, [initiale])
+  return entree
 }

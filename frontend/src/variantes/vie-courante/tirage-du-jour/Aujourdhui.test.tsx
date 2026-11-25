@@ -155,6 +155,54 @@ describe('Aujourd’hui, Le Tirage du jour', () => {
     expect(screen.getByText('Jour 323 de l’année · écart pris')).toBeInTheDocument()
   })
 
+  it('ne dit pas « Écart pris. » quand le serveur refuse, et rend le bouton', async () => {
+    reponseEcriture = Response.json({ detail: 'Écart refusé.' }, { status: 500 })
+    rendre(<Aujourdhui />)
+    const bouton = await screen.findByRole('button', { name: /J’ai pris mon écart/ })
+    fireEvent.click(bouton)
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Écart refusé.')
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Un petit écart, oui.')
+    expect(screen.queryByText(/écart pris/)).not.toBeInTheDocument()
+    expect(bouton).toBeEnabled()
+  })
+
+  it('rend le bouton et dit l’erreur quand le réseau est coupé', async () => {
+    rendre(<Aujourdhui />)
+    const bouton = await screen.findByRole('button', { name: /J’ai pris mon écart/ })
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => {
+      throw new TypeError('Failed to fetch')
+    })
+    fireEvent.click(bouton)
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/Écart non enregistré/)
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Un petit écart, oui.')
+    expect(bouton).toBeEnabled()
+  })
+
+  it('ne met aucun rose quand la récupération passe devant, même avec un verdict mérité', async () => {
+    etat = avec({
+      recuperation: { ...ETAT.recuperation, progression: 0.3, restant_h: 31 },
+      cheat_meal: { verdict: 'oui', points: 3, phrase: 'Séance lourde + 40 min de nage.', details: [] },
+    })
+    rendre(<Aujourdhui />)
+    expect(await screen.findByRole('heading', { level: 2 })).toHaveTextContent('Séance allégée aujourd’hui.')
+
+    const feuille = screen.getByRole('article', { name: 'Le tirage du jour' })
+    expect(feuille.querySelector('[fill*="rose-du-soir"], [style*="rose-du-soir"]')).toBeNull()
+  })
+
+  it('met du rose dans la réglette quand l’écart est mérité', async () => {
+    etat = avec({
+      cheat_meal: { verdict: 'oui', points: 3, phrase: 'Séance lourde + 40 min de nage.', details: [] },
+    })
+    rendre(<Aujourdhui />)
+    await screen.findByRole('heading', { level: 2 })
+
+    const reglette = screen.getByRole('article', { name: 'Le tirage du jour' }).querySelector('ol')
+    expect(reglette?.querySelector('[style*="rose-du-soir"], [fill*="rose-du-soir"]')).not.toBeNull()
+  })
+
   it('note la nuit avec sa qualité', async () => {
     rendre(<Aujourdhui />)
     await screen.findByRole('heading', { level: 2 })
@@ -309,14 +357,31 @@ describe('Aujourd’hui, Le Tirage du jour', () => {
       expect(feuille()).toHaveAttribute('data-entree', 'fixe')
     })
 
-    it('retrouve ses débords quand l’animation d’entrée est finie', async () => {
+    it('retire le rouleau à la fin de son passage mais garde l’entrée pour l’encrage et le calage', async () => {
+      rendre(<Aujourdhui />)
+      await screen.findByRole('heading', { level: 2 })
+      const rouleau = feuille().querySelector('[class*="rouleau"]')
+      expect(rouleau).not.toBeNull()
+      // jsdom n'a pas d'AnimationEvent : React écoute alors la variante préfixée.
+      fireEvent(rouleau as Element, new Event('webkitAnimationEnd', { bubbles: true }))
+      expect(feuille().querySelector('[class*="rouleau"]')).toBeNull()
+      // Le rose (encrage à 1220 ms) et le titre (calage) dépendent encore de l'entrée : ils ne sont pas coupés.
+      expect(feuille()).toHaveAttribute('data-entree', 'tirage')
+    })
+
+    it('ne lâche pas l’entrée sur la fin d’animation du masque', async () => {
       rendre(<Aujourdhui />)
       await screen.findByRole('heading', { level: 2 })
       const masque = feuille().querySelector('[class*="masque"]')
-      expect(masque).not.toBeNull()
-      // jsdom n'a pas d'AnimationEvent : React écoute alors la variante préfixée.
       fireEvent(masque as Element, new Event('webkitAnimationEnd', { bubbles: true }))
-      expect(feuille()).toHaveAttribute('data-entree', 'fixe')
+      expect(feuille()).toHaveAttribute('data-entree', 'tirage')
+    })
+
+    it('retrouve ses débords une fois l’entrée entièrement jouée', async () => {
+      rendre(<Aujourdhui />)
+      await screen.findByRole('heading', { level: 2 })
+      expect(feuille()).toHaveAttribute('data-entree', 'tirage')
+      await waitFor(() => expect(feuille()).toHaveAttribute('data-entree', 'fixe'), { timeout: 4000 })
     })
 
     it('fonctionne sans stockage', async () => {

@@ -75,6 +75,16 @@
   position: relative;
 }
 
+/*
+ * Le masque compositeur : il descend avec le rouleau pendant que son contenu remonte d'autant. Les deux
+ * translations s'annulent, donc le contenu ne bouge pas : c'est le bord du masque, qui rogne, qui le révèle.
+ * Sans ce rognage, la page apparaîtrait d'un bloc dès le premier instant.
+ */
+.feuille[data-entree='tirage'] .masque,
+.feuille[data-entree='glisse'] .masque {
+  overflow: hidden;
+}
+
 .contenu {
   display: grid;
   gap: clamp(24px, 3.5cqi, 44px);

@@ -57,6 +57,7 @@ export function Reglette({ cases, impression }: { cases: readonly CaseEcart[]; i
         <li key={c.libelle} className={styles.case} data-courante={c.courante || undefined}>
           <span className={styles.boite}>
             {c.remplie &&
+              impression !== 'vide' &&
               (impression === 'aplat' ? (
                 <span className={styles.plein} style={{ background: ROSE_DU_SOIR }} />
               ) : (
